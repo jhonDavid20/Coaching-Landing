@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
+import {useTranslations} from 'next-intl';
 
 interface AssessmentFormData {
   name: string
@@ -26,6 +27,7 @@ interface AssessmentFormProps {
 }
 
 export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
+  const t = useTranslations('AssessmentSection');
   const [bmi, setBmi] = useState<number | null>(null)
   const [bmiCategory, setBmiCategory] = useState<string>("")
   const [recommendations, setRecommendations] = useState<string[]>([])
@@ -111,23 +113,23 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <Label htmlFor="name" className="text-[#2D3748] font-medium">
-                Name *
+                {t('Name')} *
               </Label>
               <Input
                 id="name"
-                {...register("name", { required: "Name is required" })}
+                {...register("name", { required: t('NameRequired') })}
                 className="border-[#2D3748] focus:border-[#2D3748] focus:ring-[#2D3748]"
               />
               {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
             </div>
             <div>
               <Label htmlFor="email" className="text-[#2D3748] font-medium">
-                Email *
+                {t('Email')} *
               </Label>
               <Input
                 id="email"
                 type="email"
-                {...register("email", { required: "Email is required" })}
+                {...register("email", { required: t('EmailRequired') })}
                 className="border-[#2D3748] focus:border-[#2D3748] focus:ring-[#2D3748]"
               />
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
@@ -137,11 +139,11 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <Label htmlFor="age" className="text-[#2D3748] font-medium">
-                Age
+                {t('Age')}
               </Label>
               <Select onValueChange={(value) => setValue("age", value)}>
                 <SelectTrigger className="border-[#2D3748]">
-                  <SelectValue placeholder="Select age range" />
+                  <SelectValue placeholder={t('AgePlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="18-25">18-25</SelectItem>
@@ -154,16 +156,16 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
             </div>
             <div>
               <Label htmlFor="gender" className="text-[#2D3748] font-medium">
-                Gender
+                {t('Gender')}
               </Label>
               <Select onValueChange={(value) => setValue("gender", value)}>
                 <SelectTrigger className="border-[#2D3748]">
-                  <SelectValue placeholder="Select gender" />
+                  <SelectValue placeholder={t('GenderPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="male">{t('Male')}</SelectItem>
+                  <SelectItem value="female">{t('Female')}</SelectItem>
+                  <SelectItem value="other">{t('Other')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -172,7 +174,7 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <Label htmlFor="height" className="text-[#2D3748] font-medium">
-                Height (cm)
+                {t('Height')}
               </Label>
               <Input
                 id="height"
@@ -183,7 +185,7 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
             </div>
             <div>
               <Label htmlFor="weight" className="text-[#2D3748] font-medium">
-                Weight (kg)
+                {t('Weight')}
               </Label>
               <Input
                 id="weight"
@@ -198,56 +200,56 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
           {bmi && (
             <div className="bg-[#F7FAFC] p-4 rounded-lg">
               <p className="text-[#2D3748] font-medium">
-                BMI: <span className="font-bold">{bmi}</span> ({bmiCategory})
+                {t('BMI')}: <span className="font-bold">{bmi}</span> ({bmiCategory})
               </p>
             </div>
           )}
 
           <div>
             <Label htmlFor="activityLevel" className="text-[#2D3748] font-medium">
-              Activity Level
+              {t('ActivityLevel')}
             </Label>
             <Select onValueChange={(value) => setValue("activityLevel", value)}>
               <SelectTrigger className="border-[#2D3748]">
-                <SelectValue placeholder="Select activity level" />
+                <SelectValue placeholder={t('ActivityLevelPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="sedentary">Sedentary</SelectItem>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="moderate">Moderate</SelectItem>
-                <SelectItem value="very-active">Very Active</SelectItem>
-                <SelectItem value="extremely-active">Extremely Active</SelectItem>
+                <SelectItem value="sedentary">{t('Sedentary')}</SelectItem>
+                <SelectItem value="light">{t('Light')}</SelectItem>
+                <SelectItem value="moderate">{t('Moderate')}</SelectItem>
+                <SelectItem value="very-active">{t('VeryActive')}</SelectItem>
+                <SelectItem value="extremely-active">{t('ExtremelyActive')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
             <Label htmlFor="goal" className="text-[#2D3748] font-medium">
-              Primary Goal
+              {t('Goal')}
             </Label>
             <Select onValueChange={(value) => setValue("goal", value)}>
               <SelectTrigger className="border-[#2D3748]">
-                <SelectValue placeholder="Select your goal" />
+                <SelectValue placeholder={t('GoalPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="lose-weight">Lose Weight</SelectItem>
-                <SelectItem value="build-muscle">Build Muscle</SelectItem>
-                <SelectItem value="tone-up">Tone Up</SelectItem>
-                <SelectItem value="improve-fitness">Improve Fitness</SelectItem>
-                <SelectItem value="maintain-weight">Maintain Weight</SelectItem>
-                <SelectItem value="athletic-performance">Athletic Performance</SelectItem>
+                <SelectItem value="lose-weight">{t('LoseWeight')}</SelectItem>
+                <SelectItem value="build-muscle">{t('BuildMuscle')}</SelectItem>
+                <SelectItem value="tone-up">{t('ToneUp')}</SelectItem>
+                <SelectItem value="improve-fitness">{t('ImproveFitness')}</SelectItem>
+                <SelectItem value="maintain-weight">{t('MaintainWeight')}</SelectItem>
+                <SelectItem value="athletic-performance">{t('AthleticPerformance')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
             <Label htmlFor="experience" className="text-[#2D3748] font-medium">
-              Fitness Experience
+              {t('FitnessExperience')}
             </Label>
             <Textarea
               id="experience"
               {...register("experience")}
-              placeholder="Tell us about your fitness background, any injuries, or specific concerns..."
+              placeholder={t('ExperiencePlaceholder')}
               className="border-[#2D3748] focus:border-[#2D3748] focus:ring-[#2D3748] min-h-[100px]"
             />
           </div>
@@ -255,7 +257,7 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
           {/* Recommendations */}
           {recommendations.length > 0 && (
             <div className="bg-[#F7FAFC] p-6 rounded-lg">
-              <h4 className="font-semibold text-[#2D3748] mb-3">Initial Recommendations:</h4>
+              <h4 className="font-semibold text-[#2D3748] mb-3">{t('InitialRecommendations')}</h4>
               <ul className="space-y-2">
                 {recommendations.map((rec, index) => (
                   <li key={index} className="text-[#2D3748] text-sm">
@@ -267,7 +269,7 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
           )}
 
           <Button type="submit" className="w-full bg-[#2D3748] hover:bg-[#2D3748]/90 text-white py-3 text-lg">
-            Get My Custom Plan
+            {t('GetMyCustomPlan')}
           </Button>
         </form>
       </CardContent>
