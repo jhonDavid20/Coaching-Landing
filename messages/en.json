@@ -1,0 +1,88 @@
+{
+  "NavBarSection": {
+    "Home": "Home",
+    "Assessment": "Assessment",
+    "Services": "Services",
+    "About": "About"
+  },
+  "HeroSection": {
+    "title": "Transform Your Body & Life",
+    "content": "Get personalized fitness and nutrition coaching that fits your lifestyle. Science-based approach, sustainable results.",
+    "AssessmentButton": "Get Your Free Assessment",
+    "BookACallButton": "Book Discovery Call"
+  },
+  "AssessmentSection": {
+    "title": "Free Fitness Assessment",
+    "content": "Discover your unique fitness profile with our free assessment. Understand your body, set realistic goals, and start your journey to a healthier you.",
+    "BackToFormButton": "New Assessment",
+    "Name": "Name",
+    "NameRequired": "Name is required",
+    "Email": "Email",
+    "EmailRequired": "Email is required",
+    "Age": "Age",
+    "AgePlaceholder": "Select age range",
+    "Gender": "Gender",
+    "GenderPlaceholder": "Select gender",
+    "Male": "Male",
+    "Female": "Female",
+    "Other": "Other",
+    "Height": "Height (cm)",
+    "Weight": "Weight (kg)",
+    "ActivityLevel": "Activity Level",
+    "ActivityLevelPlaceholder": "Select activity level",
+    "Sedentary": "Sedentary",
+    "Light": "Light",
+    "Moderate": "Moderate",
+    "VeryActive": "Very Active",
+    "ExtremelyActive": "Extremely Active",
+    "Goal": "Primary Goal",
+    "GoalPlaceholder": "Select your goal",
+    "LoseWeight": "Lose Weight",
+    "BuildMuscle": "Build Muscle",
+    "ToneUp": "Tone Up",
+    "ImproveFitness": "Improve Fitness",
+    "MaintainWeight": "Maintain Weight",
+    "AthleticPerformance": "Athletic Performance",
+    "FitnessExperience": "Fitness Experience",
+    "ExperiencePlaceholder": "Tell us about your fitness background, any injuries, or specific concerns...",
+    "BMI": "BMI",
+    "InitialRecommendations": "Initial Recommendations:",
+    "GetMyCustomPlan": "Get My Custom Plan"
+  },
+  "AboutSection": {
+    "title": "Your Transformation Partner",
+    "content": "With over a decade of experience in fitness and nutrition coaching, I've helped hundreds of clients achieve sustainable transformations. My approach combines scientific principles with practical, real-world application.",
+    "credentials": [
+      "Certified Personal Trainer (NASM-CPT)",
+      "Precision Nutrition Level 1 Certified",
+      "10+ years coaching experience",
+      "500+ successful client transformations"
+    ],
+    "cta": "Ready to start your transformation? Schedule a consultation.",
+    "button": "Schedule Consultation",
+    "photoPlaceholder": " Photo "
+  },
+  "AssessmentSuccess": {
+    "title": "Thank You for Your Assessment!",
+    "content1": "Your custom fitness plan is being prepared. Want faster results and personalized guidance?",
+    "content2": "Book a free 15-minute strategy call to accelerate your transformation.",
+    "button": "Schedule Free Strategy Call"
+  },
+  "ServicesSection": {
+    "title": "Comprehensive Coaching Services",
+    "services": [
+      {
+        "title": "Personal Training",
+        "description": "Customized workout programs designed for your goals, fitness level, and schedule. Progressive training that adapts as you grow stronger."
+      },
+      {
+        "title": "Nutrition Coaching",
+        "description": "Evidence-based nutrition strategies that fit your lifestyle. Learn sustainable eating habits for long-term success."
+      },
+      {
+        "title": "Progress Tracking",
+        "description": "Comprehensive monitoring of your transformation journey. Data-driven adjustments to optimize your results."
+      }
+    ]
+  }
+}

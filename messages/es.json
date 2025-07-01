@@ -1,0 +1,88 @@
+{   
+  "NavBarSection": {
+    "Home": "Inicio",
+    "Assessment": "Evaluación",
+    "Services": "Servicios",
+    "About": "Acerca de mi"
+  },
+  "HeroSection": {
+    "title": "Transforma tu cuerpo y tu vida",
+    "content": "Obtén asesoramiento personalizado en fitness y nutrición que se adapta a tu estilo de vida. Enfoque basado en la ciencia, resultados sostenibles.",
+    "AssessmentButton": "Obtén tu evaluación gratuita",
+    "BookACallButton": "Reserva una llamada de descubrimiento"
+  },
+  "AssessmentSection": {
+    "title": "Evaluación física gratuita",
+    "content": "Descubre tu perfil físico único con nuestra evaluación gratuita. Comprende tu cuerpo, establece metas realistas y comienza tu camino hacia una vida más saludable.",
+    "BackToFormButton": "Nueva evaluación",
+    "Name": "Nombre",
+    "NameRequired": "El nombre es obligatorio",
+    "Email": "Correo electrónico",
+    "EmailRequired": "El correo electrónico es obligatorio",
+    "Age": "Edad",
+    "AgePlaceholder": "Selecciona rango de edad",
+    "Gender": "Género",
+    "GenderPlaceholder": "Selecciona género",
+    "Male": "Hombre",
+    "Female": "Mujer",
+    "Other": "Otro",
+    "Height": "Altura (cm)",
+    "Weight": "Peso (kg)",
+    "ActivityLevel": "Nivel de actividad",
+    "ActivityLevelPlaceholder": "Selecciona nivel de actividad",
+    "Sedentary": "Sedentario",
+    "Light": "Ligero",
+    "Moderate": "Moderado",
+    "VeryActive": "Muy activo",
+    "ExtremelyActive": "Extremadamente activo",
+    "Goal": "Meta principal",
+    "GoalPlaceholder": "Selecciona tu meta",
+    "LoseWeight": "Perder peso",
+    "BuildMuscle": "Ganar músculo",
+    "ToneUp": "Tonificar",
+    "ImproveFitness": "Mejorar condición física",
+    "MaintainWeight": "Mantener peso",
+    "AthleticPerformance": "Rendimiento atlético",
+    "FitnessExperience": "Experiencia en fitness",
+    "ExperiencePlaceholder": "Cuéntanos sobre tu experiencia en fitness, lesiones o inquietudes específicas...",
+    "BMI": "IMC",
+    "InitialRecommendations": "Recomendaciones iniciales:",
+    "GetMyCustomPlan": "Obtener mi plan personalizado"
+  },
+  "AboutSection": {
+    "title": "Tu compañero de transformación",
+    "content": "Con más de una década de experiencia en entrenamiento físico y nutricional, he ayudado a cientos de clientes a lograr transformaciones sostenibles. Mi enfoque combina principios científicos con aplicación práctica y real.",
+    "credentials": [
+      "Entrenador personal certificado (NASM-CPT)",
+      "Certificado en Nutrición de Precisión Nivel 1",
+      "Más de 10 años de experiencia como coach",
+      "Más de 500 transformaciones exitosas"
+    ],
+    "cta": "¿Listo para comenzar tu transformación? Agenda una consulta.",
+    "button": "Agendar consulta",
+    "photoPlaceholder": "Foto"
+  },
+  "AssessmentSuccess": {
+    "title": "¡Gracias por tu evaluación!",
+    "content1": "Tu plan personalizado de fitness está siendo preparado. ¿Quieres resultados más rápidos y orientación personalizada?",
+    "content2": "Reserva una llamada estratégica gratuita de 15 minutos para acelerar tu transformación.",
+    "button": "Agendar llamada estratégica gratuita"
+  },
+  "ServicesSection": {
+    "title": "Servicios integrales de coaching",
+    "services": [
+      {
+        "title": "Entrenamiento Personal",
+        "description": "Programas de entrenamiento personalizados para tus objetivos, nivel de condición física y horario. Progresión adaptada a tu avance."
+      },
+      {
+        "title": "Coaching Nutricional",
+        "description": "Estrategias de nutrición basadas en evidencia que se adaptan a tu estilo de vida. Aprende hábitos alimenticios sostenibles para el éxito a largo plazo."
+      },
+      {
+        "title": "Seguimiento de Progreso",
+        "description": "Monitoreo integral de tu transformación. Ajustes basados en datos para optimizar tus resultados."
+      }
+    ]
+  }
+}
