@@ -107,30 +107,30 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
   }, [watchedGoal, watchedActivityLevel, bmiCategory])
 
   return (
-    <Card className="bg-white shadow-lg border-0">
+    <Card className="bg-card dark:bg-[#23272F] shadow-lg border border-border dark:border-white">
       <CardContent className="p-8">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label htmlFor="name" className="text-[#2D3748] font-medium">
+              <Label htmlFor="name" className="text-foreground dark:text-white font-medium">
                 {t('Name')} *
               </Label>
               <Input
                 id="name"
                 {...register("name", { required: t('NameRequired') })}
-                className="border-[#2D3748] focus:border-[#2D3748] focus:ring-[#2D3748]"
+                className="border-border dark:border-white focus:border-primary focus:ring-primary bg-background dark:bg-[#23272F] text-foreground dark:text-white"
               />
               {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
             </div>
             <div>
-              <Label htmlFor="email" className="text-[#2D3748] font-medium">
+              <Label htmlFor="email" className="text-foreground dark:text-white font-medium">
                 {t('Email')} *
               </Label>
               <Input
                 id="email"
                 type="email"
                 {...register("email", { required: t('EmailRequired') })}
-                className="border-[#2D3748] focus:border-[#2D3748] focus:ring-[#2D3748]"
+                className="border-border dark:border-white focus:border-primary focus:ring-primary bg-background dark:bg-[#23272F] text-foreground dark:text-white"
               />
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
             </div>
@@ -138,14 +138,14 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label htmlFor="age" className="text-[#2D3748] font-medium">
+              <Label htmlFor="age" className="text-foreground dark:text-white font-medium">
                 {t('Age')}
               </Label>
               <Select onValueChange={(value) => setValue("age", value)}>
-                <SelectTrigger className="border-[#2D3748]">
+                <SelectTrigger className="border-border dark:border-white bg-background dark:bg-[#23272F] text-foreground dark:text-white">
                   <SelectValue placeholder={t('AgePlaceholder')} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background dark:bg-[#23272F] text-foreground dark:text-white">
                   <SelectItem value="18-25">18-25</SelectItem>
                   <SelectItem value="26-35">26-35</SelectItem>
                   <SelectItem value="36-45">36-45</SelectItem>
@@ -155,14 +155,14 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
               </Select>
             </div>
             <div>
-              <Label htmlFor="gender" className="text-[#2D3748] font-medium">
+              <Label htmlFor="gender" className="text-foreground dark:text-white font-medium">
                 {t('Gender')}
               </Label>
               <Select onValueChange={(value) => setValue("gender", value)}>
-                <SelectTrigger className="border-[#2D3748]">
+                <SelectTrigger className="border-border dark:border-white bg-background dark:bg-[#23272F] text-foreground dark:text-white">
                   <SelectValue placeholder={t('GenderPlaceholder')} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background dark:bg-[#23272F] text-foreground dark:text-white">
                   <SelectItem value="male">{t('Male')}</SelectItem>
                   <SelectItem value="female">{t('Female')}</SelectItem>
                   <SelectItem value="other">{t('Other')}</SelectItem>
@@ -173,47 +173,47 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label htmlFor="height" className="text-[#2D3748] font-medium">
+              <Label htmlFor="height" className="text-foreground dark:text-white font-medium">
                 {t('Height')}
               </Label>
               <Input
                 id="height"
                 type="number"
                 {...register("height")}
-                className="border-[#2D3748] focus:border-[#2D3748] focus:ring-[#2D3748]"
+                className="border-border dark:border-white focus:border-primary focus:ring-primary bg-background dark:bg-[#23272F] text-foreground dark:text-white"
               />
             </div>
             <div>
-              <Label htmlFor="weight" className="text-[#2D3748] font-medium">
+              <Label htmlFor="weight" className="text-foreground dark:text-white font-medium">
                 {t('Weight')}
               </Label>
               <Input
                 id="weight"
                 type="number"
                 {...register("weight")}
-                className="border-[#2D3748] focus:border-[#2D3748] focus:ring-[#2D3748]"
+                className="border-border dark:border-white focus:border-primary focus:ring-primary bg-background dark:bg-[#23272F] text-foreground dark:text-white"
               />
             </div>
           </div>
 
           {/* BMI Display */}
           {bmi && (
-            <div className="bg-[#F7FAFC] p-4 rounded-lg">
-              <p className="text-[#2D3748] font-medium">
+            <div className="bg-muted dark:bg-[#23272F] p-4 rounded-lg">
+              <p className="text-foreground dark:text-white font-medium">
                 {t('BMI')}: <span className="font-bold">{bmi}</span> ({bmiCategory})
               </p>
             </div>
           )}
 
           <div>
-            <Label htmlFor="activityLevel" className="text-[#2D3748] font-medium">
+            <Label htmlFor="activityLevel" className="text-foreground dark:text-white font-medium">
               {t('ActivityLevel')}
             </Label>
             <Select onValueChange={(value) => setValue("activityLevel", value)}>
-              <SelectTrigger className="border-[#2D3748]">
+              <SelectTrigger className="border-border dark:border-white bg-background dark:bg-[#23272F] text-foreground dark:text-white">
                 <SelectValue placeholder={t('ActivityLevelPlaceholder')} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-background dark:bg-[#23272F] text-foreground dark:text-white">
                 <SelectItem value="sedentary">{t('Sedentary')}</SelectItem>
                 <SelectItem value="light">{t('Light')}</SelectItem>
                 <SelectItem value="moderate">{t('Moderate')}</SelectItem>
@@ -224,14 +224,14 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
           </div>
 
           <div>
-            <Label htmlFor="goal" className="text-[#2D3748] font-medium">
+            <Label htmlFor="goal" className="text-foreground dark:text-white font-medium">
               {t('Goal')}
             </Label>
             <Select onValueChange={(value) => setValue("goal", value)}>
-              <SelectTrigger className="border-[#2D3748]">
+              <SelectTrigger className="border-border dark:border-white bg-background dark:bg-[#23272F] text-foreground dark:text-white">
                 <SelectValue placeholder={t('GoalPlaceholder')} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-background dark:bg-[#23272F] text-foreground dark:text-white">
                 <SelectItem value="lose-weight">{t('LoseWeight')}</SelectItem>
                 <SelectItem value="build-muscle">{t('BuildMuscle')}</SelectItem>
                 <SelectItem value="tone-up">{t('ToneUp')}</SelectItem>
@@ -243,24 +243,24 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
           </div>
 
           <div>
-            <Label htmlFor="experience" className="text-[#2D3748] font-medium">
+            <Label htmlFor="experience" className="text-foreground dark:text-white font-medium">
               {t('FitnessExperience')}
             </Label>
             <Textarea
               id="experience"
               {...register("experience")}
               placeholder={t('ExperiencePlaceholder')}
-              className="border-[#2D3748] focus:border-[#2D3748] focus:ring-[#2D3748] min-h-[100px]"
+              className="border-border dark:border-white focus:border-primary focus:ring-primary bg-background dark:bg-[#23272F] text-foreground dark:text-white min-h-[100px]"
             />
           </div>
 
           {/* Recommendations */}
           {recommendations.length > 0 && (
-            <div className="bg-[#F7FAFC] p-6 rounded-lg">
-              <h4 className="font-semibold text-[#2D3748] mb-3">{t('InitialRecommendations')}</h4>
+            <div className="bg-muted dark:bg-[#23272F] p-6 rounded-lg">
+              <h4 className="font-semibold text-foreground dark:text-white mb-3">{t('InitialRecommendations')}</h4>
               <ul className="space-y-2">
                 {recommendations.map((rec, index) => (
-                  <li key={index} className="text-[#2D3748] text-sm">
+                  <li key={index} className="text-foreground dark:text-white text-sm">
                     • {rec}
                   </li>
                 ))}
@@ -268,7 +268,7 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
             </div>
           )}
 
-          <Button type="submit" className="w-full bg-[#2D3748] hover:bg-[#2D3748]/90 text-white py-3 text-lg">
+          <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground dark:bg-white dark:text-[#2D3748] dark:hover:bg-white/90 py-3 text-lg">
             {t('GetMyCustomPlan')}
           </Button>
         </form>

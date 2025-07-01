@@ -19,14 +19,31 @@ export default function HeroSection() {
   }
 
   return (
-    <section id="home" className="bg-white py-20 px-4">
+    <section
+      id="home"
+      className="
+        bg-gradient-to-b
+        from-background
+        to-muted
+        dark:from-[#23272F]
+        dark:to-[#1A202C]
+        py-20 px-4
+      "
+    >
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-[#2D3748] mb-6 leading-tight">{t('title')}</h1>
-        <p className="text-xl text-[#2D3748] mb-12 max-w-2xl mx-auto leading-relaxed">{t('content')}</p>
+        <h1 className="text-5xl md:text-6xl font-bold text-foreground dark:text-white mb-6 leading-tight">{t('title')}</h1>
+        <p className="text-xl text-foreground dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">{t('content')}</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             size="lg"
-            className="bg-[#2D3748] hover:bg-[#2D3748]/90 text-white px-8 py-4 text-lg"
+            className="
+              px-8 py-4 text-lg
+              bg-primary text-primary-foreground
+              hover:bg-primary/90 hover:text-primary-foreground
+              dark:bg-white dark:text-[#2D3748]
+              dark:hover:bg-white/90 dark:hover:text-[#2D3748]
+              transition-colors
+            "
             onClick={scrollToAssessment}
           >
             {t('AssessmentButton')}
@@ -34,7 +51,14 @@ export default function HeroSection() {
           <Button
             variant="outline"
             size="lg"
-            className="border-[#2D3748] text-[#2D3748] hover:bg-[#2D3748] hover:text-white px-8 py-4 text-lg"
+            className="
+               px-8 py-4 text-lg
+              bg-primary text-primary-foreground
+              hover:bg-primary/90 hover:text-primary-foreground
+              dark:bg-white dark:text-[#2D3748]
+              dark:hover:bg-white/90 dark:hover:text-[#2D3748]
+              transition-colors
+            "
             onClick={() => openCalBooking("hero")}
           >
             {t('BookACallButton')}
