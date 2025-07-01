@@ -4,6 +4,7 @@ import {routing} from '@/i18n/routing';
 import { Inter } from 'next/font/google'
 import { getMessages } from 'next-intl/server';
 import './globals.css';
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -23,7 +24,9 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
