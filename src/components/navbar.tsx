@@ -118,11 +118,11 @@ export default function Navbar() {
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center">
+                    <div className="md:hidden flex items-center space-x-2">
                         {/* Language Toggle Button for mobile */}
                         <button
                             onClick={toggleLocale}
-                            className="mr-2 px-2 py-1 rounded text-xs font-medium border border-border text-foreground dark:text-white hover:bg-accent dark:hover:bg-[#23272F] transition-colors"
+                            className="h-10 px-4 py-2 rounded text-sm font-medium border border-border text-foreground dark:text-white hover:bg-accent dark:hover:bg-[#23272F] transition-colors"
                         >
                             {locale === 'en' ? 'ES' : 'EN'}
                         </button>
@@ -130,7 +130,7 @@ export default function Navbar() {
                         {mounted && (
                             <button
                                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                                className="mr-2 p-2 rounded border border-border text-foreground dark:text-white hover:bg-accent dark:hover:bg-[#23272F] transition-colors"
+                                className="h-10 px-4 py-2 rounded text-sm font-medium border border-border text-foreground dark:text-white hover:bg-accent dark:hover:bg-[#23272F] transition-colors"
                                 aria-label="Toggle theme"
                             >
                                 {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -140,7 +140,8 @@ export default function Navbar() {
                             variant="ghost"
                             size="sm"
                             onClick={() => setIsOpen(!isOpen)}
-                            className="text-foreground hover:bg-accent"
+                            className="h-10 px-4 py-2 rounded text-sm font-medium text-foreground dark:text-white border border-border dark:border-white hover:bg-accent"
+                            aria-label="Open menu"
                         >
                             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                         </Button>
