@@ -18,7 +18,7 @@ export default function ServicesSection() {
     to-background
     dark:from-[#1A202C]
     dark:to-[#23272F]
-    py-20 px-4
+    py-16 px-4
   "
     >
       <div className="max-w-6xl mx-auto">
