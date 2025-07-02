@@ -3,6 +3,7 @@
     "Home": "Inicio",
     "Assessment": "Evaluación",
     "Services": "Servicios",
+    "Appointment": "Reserva tu cita",
     "About": "Acerca de mi"
   },
   "HeroSection": {
@@ -84,5 +85,9 @@
         "description": "Monitoreo integral de tu transformación. Ajustes basados en datos para optimizar tus resultados."
       }
     ]
+  },
+  "CalSection": {
+    "title": "¿Listo para comenzar tu transformación?",
+    "content": "Según tu evaluación, creemos tu plan personalizado. Reserva una consulta gratuita de 15 minutos para analizar tus resultados y próximos pasos."
   }
 }
