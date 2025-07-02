@@ -3,6 +3,7 @@
     "Home": "Home",
     "Assessment": "Assessment",
     "Services": "Services",
+    "Appointment": "Make your Appointment",
     "About": "About"
   },
   "HeroSection": {
@@ -58,7 +59,7 @@
       "10+ years coaching experience",
       "500+ successful client transformations"
     ],
-    "cta": "Ready to start your transformation? Schedule a consultation.",
+    "cta": "Ready to start your transformation?",
     "button": "Schedule Consultation",
     "photoPlaceholder": " Photo "
   },
@@ -84,5 +85,9 @@
         "description": "Comprehensive monitoring of your transformation journey. Data-driven adjustments to optimize your results."
       }
     ]
+  },
+  "CalSection": {
+    "title": "Ready to Start Your Transformation?",
+    "content": "Based on your assessment, let's create your personalized plan. Book a free 15-minute consultation to discuss your results and next steps."
   }
 }

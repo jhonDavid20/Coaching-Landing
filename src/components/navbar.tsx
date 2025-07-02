@@ -14,8 +14,9 @@ export default function Navbar() {
     const t = useTranslations('NavBarSection');
     const navItems = [
         { name: t('Home'), href: "#home" },
-        { name: t('Assessment'), href: "#assessment" },
         { name: t('Services'), href: "#services" },
+        { name: t('Assessment'), href: "#assessment" },
+        { name: t('Appointment'), href: "#appointment" },
         { name: t('About'), href: "#about" },
     ]
 
