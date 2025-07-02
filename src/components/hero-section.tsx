@@ -1,15 +1,12 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-
+import { scrollToAppointment, scrollToAssessment } from "@/lib/utils"
 import {useTranslations} from 'next-intl';
 
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
 
-  const scrollToAssessment = () => {
-    document.getElementById("assessment")?.scrollIntoView({ behavior: "smooth" })
-  }
 
   const openCalBooking = (source: string) => {
     // In production, replace with actual Cal.com integration
@@ -59,7 +56,7 @@ export default function HeroSection() {
               dark:hover:bg-white/90 dark:hover:text-[#2D3748]
               transition-colors
             "
-            onClick={() => openCalBooking("hero")}
+            onClick={scrollToAppointment}
           >
             {t('BookACallButton')}
           </Button>
