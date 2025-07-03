@@ -3,9 +3,10 @@ import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import './globals.css';
 import { ThemeProvider } from "@/components/theme-provider";
+import Navbar from '@/components/navbar';
 
 
-export default async function LocaleLayout({
+export default async function RootLayout({
   children,
   params
 }: {
@@ -22,7 +23,10 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+          <NextIntlClientProvider>
+            <Navbar />
+            {children}
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>

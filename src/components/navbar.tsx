@@ -8,7 +8,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { useLocale } from 'next-intl'
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
-
+import Link from "next/link";
 
 export default function Navbar() {
     const t = useTranslations('NavBarSection');
@@ -56,13 +56,14 @@ export default function Navbar() {
     }, [])
 
     const scrollToSection = (href: string) => {
-        const element = document.querySelector(href)
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" })
-        } else if (href === "#home") {
-            window.scrollTo({ top: 0, behavior: "smooth" })
+        const element = document.querySelector(href);
+        if (element && pathname === `/${locale}`) {
+            element.scrollIntoView({ behavior: "smooth" });
+        } else {
+            // If not on main page, navigate to main page with hash
+            router.push(`/${locale}/${href === "#home" ? "" : href}`);
         }
-        setIsOpen(false)
+        setIsOpen(false);
     }
 
     return (
