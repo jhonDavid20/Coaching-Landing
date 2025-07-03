@@ -89,5 +89,81 @@
   "CalSection": {
     "title": "Ready to Start Your Transformation?",
     "content": "Based on your assessment, let's create your personalized plan. Book a free 15-minute consultation to discuss your results and next steps."
+  },
+  "philosophy": {
+    "title": "Why Do Diets Fail?",
+    "subtitle": "Stop Starting Diets Every Monday",
+    "stats": [
+      { "number": "95%", "label": "of diets fail within a year" },
+      { "number": "0", "label": "extreme restrictions" },
+      { "number": "100%", "label": "education first" }
+    ],
+    "keyPoints": [
+      {
+        "title": "🔍 Education Before Restriction",
+        "text": "Instead of cutting out foods, I help you understand what your body truly needs. We identify what isn’t working in your current eating patterns."
+      },
+      {
+        "title": "🎯 Sustainable Habits",
+        "text": "We build habits that become part of who you are, not just what you do for 12 weeks. No more relying on willpower alone."
+      }
+    ],
+    "analogy": {
+      "icon": "🏎️",
+      "title": "Your Body is a Machine",
+      "text": "Just like you wouldn’t put cheap fuel in a Ferrari, why fuel your body with foods that don’t serve its needs?"
+    },
+    "cta": {
+      "title": "Ready to Break the Diet Cycle?",
+      "text": "Let’s build habits that truly last",
+      "button": "Discover My Full Philosophy"
+    }
+  },
+  "PhilosophyFullPage": {
+    "breadcrumb": "Home → My Nutrition Philosophy",
+    "heroTitle": "My Nutrition Philosophy",
+    "heroSubtitle": "Breaking the Diet Cycle for Good",
+    "problemTitle": "The Problem with Traditional Diets",
+    "problemHighlight1": "Most people approach nutrition backwards.",
+    "problemHighlight2": "This approach fails because it treats symptoms, not causes.",
+    "problemText": "After years of processed foods and unconscious eating, we've lost touch with how nutrition truly affects our bodies. We're so used to nutrient-poor foods that we don't even notice how they make us feel sluggish, tired, and unsatisfied.",
+    "approachTitle": "My Approach: Education Before Transformation",
+    "approachIntro": "Instead of starting with restriction, I believe in starting with awareness. My philosophy centers on three core principles:",
+    "principles": {
+      "1": {
+        "title": "Identify the Root Cause",
+        "text": "Before making any changes, we need to understand what's really wrong with your current diet. You can't fix what you don't understand."
+      },
+      "2": {
+        "title": "Treat Your Body Like a Machine",
+        "text": "Your body is an incredible machine that requires the right fuel to function optimally. Just like you wouldn't put cheap gas in a Ferrari, why fuel your body with foods that don't serve its needs?"
+      },
+      "3": {
+        "title": "Lifestyle Integration",
+        "text": "Sustainable nutrition isn't about following a diet for 12 weeks—it's about building eating habits that become part of who you are. It's a lifelong journey of learning and adaptation."
+      }
+    },
+    "educationSection": {
+      "title": "The Power of Nutrition Education",
+      "content": "Understanding the 'why' and 'how' of nutrition empowers you to make better choices. My role is to provide you with the knowledge and tools you need to take charge of your health."
+    },
+    "transformationStories": {
+      "title": "Real People, Real Transformations",
+      "testimonials": [
+        {
+          "name": "John Doe",
+          "statement": "I never understood how my diet was affecting my life until I started working with [Your Name]. The education I received was a game changer."
+        },
+        {
+          "name": "Jane Smith",
+          "statement": "This is not just another diet plan. It's a complete shift in mindset and habits. I've never felt better."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Are You Ready to Transform Your Relationship with Food?",
+      "text": "Let's embark on this journey together and break the diet cycle for good.",
+      "button": "Schedule Your Free Consultation"
+    }
   }
 }

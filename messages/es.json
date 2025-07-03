@@ -89,5 +89,81 @@
   "CalSection": {
     "title": "¿Listo para comenzar tu transformación?",
     "content": "Según tu evaluación, creemos tu plan personalizado. Reserva una consulta gratuita de 15 minutos para analizar tus resultados y próximos pasos."
+  },
+  "philosophy": {
+    "title": "¿Por qué fallan las dietas?",
+    "subtitle": "Deja de empezar dietas cada lunes",
+    "stats": [
+      { "number": "95%", "label": "de las dietas fallan en un año" },
+      { "number": "0", "label": "restricciones extremas" },
+      { "number": "100%", "label": "educación primero" }
+    ],
+    "keyPoints": [
+      {
+      "title": "🔍 Educación antes que restricción",
+      "text": "En lugar de eliminar alimentos, te ayudo a entender lo que tu cuerpo realmente necesita. Identificamos qué no está funcionando en tus hábitos actuales."
+      },
+      {
+      "title": "🎯 Hábitos sostenibles",
+      "text": "Construimos hábitos que se vuelven parte de quién eres, no solo lo que haces por 12 semanas. No más depender solo de la fuerza de voluntad."
+      }
+    ],
+    "analogy": {
+      "icon": "🏎️",
+      "title": "Tu cuerpo es una máquina",
+      "text": "Así como no pondrías combustible barato en un Ferrari, ¿por qué alimentar tu cuerpo con alimentos que no le sirven?"
+    },
+    "cta": {
+      "title": "¿Listo para romper el ciclo de las dietas?",
+      "text": "Construyamos hábitos que realmente duren",
+      "button": "Descubre mi filosofía completa"
+    }
+  },
+  "PhilosophyFullPage": {
+    "breadcrumb": "Inicio → Mi Filosofía Nutricional",
+    "heroTitle": "Mi Filosofía Nutricional",
+    "heroSubtitle": "Rompiendo el ciclo de las dietas para siempre",
+    "problemTitle": "El problema de las dietas tradicionales",
+    "problemHighlight1": "La mayoría de las personas abordan la nutrición al revés.",
+    "problemHighlight2": "Este enfoque falla porque trata los síntomas, no las causas.",
+    "problemText": "Después de años de consumir alimentos procesados y comer de manera inconsciente, hemos perdido la conexión con cómo la nutrición realmente afecta a nuestro cuerpo. Estamos tan acostumbrados a alimentos pobres en nutrientes que ni siquiera notamos cómo nos hacen sentir cansados, lentos e insatisfechos.",
+    "approachTitle": "Mi enfoque: Educación antes de la transformación",
+    "approachIntro": "En lugar de comenzar con la restricción, creo en empezar con la conciencia. Mi filosofía se centra en tres principios fundamentales:",
+    "principles": {
+      "1": {
+        "title": "Identificar la causa raíz",
+        "text": "Antes de hacer cualquier cambio, necesitamos entender qué está mal realmente en tu dieta actual. No puedes arreglar lo que no entiendes."
+      },
+      "2": {
+        "title": "Trata tu cuerpo como una máquina",
+        "text": "Tu cuerpo es una máquina increíble que requiere el combustible adecuado para funcionar de manera óptima. Así como no pondrías gasolina barata en un Ferrari, ¿por qué alimentar tu cuerpo con alimentos que no le sirven?"
+      },
+      "3": {
+        "title": "Integración en el estilo de vida",
+        "text": "La nutrición sostenible no se trata de seguir una dieta durante 12 semanas, sino de construir hábitos alimenticios que se vuelvan parte de quién eres. Es un viaje de aprendizaje y adaptación para toda la vida."
+      }
+    },
+    "educationSection": {
+      "title": "El poder de la educación nutricional",
+      "content": "Entender el 'por qué' y el 'cómo' de la nutrición te da el poder de tomar mejores decisiones. Mi papel es brindarte el conocimiento y las herramientas que necesitas para tomar el control de tu salud."
+    },
+    "transformationStories": {
+      "title": "Personas reales, transformaciones reales",
+      "testimonials": [
+        {
+          "name": "John Doe",
+          "statement": "Nunca entendí cómo mi dieta afectaba mi vida hasta que empecé a trabajar con [Tu Nombre]. La educación que recibí cambió todo."
+        },
+        {
+          "name": "Jane Smith",
+          "statement": "Esto no es solo otro plan de dieta. Es un cambio completo de mentalidad y hábitos. Nunca me he sentido mejor."
+        }
+      ]
+    },
+    "cta": {
+      "title": "¿Listo para transformar tu relación con la comida?",
+      "text": "Emprendamos este viaje juntos y rompamos el ciclo de las dietas para siempre.",
+      "button": "Agenda tu consulta gratuita"
+    }
   }
 }
