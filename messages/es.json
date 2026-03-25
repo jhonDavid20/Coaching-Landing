@@ -165,5 +165,41 @@
       "text": "Emprendamos este viaje juntos y rompamos el ciclo de las dietas para siempre.",
       "button": "Agenda tu consulta gratuita"
     }
+  },
+  "dashboard": {
+    "title": "Panel de Control",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión",
+    "welcome": "Bienvenido de nuevo,",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "notifications": "Notificaciones"
+  },
+  "profile": {
+    "title": "Perfil",
+    "noUserData": "No hay datos de usuario disponibles",
+    "anonymous": "Usuario Anónimo",
+    "member": "Miembro",
+    "email": "Correo Electrónico",
+    "username": "Nombre de Usuario",
+    "role": "Rol",
+    "userId": "ID de Usuario",
+    "emailVerification": "Verificación de Correo",
+    "verified": "Verificado",
+    "notVerified": "No Verificado",
+    "fullName": "Nombre Completo",
+    "memberSince": "Miembro Desde",
+    "location": "Ubicación",
+    "personalInfo": "Información Personal",
+    "accountDetails": "Detalles de la Cuenta",
+    "additionalInfo": "Información Adicional",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "editProfile": "Editar Perfil",
+    "save": "Guardar Cambios",
+    "saving": "Guardando...",
+    "cancel": "Cancelar",
+    "updateSuccess": "Perfil actualizado exitosamente",
+    "updateError": "Error al actualizar el perfil"
   }
 }

@@ -34,7 +34,7 @@ const PhilosophySection: React.FC = () => {
               key={i}
               className="text-center p-8 bg-card dark:bg-[#23272F] text-card-foreground dark:text-white rounded-lg shadow-lg border border-border"
             >
-              <div className="text-4xl font-bold text-primary mb-2">
+              <div className="text-4xl font-bold text-primary mb-2 dark:text-white">
                 {t(`philosophy.stats.${i}.number`)}
               </div>
               <div className="text-base text-foreground dark:text-gray-300 font-medium">

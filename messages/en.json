@@ -165,5 +165,41 @@
       "text": "Let's embark on this journey together and break the diet cycle for good.",
       "button": "Schedule Your Free Consultation"
     }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "profile": "Profile",
+    "logout": "Logout",
+    "welcome": "Welcome back,",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "notifications": "Notifications"
+  },
+  "profile": {
+    "title": "Profile",
+    "noUserData": "No user data available",
+    "anonymous": "Anonymous User",
+    "member": "Member",
+    "email": "Email",
+    "username": "Username",
+    "role": "Role",
+    "userId": "User ID",
+    "emailVerification": "Email Verification",
+    "verified": "Verified",
+    "notVerified": "Not Verified",
+    "fullName": "Full Name",
+    "memberSince": "Member Since",
+    "location": "Location",
+    "personalInfo": "Personal Information",
+    "accountDetails": "Account Details",
+    "additionalInfo": "Additional Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "editProfile": "Edit Profile",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile"
   }
 }

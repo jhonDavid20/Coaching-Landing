@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 export default function PhilosophyPage() {
   const t = useTranslations("PhilosophyFullPage");
@@ -105,7 +106,7 @@ export default function PhilosophyPage() {
         <div className="bg-primary text-primary-foreground dark:bg-white dark:text-[#2D3748] rounded-lg shadow-lg p-8 text-center mt-16">
           <h3 className="text-2xl font-bold mb-2">{t("cta.title")}</h3>
           <p className="text-lg mb-6 opacity-90">{t("cta.text")}</p>
-          <a
+          <Link
             href="/#appointment"
             className="
               inline-block
@@ -119,7 +120,9 @@ export default function PhilosophyPage() {
             "
           >
             {t("cta.button")}
-          </a>
+          </Link>
+
+
         </div>
       </div>
     </section>

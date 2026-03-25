@@ -1,17 +1,15 @@
-import Navbar from "@/components/navbar";
-import HeroSection from "@/components/hero-section"
-import AssessmentSection from "@/components/assessment-section"
-import ServicesSection from "@/components/services-section"
-import AboutSection from "@/components/about-section"
-import CalSection from "@/components/cal-section";
-import PhilosophySection from "@/components/philosophy-section";
+import HeroSection from "@/components/sections/hero-section"
+import AssessmentSection from "@/components/sections/assessment-section"
+import ServicesSection from "@/components/sections/services-section"
+import AboutSection from "@/components/sections/about-section"
+import CalSection from "@/components/sections/cal-section";
+import PhilosophySection from "@/components/sections/philosophy-section";
 
 
 export default function HomePage() {
   return (
-    <div>
-      <Navbar />
-      <HeroSection />    
+    <div className="pt-16">
+      <HeroSection />
       <PhilosophySection />
       <ServicesSection />
       <AssessmentSection />

@@ -2,8 +2,11 @@ import {NextIntlClientProvider, hasLocale} from 'next-intl';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import './globals.css';
-import { ThemeProvider } from "@/components/theme-provider";
-import Navbar from '@/components/navbar';
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "sonner";
+import AuthSessionProvider from "@/components/auth/session-provider";
+import ConditionalNavbar from "@/components/layout/conditional-navbar";
+import LoadingProvider from "@/components/providers/loading-provider";
 
 
 export default async function RootLayout({
@@ -20,14 +23,19 @@ export default async function RootLayout({
   }
  
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <NextIntlClientProvider>
-            <Navbar />
-            {children}
-          </NextIntlClientProvider>
-        </ThemeProvider>
+        <AuthSessionProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <LoadingProvider>
+              <NextIntlClientProvider>
+                <ConditionalNavbar />
+                {children}
+                <Toaster />
+              </NextIntlClientProvider>
+            </LoadingProvider>
+          </ThemeProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );
