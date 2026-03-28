@@ -1,248 +1,557 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/components/auth/session-provider';
-import { updateUserProfile } from '@/actions/auth';
-import { toast } from 'sonner';
-import { User, Mail, Shield, CheckCircle, XCircle, Pencil } from 'lucide-react';
+import { getFullUserProfile } from '@/actions/user';
+import type { UserWithProfile } from '@/actions/user';
+import EditProfileDrawer from '@/components/profile/edit-profile-drawer';
+import {
+  User,
+  Zap,
+  HeartPulse,
+  ChevronDown,
+  Pencil,
+} from 'lucide-react';
+import { cn, formatUTCDate } from '@/lib/utils';
+
+// ─── Small helpers ───────────────────────────────────────────────────────────
+
+function Field({
+  label,
+  value,
+  notCompleted,
+}: {
+  label: string;
+  value?: string | number | null;
+  notCompleted: string;
+}) {
+  return (
+    <div className="min-w-0">
+      <p className="text-xs font-medium text-gray-500 mb-0.5 uppercase tracking-wide">{label}</p>
+      {value != null && value !== '' ? (
+        <p className="text-sm text-gray-900 dark:text-white break-words">{String(value)}</p>
+      ) : (
+        <p className="text-sm text-gray-400 dark:text-gray-600 italic">{notCompleted}</p>
+      )}
+    </div>
+  );
+}
+
+function TagList({ tags, noneRegistered }: { tags?: string[] | null; noneRegistered: string }) {
+  if (!tags || tags.length === 0) {
+    return (
+      <span className="inline-flex items-center px-3 py-1 text-xs text-gray-400 dark:text-gray-600 border border-dashed border-gray-300 dark:border-gray-700 rounded-full italic">
+        {noneRegistered}
+      </span>
+    );
+  }
+  return (
+    <div className="flex flex-wrap gap-2">
+      {tags.map((tag) => (
+        <span
+          key={tag}
+          className="px-3 py-1 text-xs text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700/60 rounded-full border border-gray-300 dark:border-gray-600"
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function Badge({ label, color }: { label: string; color: 'blue' | 'teal' | 'amber' }) {
+  const styles = {
+    blue: 'bg-blue-500/15 text-blue-600 dark:text-blue-300 border-blue-500/30',
+    teal: 'bg-teal-500/15 text-teal-600 dark:text-teal-300 border-teal-500/30',
+    amber: 'bg-amber-500/15 text-amber-600 dark:text-amber-300 border-amber-500/30',
+  };
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center px-3 py-1 text-xs font-medium rounded-full border',
+        styles[color]
+      )}
+    >
+      {label}
+    </span>
+  );
+}
+
+// ─── Weight progress section ─────────────────────────────────────────────────
+
+function WeightProgress({
+  weight,
+  targetWeight,
+  fitnessGoal,
+  labelProgress,
+  labelRemaining,
+  labelToLose,
+  labelToGain,
+  labelCurrent,
+  labelGoal,
+}: {
+  weight: number;
+  targetWeight: number;
+  fitnessGoal?: string;
+  labelProgress: string;
+  labelRemaining: string;
+  labelToLose: string;
+  labelToGain: string;
+  labelCurrent: string;
+  labelGoal: string;
+}) {
+  const isLoss = fitnessGoal === 'weight_loss' || weight > targetWeight;
+  const gap = Math.abs(weight - targetWeight);
+
+  const scaleMin = Math.min(weight, targetWeight) * 0.97;
+  const scaleMax = Math.max(weight, targetWeight) * 1.03;
+  const range = scaleMax - scaleMin;
+  const currentPct = ((weight - scaleMin) / range) * 100;
+  const targetPct = ((targetWeight - scaleMin) / range) * 100;
+
+  const filledFrom = Math.min(currentPct, targetPct);
+  const filledWidth = Math.abs(currentPct - targetPct);
+
+  return (
+    <div className="col-span-1 sm:col-span-2 bg-gray-50 dark:bg-gray-800/40 rounded-xl p-4 border border-gray-200 dark:border-gray-700/50">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+          {labelProgress}
+        </p>
+        <span className="text-xs text-gray-500 dark:text-gray-400">
+          {labelRemaining}{' '}
+          <span className="text-gray-900 dark:text-white font-semibold">{gap.toFixed(1)} kg</span>{' '}
+          {isLoss ? labelToLose : labelToGain}
+        </span>
+      </div>
+      {/* Scale bar */}
+      <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div
+          className={cn(
+            'absolute h-full rounded-full',
+            isLoss
+              ? 'bg-gradient-to-r from-blue-500 to-teal-400'
+              : 'bg-gradient-to-r from-teal-400 to-blue-500'
+          )}
+          style={{ left: `${filledFrom}%`, width: `${filledWidth}%` }}
+        />
+      </div>
+      <div className="flex justify-between mt-1.5 text-xs text-gray-500">
+        <span>{Math.min(weight, targetWeight).toFixed(1)} kg</span>
+        <span>{Math.max(weight, targetWeight).toFixed(1)} kg</span>
+      </div>
+      <div className="flex items-center gap-4 mt-2 text-xs">
+        <span className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+          <span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />
+          {labelCurrent}: <span className="text-gray-900 dark:text-white">{weight} kg</span>
+        </span>
+        <span className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+          <span className="w-2 h-2 rounded-full bg-teal-400 inline-block" />
+          {labelGoal}: <span className="text-gray-900 dark:text-white">{targetWeight} kg</span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Accordion section ───────────────────────────────────────────────────────
+
+interface AccordionSectionProps {
+  isOpen: boolean;
+  onToggle: () => void;
+  icon: React.ReactNode;
+  iconBg: string;
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
+  sectionRef?: React.RefObject<HTMLDivElement | null>;
+}
+
+function AccordionSection({
+  isOpen,
+  onToggle,
+  icon,
+  iconBg,
+  title,
+  subtitle,
+  children,
+  sectionRef,
+}: AccordionSectionProps) {
+  return (
+    <div
+      ref={sectionRef}
+      className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden"
+    >
+      {/* Trigger */}
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors"
+      >
+        <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', iconBg)}>
+          {icon}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-gray-900 dark:text-white">{title}</p>
+          <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>
+        </div>
+        <ChevronDown
+          className="w-4 h-4 text-gray-500 flex-shrink-0"
+          style={{
+            transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+          }}
+        />
+      </button>
+
+      {/* Animated body */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateRows: isOpen ? '1fr' : '0fr',
+          transition: 'grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
+        <div style={{ overflow: 'hidden' }}>
+          <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-6">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Skeleton ────────────────────────────────────────────────────────────────
+
+function ProfileSkeleton() {
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
+      {/* Header skeleton */}
+      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 p-6 animate-pulse">
+        <div className="flex items-center gap-5">
+          <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
+          <div className="flex-1 space-y-2">
+            <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-48" />
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24" />
+          </div>
+          <div className="h-9 w-32 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+        </div>
+      </div>
+      {/* Three accordion skeletons */}
+      {[1, 2, 3].map((i) => (
+        <div
+          key={i}
+          className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 px-6 py-5 animate-pulse"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
+            <div className="flex-1 space-y-1.5">
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-36" />
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-52" />
+            </div>
+            <div className="w-4 h-4 rounded bg-gray-200 dark:bg-gray-700" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Main page ───────────────────────────────────────────────────────────────
 
 export default function ProfilePage() {
   const t = useTranslations('profile');
-  const tDashboard = useTranslations('dashboard');
-  const { user, loading, refreshUser } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const [profile, setProfile] = useState<UserWithProfile | null>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [open, setOpen] = useState([false, false, false]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-  });
+  const section1Ref = useRef<HTMLDivElement | null>(null);
 
-  const startEditing = () => {
-    if (user) {
-      setFormData({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        username: user.username || '',
-      });
-    }
-    setIsEditing(true);
+  const loadProfile = useCallback(() => {
+    setProfileLoading(true);
+    getFullUserProfile()
+      .then(setProfile)
+      .catch(() => setProfile(null))
+      .finally(() => setProfileLoading(false));
+  }, []);
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
+
+  const toggle = (i: number) =>
+    setOpen((prev) => prev.map((v, idx) => (idx === i ? !v : v)));
+
+  const handleEditProfile = () => {
+    setDrawerOpen(true);
   };
 
-  const cancelEditing = () => {
-    setIsEditing(false);
+  if (authLoading || profileLoading) return <ProfileSkeleton />;
+
+  // ── Translated label maps (built at render time) ──
+  const fitnessGoalLabels: Record<string, string> = {
+    weight_loss: t('goalWeightLoss'),
+    muscle_gain: t('goalMuscleGain'),
+    maintenance: t('goalMaintenance'),
+    endurance: t('goalEndurance'),
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    try {
-      const result = await updateUserProfile(formData);
-      if (result.success) {
-        toast.success(t('updateSuccess'));
-        await refreshUser();
-        setIsEditing(false);
-      } else {
-        toast.error(result.message || t('updateError'));
-      }
-    } catch {
-      toast.error(t('updateError'));
-    } finally {
-      setSaving(false);
-    }
+  const activityLevelLabels: Record<string, string> = {
+    sedentary: t('activitySedentary'),
+    lightly_active: t('activityLightly'),
+    moderately_active: t('activityModerately'),
+    very_active: t('activityVery'),
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-3 text-gray-600 dark:text-gray-400">{tDashboard('loading')}</span>
-      </div>
-    );
-  }
+  const preferredWorkoutLabels: Record<string, string> = {
+    morning: t('workoutMorning'),
+    afternoon: t('workoutAfternoon'),
+    evening: t('workoutEvening'),
+    flexible: t('workoutFlexible'),
+  };
 
-  if (!user) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-gray-600 dark:text-gray-400">
-          {t('noUserData')}
-        </p>
-      </div>
-    );
-  }
+  const genderLabels: Record<string, string> = {
+    male: t('genderMale'),
+    female: t('genderFemale'),
+    prefer_not_to_say: t('genderPreferNot'),
+    other: t('genderOther'),
+  };
+
+  const p = profile?.profile ?? {};
+  const displayName =
+    profile
+      ? `${profile.firstName} ${profile.lastName}`.trim() || profile.username
+      : user
+      ? `${user.firstName} ${user.lastName}`.trim() || user.username
+      : '—';
+
+  const roleLabel = (profile?.role ?? user?.role ?? 'client').replace('_', ' ');
+  const initials = displayName
+    .split(' ')
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? '')
+    .join('');
+
+  const hasWeightProgress =
+    p.weight != null &&
+    p.targetWeight != null &&
+    p.weight !== p.targetWeight;
+
+  const notCompleted = t('notCompleted');
+  const noneRegistered = t('noneRegistered');
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
-        <div className="px-6 py-8 bg-gradient-to-r from-blue-500 to-purple-600">
-          <h1 className="text-4xl font-extrabold text-white text-center">
-            {t('title')}
-          </h1>
-        </div>
-
-        <div className="p-8">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <User className="w-10 h-10 text-white" />
-              </div>
-              <div className="ml-5">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username}
-                </h2>
-                <p className="text-base text-gray-600 dark:text-gray-400 capitalize mt-1">
-                  {user.role || t('member')}
-                </p>
-              </div>
+    <div className="max-w-3xl mx-auto space-y-4">
+      {/* ── Profile header ── */}
+      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+        <div className="h-2 bg-gradient-to-r from-blue-600 to-purple-600" />
+        <div className="px-6 py-6 flex flex-col sm:flex-row sm:items-center gap-4">
+          {/* Avatar */}
+          {profile?.avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={profile.avatar}
+              alt={displayName}
+              className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700 flex-shrink-0"
+            />
+          ) : (
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center flex-shrink-0 text-white text-2xl font-bold ring-2 ring-gray-200 dark:ring-gray-700">
+              {initials || <User className="w-9 h-9" />}
             </div>
-            {!isEditing && (
-              <button
-                onClick={startEditing}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
-              >
-                <Pencil className="w-4 h-4" />
-                {t('editProfile')}
-              </button>
+          )}
+
+          {/* Name + role */}
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate">{displayName}</h1>
+            <div className="flex items-center gap-2 mt-1 flex-wrap">
+              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-blue-600 dark:text-blue-300 border border-blue-500/30 capitalize">
+                {roleLabel}
+              </span>
+              {profile?.isEmailVerified && (
+                <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/30">
+                  {t('verified')}
+                </span>
+              )}
+            </div>
+            {p.timezone && (
+              <p className="text-xs text-gray-500 mt-1.5">{p.timezone}</p>
             )}
           </div>
 
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-            {t('accountDetails')}
-          </h3>
+          {/* Edit button */}
+          <button
+            type="button"
+            onClick={handleEditProfile}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 transition-opacity flex-shrink-0"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+            {t('editProfile')}
+          </button>
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* First Name - editable */}
-            <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg min-h-[72px]">
-              <User className="w-5 h-5 text-orange-500 mr-3" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {t('firstName')}
-                </p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={formData.firstName}
-                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="mt-1 w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                ) : (
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {user.firstName || '-'}
-                  </p>
-                )}
-              </div>
-            </div>
+      {/* ── Section 1: Account ── */}
+      <AccordionSection
+        sectionRef={section1Ref}
+        isOpen={open[0]}
+        onToggle={() => toggle(0)}
+        iconBg="bg-blue-500/15 border border-blue-500/30"
+        icon={<User className="w-5 h-5 text-blue-400" />}
+        title={t('accountSection')}
+        subtitle={t('accountSubtitle')}
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
+          <Field label={t('firstName')} value={profile?.firstName ?? user?.firstName} notCompleted={notCompleted} />
+          <Field label={t('lastName')} value={profile?.lastName ?? user?.lastName} notCompleted={notCompleted} />
+          <Field label={t('username')} value={profile?.username ?? user?.username} notCompleted={notCompleted} />
+          <Field
+            label={t('gender')}
+            value={p.gender ? (genderLabels[p.gender] ?? p.gender) : null}
+            notCompleted={notCompleted}
+          />
+          <div className="sm:col-span-2">
+            <Field label={t('email')} value={profile?.email ?? user?.email} notCompleted={notCompleted} />
+          </div>
+          <Field label={t('phone')} value={p.phone} notCompleted={notCompleted} />
+          <Field
+            label={t('dateOfBirth')}
+            value={
+              p.dateOfBirth ? formatUTCDate(p.dateOfBirth) : null
+            }
+            notCompleted={notCompleted}
+          />
+        </div>
+      </AccordionSection>
 
-            {/* Last Name - editable */}
-            <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg min-h-[72px]">
-              <User className="w-5 h-5 text-orange-500 mr-3" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {t('lastName')}
-                </p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={formData.lastName}
-                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="mt-1 w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                ) : (
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {user.lastName || '-'}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Username - editable */}
-            <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg min-h-[72px]">
-              <User className="w-5 h-5 text-green-500 mr-3" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {t('username')}
-                </p>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={formData.username}
-                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    className="mt-1 w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                ) : (
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {user.username}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Email - read only */}
-            <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg min-h-[72px]">
-              <Mail className="w-5 h-5 text-blue-500 mr-3" />
-              <div>
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {t('email')}
-                </p>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {user.email}
-                </p>
-              </div>
-            </div>
-
-            {/* Role - read only */}
-            <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg min-h-[72px]">
-              <Shield className="w-5 h-5 text-purple-500 mr-3" />
-              <div>
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {t('role')}
-                </p>
-                <p className="text-gray-600 dark:text-gray-400 capitalize">
-                  {user.role}
-                </p>
-              </div>
-            </div>
-
-            {/* Email Verification - read only */}
-            <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg min-h-[72px]">
-              {user.isEmailVerified ? (
-                <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-              ) : (
-                <XCircle className="w-5 h-5 text-red-500 mr-3" />
-              )}
-              <div>
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {t('emailVerification')}
-                </p>
-                <p className={`text-sm ${user.isEmailVerified ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                  {user.isEmailVerified ? t('verified') : t('notVerified')}
-                </p>
-              </div>
-            </div>
+      {/* ── Section 2: Fitness ── */}
+      <AccordionSection
+        isOpen={open[1]}
+        onToggle={() => toggle(1)}
+        iconBg="bg-teal-500/15 border border-teal-500/30"
+        icon={<Zap className="w-5 h-5 text-teal-400" />}
+        title={t('fitnessSection')}
+        subtitle={t('fitnessSubtitle')}
+      >
+        <div className="space-y-5">
+          {/* Badges row */}
+          <div className="flex flex-wrap gap-2">
+            {p.fitnessGoal && (
+              <Badge
+                label={fitnessGoalLabels[p.fitnessGoal] ?? p.fitnessGoal}
+                color="teal"
+              />
+            )}
+            {p.activityLevel && (
+              <Badge
+                label={activityLevelLabels[p.activityLevel] ?? p.activityLevel}
+                color="blue"
+              />
+            )}
+            {!p.fitnessGoal && !p.activityLevel && (
+              <p className="text-sm text-gray-400 dark:text-gray-600 italic">{t('noObjectives')}</p>
+            )}
           </div>
 
-          {/* Save / Cancel buttons */}
-          {isEditing && (
-            <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <button
-                onClick={cancelEditing}
-                disabled={saving}
-                className="px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors disabled:opacity-50"
-              >
-                {t('cancel')}
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-              >
-                {saving ? t('saving') : t('save')}
-              </button>
+          {/* Weight / Height row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
+            <Field
+              label={t('currentWeight')}
+              value={p.weight != null ? `${p.weight} kg` : null}
+              notCompleted={notCompleted}
+            />
+            <Field
+              label={t('height')}
+              value={p.height != null ? `${p.height} cm` : null}
+              notCompleted={notCompleted}
+            />
+
+            {/* Weight progress bar */}
+            {hasWeightProgress && (
+              <WeightProgress
+                weight={p.weight!}
+                targetWeight={p.targetWeight!}
+                fitnessGoal={p.fitnessGoal}
+                labelProgress={t('weightProgress')}
+                labelRemaining={t('remaining')}
+                labelToLose={t('weightToLose')}
+                labelToGain={t('weightToGain')}
+                labelCurrent={t('currentWeightLabel')}
+                labelGoal={t('goalLabel')}
+              />
+            )}
+
+            <Field
+              label={t('preferredWorkout')}
+              value={
+                p.preferredWorkoutTime
+                  ? (preferredWorkoutLabels[p.preferredWorkoutTime] ?? p.preferredWorkoutTime)
+                  : null
+              }
+              notCompleted={notCompleted}
+            />
+            <Field label={t('gymLocation')} value={p.gymLocation} notCompleted={notCompleted} />
+          </div>
+        </div>
+      </AccordionSection>
+
+      {/* ── Section 3: Health ── */}
+      <AccordionSection
+        isOpen={open[2]}
+        onToggle={() => toggle(2)}
+        iconBg="bg-amber-500/15 border border-amber-500/30"
+        icon={<HeartPulse className="w-5 h-5 text-amber-400" />}
+        title={t('healthSection')}
+        subtitle={t('healthSubtitle')}
+      >
+        <div className="space-y-6">
+          <div>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+              {t('medicalConditions')}
+            </p>
+            <TagList tags={p.medicalConditions} noneRegistered={noneRegistered} />
+          </div>
+          <div>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+              {t('injuries')}
+            </p>
+            <TagList tags={p.injuries} noneRegistered={noneRegistered} />
+          </div>
+          <div>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+              {t('allergies')}
+            </p>
+            <TagList tags={p.allergies} noneRegistered={noneRegistered} />
+          </div>
+          <div>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+              {t('dietaryRestrictions')}
+            </p>
+            <TagList tags={p.dietaryRestrictions} noneRegistered={noneRegistered} />
+          </div>
+          {p.notes && (
+            <div>
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+                {t('notes')}
+              </p>
+              <p className="text-sm text-gray-900 dark:text-white">{p.notes}</p>
             </div>
           )}
         </div>
-      </div>
+      </AccordionSection>
+
+      {/* ── Edit drawer ── */}
+      {profile && (
+        <EditProfileDrawer
+          isOpen={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          profile={profile}
+          onSaved={loadProfile}
+        />
+      )}
     </div>
   );
 }
