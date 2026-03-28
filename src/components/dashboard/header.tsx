@@ -7,9 +7,9 @@ import { Sun, Moon, Bell, Home, LogOut, ChevronDown, Menu } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { usePathname, useRouter } from '@/i18n/navigation';
 import { logoutUserNoRedirect } from '@/actions/auth';
 import { useLoading } from '@/components/providers/loading-provider';
+import { useLocaleSwitch } from '@/components/providers/locale-switch-provider';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,18 +29,12 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
-  const pathname = usePathname();
-  const router = useRouter();
   const { startLoading } = useLoading();
+  const { toggleLocale, isTransitioning: isLocalePending } = useLocaleSwitch();
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const toggleLocale = () => {
-    const nextLocale = locale === 'en' ? 'es' : 'en';
-    router.replace(pathname, { locale: nextLocale, scroll: false });
-  };
 
   return (
     <header className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 z-50">
@@ -75,7 +69,8 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
             {/* Language Toggle */}
             <button
               onClick={toggleLocale}
-              className="px-2 py-1.5 md:px-3 md:py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              disabled={isLocalePending}
+              className="px-2 py-1.5 md:px-3 md:py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 disabled:opacity-50"
             >
               {locale === 'en' ? 'ES' : 'EN'}
             </button>

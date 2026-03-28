@@ -3,13 +3,11 @@
 import { useState } from 'react';
 import Sidebar from '@/components/dashboard/sidebar';
 import DashboardHeader from '@/components/dashboard/header';
+import { LocaleSwitchProvider, useLocaleSwitch } from '@/components/providers/locale-switch-provider';
 
-export default function DashboardLayoutClient({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function DashboardContent({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { contentOpacity } = useLocaleSwitch();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -28,11 +26,29 @@ export default function DashboardLayoutClient({
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main content - offset by navbar height and sidebar width */}
-      <main className="mt-16 lg:ml-64 min-h-[calc(100vh-4rem)] bg-gray-50 dark:bg-gray-900">
+      <main
+        className="mt-16 lg:ml-64 min-h-[calc(100vh-4rem)] bg-gray-50 dark:bg-gray-900"
+        style={{
+          opacity: contentOpacity,
+          transition: 'opacity 200ms ease-in-out',
+        }}
+      >
         <div className="container mx-auto px-4 py-6 md:px-6 md:py-8 max-w-7xl">
           {children}
         </div>
       </main>
     </div>
+  );
+}
+
+export default function DashboardLayoutClient({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <LocaleSwitchProvider>
+      <DashboardContent>{children}</DashboardContent>
+    </LocaleSwitchProvider>
   );
 }

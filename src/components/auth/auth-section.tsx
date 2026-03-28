@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ const AuthSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { } = useAuth();
   const { startLoading, stopLoading } = useLoading();
+  const locale = useLocale();
 
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -63,7 +64,7 @@ const AuthSection: React.FC = () => {
           toast.success("Signed in successfully!");
           // Redirect to dashboard after successful login
           setTimeout(() => {
-            window.location.href = "/dashboard";
+            window.location.href = `/${locale}/dashboard`;
           }, 100);
         } else {
           toast.error(response.message || "Invalid credentials");
@@ -73,7 +74,7 @@ const AuthSection: React.FC = () => {
         const result = await signupUser(data as SignupFormData);
 
         if (result.success) {
-          toast.success("Account created successfully! Please sign in.");
+          toast.success("Account created successfully! Please Log In.");
           setIsLogin(true);
           signupForm.reset();
         } else {
