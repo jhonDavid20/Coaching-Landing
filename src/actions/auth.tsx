@@ -3,6 +3,7 @@
 import { LoginFormData, SignupFormData, AuthResponse } from "@/lib/auth-schemas";
 import { apiClient } from "@/lib/api-client";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function loginUser(data: LoginFormData): Promise<AuthResponse> {
   console.log('loginUser called with:', data.email);

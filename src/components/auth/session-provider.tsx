@@ -13,6 +13,7 @@ interface User {
   lastName: string;
   role: string;
   isEmailVerified: boolean;
+  hasCompletedOnboarding?: boolean;
 }
 
 interface AuthContextType {
