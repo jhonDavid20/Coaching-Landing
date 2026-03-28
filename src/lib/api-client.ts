@@ -11,6 +11,7 @@ export interface AuthResponse {
     lastName: string;
     role: string;
     isEmailVerified: boolean;
+    hasCompletedOnboarding?: boolean;
     avatar?: string;
     lastLoginAt?: string;
     createdAt?: string;
@@ -34,6 +35,24 @@ export interface RegisterData {
   username: string;
   email: string;
   password: string;
+}
+
+export interface OnboardingData {
+  fitnessGoal: 'weight_loss' | 'muscle_gain' | 'maintenance' | 'endurance';
+  activityLevel: 'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active';
+  dateOfBirth: string;
+  gender: 'male' | 'female' | 'prefer_not_to_say' | 'other';
+  height: number;
+  weight: number;
+  targetWeight?: number;
+  medicalConditions: string[];
+  injuries: string[];
+  medications: string[];
+  allergies: string[];
+  preferredWorkoutTime: 'morning' | 'afternoon' | 'evening' | 'flexible';
+  gymLocation?: string;
+  timezone: string;
+  phone?: string;
 }
 
 class ApiClient {
@@ -231,6 +250,41 @@ class ApiClient {
     } catch (error) {
       console.error('Health check failed:', error);
       return false;
+    }
+  }
+
+  async completeOnboarding(token: string, data: OnboardingData): Promise<AuthResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/users/me/onboarding`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          message: responseData.message || 'Onboarding failed',
+        };
+      }
+
+      return {
+        success: true,
+        message: responseData.message || 'Onboarding completed',
+        user: responseData.user,
+      };
+    } catch (error) {
+      console.error('Complete onboarding error:', error);
+      return {
+        success: false,
+        message: 'Network error. Please check if the server is running.',
+      };
     }
   }
 }
