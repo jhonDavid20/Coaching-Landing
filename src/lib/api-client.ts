@@ -35,6 +35,7 @@ export interface RegisterData {
   username: string;
   email: string;
   password: string;
+  inviteToken?: string;
 }
 
 export interface OnboardingData {
@@ -132,7 +133,7 @@ class ApiClient {
     }
   }
 
-  async verifyToken(token: string): Promise<{ valid: boolean; user?: any }> {
+  async verifyToken(token: string): Promise<{ valid: boolean; networkError?: boolean; user?: any }> {
     try {
       const response = await fetch(`${this.baseUrl}/api/auth/me`, {
         method: 'GET',
@@ -143,7 +144,8 @@ class ApiClient {
       });
 
       if (!response.ok) {
-        return { valid: false };
+        // Definitive rejection from the server (401, 403, etc.)
+        return { valid: false, networkError: false };
       }
 
       const data = await response.json();
@@ -153,8 +155,9 @@ class ApiClient {
         user: data.user || data,
       };
     } catch (error) {
+      // Network failure — backend unreachable, not the same as an invalid token
       console.error('Token verification error:', error);
-      return { valid: false };
+      return { valid: false, networkError: true };
     }
   }
 

@@ -21,7 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function Navbar() {
+export default function Navbar({ hideAuth = false }: { hideAuth?: boolean }) {
     const t = useTranslations('NavBarSection');
     const { user, loading } = useAuth();
     const isLoading = loading;
@@ -125,7 +125,7 @@ export default function Navbar() {
                             </button>
                         )}
                         {/* Auth Button */}
-                        {mounted && !isLoading && (
+                        {!hideAuth && mounted && !isLoading && (
                             isAuthenticated && user ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger className="ml-4 flex items-center space-x-2 px-3 py-2 rounded border border-border text-foreground dark:text-white hover:bg-accent dark:hover:bg-[#23272F] transition-colors focus:outline-none focus:ring-2 focus:ring-primary">
@@ -229,7 +229,7 @@ export default function Navbar() {
                                     {item.name}
                                 </button>
                             ))}
-                            {mounted && !isLoading && (
+                            {!hideAuth && mounted && !isLoading && (
                                 isAuthenticated && user ? (
                                 <div className="px-3 py-2 space-y-2">
                                     <div className="flex items-center px-3 py-2">

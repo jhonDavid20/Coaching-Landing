@@ -1,105 +1,72 @@
 import createMiddleware from 'next-intl/middleware';
-import {routing} from './i18n/routing';
+import { routing } from './i18n/routing';
 import { NextResponse, NextRequest } from 'next/server';
 
 const intlMiddleware = createMiddleware(routing);
 
-async function validateToken(token: string): Promise<boolean> {
-  try {
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3002';
-    const response = await fetch(`${baseUrl}/api/auth/verify`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (!response.ok) {
-      return false;
-    }
-
-    const result = await response.json();
-    return result.success === true || result.valid === true;
-  } catch (error) {
-    console.error('Token validation failed:', error);
-    return false;
-  }
-}
-
-export default async function middleware(req: NextRequest) {
-  // Skip auth middleware for API routes and NextAuth routes
+export default function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith('/api/')) {
-    return;
+    return NextResponse.next();
   }
 
-  const isOnAuth = req.nextUrl.pathname.includes('/auth');
-  const isOnDashboard = req.nextUrl.pathname.includes('/dashboard');
-  const isOnOnboarding = req.nextUrl.pathname.includes('/onboarding');
+  const { pathname } = req.nextUrl;
+  const isOnAuth = pathname.includes('/auth');
+  const isOnDashboard = pathname.includes('/dashboard');
+  const isOnOnboarding = pathname.includes('/onboarding');
 
-  if (isOnDashboard || isOnAuth || isOnOnboarding) {
-    const accessToken = req.cookies.get('access_token');
-    const userData = req.cookies.get('user_data');
+  if (!isOnDashboard && !isOnAuth && !isOnOnboarding) {
+    return intlMiddleware(req);
+  }
 
-    let isValidUser = false;
-    let hasCompletedOnboarding: boolean | undefined;
+  const accessToken = req.cookies.get('access_token')?.value;
+  const userDataRaw = req.cookies.get('user_data')?.value;
 
-    if (accessToken?.value && userData?.value) {
-      try {
-        isValidUser = await validateToken(accessToken.value);
-      } catch (error) {
-        console.error('Token validation error in middleware:', error);
-        isValidUser = false;
-      }
+  // Treat the session as valid if both cookies are present.
+  // Deep token verification happens server-side in getCurrentUser()
+  // on each page — we avoid backend calls in middleware to keep
+  // navigation fast and resilient to transient backend downtime.
+  const hasSession = !!(accessToken && userDataRaw);
 
-      // If token is invalid, clear cookies
-      if (!isValidUser) {
-        const response = intlMiddleware(req) || NextResponse.next();
-        response.cookies.set('access_token', '', { maxAge: 0, path: '/' });
-        response.cookies.set('refresh_token', '', { maxAge: 0, path: '/' });
-        response.cookies.set('user_data', '', { maxAge: 0, path: '/' });
-        return response;
-      }
+  let hasCompletedOnboarding: boolean | undefined;
+  let userRole = 'user';
 
-      // Parse hasCompletedOnboarding from user_data cookie
-      if (isValidUser && userData?.value) {
-        try {
-          const parsed = JSON.parse(userData.value);
-          hasCompletedOnboarding = parsed.hasCompletedOnboarding;
-        } catch {
-          hasCompletedOnboarding = undefined;
-        }
-      }
+  if (hasSession && userDataRaw) {
+    try {
+      const parsed = JSON.parse(userDataRaw);
+      hasCompletedOnboarding = parsed.hasCompletedOnboarding;
+      userRole = parsed.role ?? 'user';
+    } catch {
+      // Malformed cookie — treat as unauthenticated
     }
+  }
 
-    const locale = req.nextUrl.pathname.split('/')[1] || 'es';
+  const locale = pathname.split('/')[1] || 'es';
+  const isCoach = userRole === 'coach';
+  const onboardingDest = isCoach ? `/${locale}/onboarding/coach` : `/${locale}/onboarding`;
 
-    // Unauthenticated → dashboard: redirect to auth
-    if (isOnDashboard && !isValidUser) {
-      return NextResponse.redirect(new URL(`/${locale}/auth`, req.url));
-    }
+  // Unauthenticated → protected page: redirect to auth
+  if (!hasSession && (isOnDashboard || isOnOnboarding)) {
+    return NextResponse.redirect(new URL(`/${locale}/auth`, req.url));
+  }
 
-    // Unauthenticated → onboarding: redirect to auth
-    if (isOnOnboarding && !isValidUser) {
-      return NextResponse.redirect(new URL(`/${locale}/auth`, req.url));
-    }
+  // Authenticated → auth page: redirect to dashboard
+  if (hasSession && isOnAuth) {
+    return NextResponse.redirect(new URL(`/${locale}/dashboard`, req.url));
+  }
 
-    // Authenticated → auth page: redirect to dashboard
-    if (isValidUser && isOnAuth) {
-      return NextResponse.redirect(new URL(`/${locale}/dashboard`, req.url));
-    }
+  // Authenticated, onboarding incomplete → dashboard: send to correct onboarding
+  if (hasSession && isOnDashboard && hasCompletedOnboarding === false) {
+    return NextResponse.redirect(new URL(onboardingDest, req.url));
+  }
 
-    // Authenticated, onboarding incomplete → dashboard: redirect to onboarding
-    if (isValidUser && isOnDashboard && hasCompletedOnboarding === false) {
-      return NextResponse.redirect(new URL(`/${locale}/onboarding`, req.url));
-    }
+  // Coach landing on client onboarding path → redirect to coach onboarding
+  if (hasSession && isCoach && pathname.endsWith('/onboarding') && hasCompletedOnboarding === false) {
+    return NextResponse.redirect(new URL(`/${locale}/onboarding/coach`, req.url));
+  }
 
-    // Authenticated, onboarding complete (or flag absent) → onboarding page: redirect to dashboard
-    if (isValidUser && isOnOnboarding && hasCompletedOnboarding !== false) {
-      return NextResponse.redirect(new URL(`/${locale}/dashboard`, req.url));
-    }
-
-    // Authenticated, onboarding incomplete → onboarding page: allow through
+  // Authenticated, onboarding already done → onboarding page: redirect to dashboard
+  if (hasSession && isOnOnboarding && hasCompletedOnboarding !== false) {
+    return NextResponse.redirect(new URL(`/${locale}/dashboard`, req.url));
   }
 
   return intlMiddleware(req);

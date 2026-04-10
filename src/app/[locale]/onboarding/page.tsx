@@ -104,14 +104,14 @@ function SelectCard({ label, icon, description, selected, onClick }: SelectCardP
       className={cn(
         'border-2 rounded-xl p-4 text-left transition-all duration-200 w-full',
         selected
-          ? 'border-blue-500 bg-blue-500/10 text-white'
-          : 'border-gray-700 bg-[#1a1d27] text-gray-300 hover:border-gray-500 hover:bg-gray-700/50'
+          ? 'border-[#3a7d44] bg-[#ddf0df] text-[#162318]'
+          : 'border-[#d8e0d8] bg-[#f6f8f5] text-[#617061] hover:border-[#3a7d44] hover:bg-[#f0faf0]'
       )}
     >
       {icon && <span className="text-2xl mb-2 block">{icon}</span>}
       <span className="font-medium block">{label}</span>
       {description && (
-        <span className={cn('text-sm mt-1 block', selected ? 'text-blue-200' : 'text-gray-500')}>
+        <span className={cn('text-sm mt-1 block', selected ? 'text-[#2d5a31]' : 'text-gray-500')}>
           {description}
         </span>
       )}
@@ -143,8 +143,8 @@ function MultiSelectChips({ options, selected, onChange }: MultiSelectChipsProps
           className={cn(
             'px-3 py-1.5 rounded-full border text-sm transition-all duration-200',
             selected.includes(opt)
-              ? 'border-blue-500 bg-blue-500/20 text-blue-300'
-              : 'border-gray-600 bg-[#1a1d27] text-gray-400 hover:border-gray-500'
+              ? 'border-[#3a7d44] bg-[#ddf0df] text-[#2d5a31]'
+              : 'border-[#d8e0d8] bg-white text-[#617061] hover:border-[#3a7d44]'
           )}
         >
           {opt}
@@ -295,7 +295,7 @@ export default function OnboardingPage() {
     return (
       <div className="space-y-8">
         <div>
-          <p className="text-sm font-medium text-gray-300 mb-3">¿Cuál es tu objetivo principal?</p>
+          <p className="text-sm font-medium text-[#0f1f10] mb-3">¿Cuál es tu objetivo principal?</p>
           <div className="grid grid-cols-2 gap-3">
             <SelectCard
               label="Perder peso"
@@ -326,7 +326,7 @@ export default function OnboardingPage() {
         </div>
 
         <div>
-          <p className="text-sm font-medium text-gray-300 mb-3">¿Cuál es tu nivel de actividad actual?</p>
+          <p className="text-sm font-medium text-[#0f1f10] mb-3">¿Cuál es tu nivel de actividad actual?</p>
           <div className="grid grid-cols-1 gap-3">
             <SelectCard
               label="Sedentario"
@@ -366,19 +366,19 @@ export default function OnboardingPage() {
     return (
       <div className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-[#0f1f10] mb-1">
             Fecha de nacimiento
           </label>
           <input
             type="date"
             {...register('birthDate')}
-            className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent [color-scheme:dark]"
+            className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44]"
           />
           <FieldError message={errors.birthDate?.message} />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">Género</label>
+          <label className="block text-sm font-medium text-[#0f1f10] mb-3">Género</label>
           <div className="grid grid-cols-2 gap-3">
             {[
               { value: 'male', label: 'Masculino' },
@@ -401,39 +401,39 @@ export default function OnboardingPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">Altura (cm)</label>
+            <label className="block text-sm font-medium text-[#0f1f10] mb-1">Altura (cm)</label>
             <input
               type="number"
               placeholder="170"
               {...register('height', { valueAsNumber: true })}
-              className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
             />
             <FieldError message={errors.height?.message} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-[#0f1f10] mb-1">
               Peso actual (kg)
             </label>
             <input
               type="number"
               placeholder="70"
               {...register('currentWeight', { valueAsNumber: true })}
-              className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
             />
             <FieldError message={errors.currentWeight?.message} />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-[#0f1f10] mb-1">
             Peso objetivo (kg){' '}
-            <span className="text-gray-500 font-normal">— opcional</span>
+            <span className="text-[#617061] font-normal">— opcional</span>
           </label>
           <input
             type="number"
             placeholder="65"
             {...register('targetWeight', { valueAsNumber: true })}
-            className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+            className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
           />
           <FieldError message={errors.targetWeight?.message} />
         </div>
@@ -446,13 +446,13 @@ export default function OnboardingPage() {
 
     return (
       <div className="space-y-6">
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-[#617061]">
           Todos los campos de este paso son opcionales. Esta información nos ayuda a personalizar
           tu plan de entrenamiento.
         </p>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-sm font-medium text-[#0f1f10] mb-3">
             Condiciones médicas
           </label>
           <MultiSelectChips
@@ -463,7 +463,7 @@ export default function OnboardingPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-sm font-medium text-[#0f1f10] mb-3">
             Lesiones previas
           </label>
           <MultiSelectChips
@@ -474,19 +474,19 @@ export default function OnboardingPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
-            Medicamentos <span className="text-gray-500 font-normal">— campo libre</span>
+          <label className="block text-sm font-medium text-[#0f1f10] mb-1">
+            Medicamentos <span className="text-[#617061] font-normal">— campo libre</span>
           </label>
           <textarea
             {...register('medications')}
             rows={2}
             placeholder="Ej: Metformina 500mg, Losartán..."
-            className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 resize-none"
+            className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0] resize-none"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
+          <label className="block text-sm font-medium text-[#0f1f10] mb-3">
             Alergias alimentarias
           </label>
           <MultiSelectChips
@@ -506,7 +506,7 @@ export default function OnboardingPage() {
     return (
       <div className="space-y-6">
         <div>
-          <p className="text-sm font-medium text-gray-300 mb-3">¿Cuándo prefieres entrenar?</p>
+          <p className="text-sm font-medium text-[#0f1f10] mb-3">¿Cuándo prefieres entrenar?</p>
           <div className="grid grid-cols-2 gap-3">
             {[
               { value: 'morning', label: 'Mañana', icon: '🌅' },
@@ -531,12 +531,12 @@ export default function OnboardingPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-[#0f1f10] mb-1">
             Zona horaria
           </label>
           <select
             {...register('timezone')}
-            className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44]"
           >
             <option value="" disabled className="bg-gray-800">
               Selecciona tu zona horaria
@@ -552,27 +552,27 @@ export default function OnboardingPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-[#0f1f10] mb-1">
               Gym / Ubicación{' '}
-              <span className="text-gray-500 font-normal">— opcional</span>
+              <span className="text-[#617061] font-normal">— opcional</span>
             </label>
             <input
               type="text"
               placeholder="Ej: Gold's Gym, Casa..."
               {...register('gymLocation')}
-              className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-[#0f1f10] mb-1">
               Teléfono{' '}
-              <span className="text-gray-500 font-normal">— opcional</span>
+              <span className="text-[#617061] font-normal">— opcional</span>
             </label>
             <input
               type="tel"
               placeholder="+52 55 1234 5678"
               {...register('phone')}
-              className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
             />
           </div>
         </div>
@@ -630,8 +630,8 @@ export default function OnboardingPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-center">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-            <CheckCircle2 className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 rounded-full bg-[#ddf0df] border-2 border-[#3a7d44] flex items-center justify-center">
+            <CheckCircle2 className="w-8 h-8 text-[#3a7d44]" />
           </div>
         </div>
 
@@ -641,9 +641,9 @@ export default function OnboardingPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {items.map(({ label, value }) => (
-            <div key={label} className="bg-gray-800/50 rounded-lg px-4 py-3">
-              <p className="text-xs text-gray-500 mb-0.5">{label}</p>
-              <p className="text-sm text-white font-medium">{value}</p>
+            <div key={label} className="bg-[#f0faf0] border border-[#d8e0d8] rounded-lg px-4 py-3">
+              <p className="text-xs text-[#617061] mb-0.5">{label}</p>
+              <p className="text-sm text-[#0f1f10] font-medium">{value}</p>
             </div>
           ))}
         </div>
@@ -674,38 +674,38 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f1117] flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-[#f6f8f5] flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-2xl">
         {/* Brand */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            Fit<span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Coach</span>
+          <h1 className="text-2xl font-bold text-[#162318] tracking-tight">
+            Steady<span className="text-[#52a85e]">Vitality</span>
           </h1>
         </div>
 
         {/* Progress bar */}
-        <div className="mb-2 flex items-center justify-between text-xs text-gray-500">
+        <div className="mb-2 flex items-center justify-between text-xs text-[#617061]">
           <span>Paso {currentStep} de 5</span>
           <span>{Math.round((currentStep / 5) * 100)}%</span>
         </div>
-        <div className="w-full bg-gray-700/50 rounded-full h-1.5 mb-8">
+        <div className="w-full bg-[#d8e0d8] rounded-full h-1.5 mb-8">
           <div
-            className="h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-500 ease-out"
+            className="h-1.5 rounded-full bg-[#3a7d44] transition-all duration-500 ease-out"
             style={{ width: `${(currentStep / 5) * 100}%` }}
           />
         </div>
 
         {/* Step card */}
-        <div className="bg-[#1a1d27] rounded-2xl shadow-2xl border border-gray-800 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-[#d8e0d8] overflow-hidden">
           {/* Step header */}
-          <div className="px-8 pt-8 pb-6 border-b border-gray-800">
+          <div className="px-8 pt-8 pb-6 border-b border-[#d8e0d8]">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                <StepIcon className="w-5 h-5 text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-[#ddf0df] border border-[#3a7d44]/20 flex items-center justify-center flex-shrink-0">
+                <StepIcon className="w-5 h-5 text-[#3a7d44]" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-white">{stepConfig.title}</h2>
-                <p className="text-sm text-gray-400">{stepConfig.subtitle}</p>
+                <h2 className="text-lg font-semibold text-[#0f1f10]">{stepConfig.title}</h2>
+                <p className="text-sm text-[#617061]">{stepConfig.subtitle}</p>
               </div>
             </div>
           </div>
@@ -724,13 +724,13 @@ export default function OnboardingPage() {
           </div>
 
           {/* Navigation */}
-          <div className="px-8 pb-8 flex items-center justify-between border-t border-gray-800 pt-6">
+          <div className="px-8 pb-8 flex items-center justify-between border-t border-[#d8e0d8] pt-6">
             {currentStep > 1 ? (
               <button
                 type="button"
                 onClick={handleBack}
                 disabled={isSubmitting}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-gray-600 text-gray-300 text-sm font-medium hover:bg-gray-700/50 transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-[#d8e0d8] text-[#617061] text-sm font-medium hover:bg-[#eff2ee] hover:text-[#162318] transition-colors disabled:opacity-50"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Anterior
@@ -743,7 +743,7 @@ export default function OnboardingPage() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#162318] text-white text-sm font-medium hover:bg-[#243d27] transition-colors"
               >
                 Siguiente
                 <ChevronRight className="w-4 h-4" />
@@ -753,7 +753,7 @@ export default function OnboardingPage() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#162318] text-white text-sm font-medium hover:bg-[#243d27] transition-colors disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>

@@ -94,9 +94,18 @@
     "title": "Why Do Diets Fail?",
     "subtitle": "Stop Starting Diets Every Monday",
     "stats": [
-      { "number": "95%", "label": "of diets fail within a year" },
-      { "number": "0", "label": "extreme restrictions" },
-      { "number": "100%", "label": "education first" }
+      {
+        "number": "95%",
+        "label": "of diets fail within a year"
+      },
+      {
+        "number": "0",
+        "label": "extreme restrictions"
+      },
+      {
+        "number": "100%",
+        "label": "education first"
+      }
     ],
     "keyPoints": [
       {
@@ -173,7 +182,267 @@
     "welcome": "Welcome back,",
     "loading": "Loading...",
     "error": "An error occurred",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "adminSection": "Admin",
+    "coachSection": "Coach",
+    "overview": "Overview",
+    "invites": "Invites",
+    "myClients": "My Clients",
+    "profilePlans": "Profile & Plans",
+    "findCoach": "Find a Coach",
+    "myCoach": "My Coach"
+  },
+  "coachDashboard": {
+    "greeting": "Good day, {name}!",
+    "greetingSubtitle": "Here's a snapshot of your coaching activity.",
+    "refresh": "Refresh",
+    "activeClients": "Active clients",
+    "trialClientsCount": "+{n} on trial",
+    "sessionsThisMonth": "Sessions this month",
+    "revenueThisMonth": "Revenue this month",
+    "totalClients": "All clients",
+    "allTime": "All time",
+    "activeClientsTitle": "Active clients",
+    "noActiveClients": "No active clients yet.",
+    "sessions": "sessions",
+    "andMore": "+{n} more — view all in My Clients",
+    "upcomingSessions": "Upcoming sessions",
+    "noUpcomingSessions": "No sessions scheduled.",
+    "trial": "Trial",
+    "regular": "Session",
+    "goalWeightLoss": "Weight loss",
+    "goalMuscleGain": "Muscle gain",
+    "goalMaintenance": "Maintenance",
+    "goalEndurance": "Endurance",
+    "clientsTitle": "My Clients",
+    "clientsSubtitle": "{n} clients total",
+    "searchPlaceholder": "Search by name or email…",
+    "filterAll": "All",
+    "statusActive": "Active",
+    "statusTrial": "Trial",
+    "statusInactive": "Inactive",
+    "noClients": "No clients yet.",
+    "noResults": "No clients match your search.",
+    "drawerSessions": "Sessions",
+    "drawerJoined": "Joined",
+    "drawerNextSession": "Next session",
+    "drawerLastSession": "Last session",
+    "drawerFitness": "Fitness",
+    "drawerWeight": "Weight",
+    "drawerHeight": "Height",
+    "drawerActivity": "Activity level",
+    "drawerHealth": "Health",
+    "drawerConditions": "Medical conditions",
+    "drawerInjuries": "Injuries",
+    "drawerAllergies": "Allergies",
+    "drawerDiet": "Dietary restrictions",
+    "drawerNone": "None registered",
+    "drawerNotes": "Coach notes",
+    "profilePlansTitle": "Profile & Plans",
+    "profilePlansSubtitle": "Update your public profile and manage your service packages.",
+    "tabProfile": "Coach Profile",
+    "tabPlans": "Service Plans",
+    "saveButton": "Save changes",
+    "saving": "Saving…",
+    "profileSaved": "Profile saved successfully",
+    "plansSaved": "Plans saved",
+    "sectionIdentity": "Identity & Story",
+    "sectionExpertise": "Expertise",
+    "sectionAvailability": "Availability",
+    "sectionRates": "Rates & Pricing",
+    "sectionLinks": "Links",
+    "fieldHeadline": "Profile headline",
+    "fieldBio": "Bio",
+    "fieldYears": "Years of experience",
+    "fieldCoachingType": "Coaching type",
+    "fieldSpecialties": "Specialties",
+    "fieldModalities": "Training modalities",
+    "fieldClientTypes": "Target client types",
+    "fieldCertifications": "Certifications",
+    "fieldLanguages": "Languages spoken",
+    "fieldTimezone": "Timezone",
+    "fieldSessionDuration": "Session duration",
+    "minutes": "min",
+    "fieldMaxClients": "Max client capacity",
+    "fieldTotalTrained": "Total clients trained",
+    "fieldAccepting": "Accepting new clients",
+    "fieldAcceptingHint": "Toggle off to pause new client requests",
+    "fieldSessionRate": "Session rate (USD)",
+    "fieldTrialAvailable": "Trial session available",
+    "fieldTrialRatePlaceholder": "Free or discounted rate",
+    "fieldVideoIntro": "Video intro URL",
+    "fieldWebsite": "Website",
+    "fieldInstagram": "Instagram handle",
+    "plansHint": "Define the packages you offer clients. Plans are saved locally until your backend is configured.",
+    "addPlan": "Add plan",
+    "noPlans": "No plans yet.",
+    "addFirstPlan": "Create your first plan",
+    "planName": "Plan name",
+    "planPrice": "Price (USD)",
+    "planDuration": "Duration",
+    "weeks": "weeks",
+    "planSessions": "Sessions included",
+    "planDescription": "Description",
+    "planFeatures": "What's included",
+    "planFeaturePlaceholder": "e.g. Weekly 1:1 video call",
+    "addFeature": "Add feature",
+    "inviteClientButton": "Invite Client",
+    "inviteClientTitle": "Invite a client",
+    "inviteClientHint": "Enter the client's email address. They'll receive a link to create their account and complete their fitness profile.",
+    "inviteClientEmail": "Client email",
+    "inviteSendButton": "Send invite",
+    "inviteSending": "Sending…",
+    "inviteSentTitle": "Invite sent!",
+    "inviteSentDesc": "An invite link has been created for {email}.",
+    "inviteLinkLabel": "Copy & share this link",
+    "inviteLinkCopied": "Link copied!",
+    "inviteDoneButton": "Done",
+    "pendingRequestsTitle": "Pending connection requests",
+    "acceptRequest": "Accept",
+    "declineRequest": "Decline",
+    "requestAccepted": "Client accepted",
+    "requestDeclined": "Request declined"
+  },
+  "marketplace": {
+    "title": "Find a Coach",
+    "subtitle": "{n} coaches available",
+    "searchPlaceholder": "Search by name, specialty, or style…",
+    "filterAll": "All",
+    "trialFilter": "Trial available",
+    "noResults": "No coaches match your filters.",
+    "yearsExp": "{n} yrs experience",
+    "clientsTrained": "{n} clients",
+    "freeTrial": "Free trial",
+    "paidTrial": "${price} trial",
+    "requestConnect": "Request to connect",
+    "requestSent": "Request sent",
+    "requestSentToast": "Your request has been sent to the coach.",
+    "viewProfile": "View full profile",
+    "drawerCertifications": "Certifications",
+    "drawerModalities": "Training style",
+    "drawerTargetClients": "Works well with",
+    "drawerLanguages": "Languages",
+    "drawerPricing": "Pricing",
+    "drawerPerSession": "/session",
+    "drawerTrialAvailable": "Trial session available",
+    "drawerMaxCapacity": "Up to {n} clients",
+    "drawerSocialLinks": "Find online",
+    "drawerVideoIntro": "Intro video",
+    "drawerClose": "Close",
+    "drawerOpenToClients": "Open to new clients",
+    "drawerTimezone": "Timezone",
+    "drawerSpotsAvailable": "{available} of {total} spots open",
+    "drawerSpotsLabel": "Availability",
+    "drawerEmail": "Contact email",
+    "drawerSessionFormat": "Session format",
+    "drawerFullyBooked": "Fully booked"
+  },
+  "adminInvites": {
+    "title": "Coach Invites",
+    "subtitle": "Send and manage invite links for new coaches",
+    "createTitle": "Send a new invite",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "coach@example.com",
+    "createButton": "Send invite",
+    "creating": "Sending…",
+    "createSuccess": "Invite sent successfully",
+    "createError": "Failed to send invite",
+    "listTitle": "All invites",
+    "total": "total",
+    "refresh": "Refresh",
+    "noInvites": "No invites yet — send one above",
+    "created": "Created",
+    "prev": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {total}"
+  },
+  "auth": {
+    "signInHeading": "Sign In",
+    "createAccountHeading": "Create Account",
+    "signInSubtitle": "Welcome back! Please sign in to your account.",
+    "createAccountSubtitle": "Join us today and start your fitness journey.",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "usernameLabel": "Username",
+    "emailLabel": "Email Address",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastNamePlaceholder": "Enter your last name",
+    "usernamePlaceholder": "Choose a username",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "signingIn": "Signing In...",
+    "creatingAccount": "Creating Account...",
+    "signInButton": "Sign In",
+    "createAccountButton": "Create Account",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signUp": "Sign up",
+    "signIn": "Sign in",
+    "forgotPassword": "Forgot your password?",
+    "invitePrompt": "Do you have an invite?",
+    "enterInviteToken": "Enter your invite code!"
+  },
+  "inviteLanding": {
+    "brandSubtitle": "Coach invitation",
+    "heading": "Enter your invite token",
+    "subtitle": "Paste the token from your invitation email to create your coach account.",
+    "tokenLabel": "Invite token",
+    "tokenPlaceholder": "Paste your token here…",
+    "emptyError": "Please enter your invite token.",
+    "validating": "Validating…",
+    "continueButton": "Continue",
+    "hasAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "noInvite": "Don't have an invite? Contact your platform administrator."
+  },
+  "inviteSignup": {
+    "heading": "You've been invited!",
+    "subtitle": "Create your coach account to get started.",
+    "invitedEmail": "Invited email",
+    "firstNameLabel": "First Name",
+    "lastNameLabel": "Last Name",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "firstNamePlaceholder": "Jane",
+    "lastNamePlaceholder": "Smith",
+    "passwordPlaceholder": "Create a strong password",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "creating": "Creating account…",
+    "createButton": "Create coach account"
+  },
+  "adminOverview": {
+    "heading": "Admin Overview",
+    "lastRefreshed": "Last refreshed {time}",
+    "loading": "Loading…",
+    "refresh": "Refresh",
+    "totalUsers": "Total users",
+    "newThisWeek": "New this week",
+    "sinceMonday": "+{n} since Monday",
+    "coaches": "Coaches",
+    "pendingInvites": "Pending invites",
+    "signupsChart": "Signups — last 30 days",
+    "signupsSummary": "{total} total · peak {count} on {date}",
+    "usersByRole": "Users by role",
+    "noData": "No data yet",
+    "signup": "sign-up",
+    "signups": "sign-ups",
+    "user": "user",
+    "users": "users",
+    "invitePipeline": "Invite pipeline",
+    "totalSent": "Total sent",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "expired": "Expired",
+    "quickInviteTitle": "Quick invite",
+    "quickInviteSubtitle": "Send a coach invite instantly",
+    "sendButton": "Send",
+    "manageAll": "Manage all",
+    "failedToLoad": "Failed to load stats",
+    "inviteSent": "Invite sent!",
+    "inviteFailed": "Failed to send invite"
   },
   "profile": {
     "title": "Profile",
@@ -261,11 +530,203 @@
     "currentWeightLabel": "Current",
     "goalLabel": "Goal",
     "remaining": "Remaining",
-    "verified": "Verified",
     "medicalConditionsLabel": "Medical Conditions",
     "medicationsLabel": "Medications",
     "injuriesLabel": "Previous Injuries",
     "allergiesLabel": "Allergies",
     "dietaryRestrictionsLabel": "Dietary Restrictions"
+  },
+  "landing": {
+    "nav": {
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "pricing": "Pricing",
+      "testimonials": "Testimonials",
+      "login": "Log in",
+      "getStarted": "Get Started Free"
+    },
+    "hero": {
+      "badge": "Trusted by 500+ fitness coaches",
+      "headlinePart1": "The coaching platform",
+      "headlinePart2": "built for results",
+      "description": "Manage clients, assign personalized packages, track sessions and progress — all in one clean dashboard. Stop juggling spreadsheets and start coaching.",
+      "trust1": "No credit card required",
+      "trust2": "Free 14-day trial",
+      "trust3": "Cancel anytime",
+      "ctaPrimary": "Start for free",
+      "ctaSecondary": "Our story",
+      "mockTitle": "SteadyVitality — Coach Dashboard",
+      "mockActiveClients": "Active Clients",
+      "mockSessionsDone": "Sessions Done",
+      "mockMonthlyRev": "Monthly Rev.",
+      "mockThisMonth": "This month",
+      "mockNewClients": "+3 new clients"
+    },
+    "social": {
+      "coachesValue": "500+",
+      "coachesLabel": "Active coaches",
+      "clientsValue": "8,200+",
+      "clientsLabel": "Clients managed",
+      "retentionValue": "94%",
+      "retentionLabel": "Client retention rate",
+      "ratingValue": "4.9 ★",
+      "ratingLabel": "Average coach rating"
+    },
+    "features": {
+      "badge": "Everything you need",
+      "heading": "A complete toolkit for professional coaches",
+      "description": "Built around the real workflows coaches use every day — not generic project management wrapped in a gym theme.",
+      "items": [
+        {
+          "title": "Client Management",
+          "description": "A full profile for every client — health history, fitness goals, body metrics, and activity levels in one place."
+        },
+        {
+          "title": "Personalized Packages",
+          "description": "Create coaching packages with custom sessions, duration, features, and pricing. Assign them to clients with goals and notes."
+        },
+        {
+          "title": "Progress Tracking",
+          "description": "Session bubbles, progress bars, and completion stats so you and your clients always know where they stand."
+        },
+        {
+          "title": "Session Scheduling",
+          "description": "Log completed sessions, set targets, and track weekly cadence — without needing a separate calendar tool."
+        },
+        {
+          "title": "Coach Notes & Goals",
+          "description": "Attach private notes and custom goals to each client's package. Keep your coaching context organized and accessible."
+        },
+        {
+          "title": "Invite-Only Onboarding",
+          "description": "Send invite links to new clients. They fill in their profile, you get notified, and they're immediately in your roster."
+        }
+      ]
+    },
+    "howItWorks": {
+      "badge": "Simple by design",
+      "heading": "Up and running in four steps",
+      "description": "No onboarding calls required. Most coaches have their first client assigned within a day.",
+      "steps": [
+        {
+          "num": "01",
+          "title": "Create your coach profile",
+          "description": "Set up your specialties, training modalities, bio, and availability. Your public profile is what clients see on the marketplace."
+        },
+        {
+          "num": "02",
+          "title": "Build your packages",
+          "description": "Define coaching packages with session counts, duration, price, and the specific features included. You control the offer."
+        },
+        {
+          "num": "03",
+          "title": "Invite or accept clients",
+          "description": "Send invite links or get discovery requests from the marketplace. Clients complete their health profile on onboarding."
+        },
+        {
+          "num": "04",
+          "title": "Assign & track",
+          "description": "Assign a package to each client, add goals and notes, log sessions, and watch progress update in real time."
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "Pricing",
+      "heading": "Simple, transparent pricing",
+      "description": "Start free. Upgrade when you're ready.",
+      "popular": "Most popular",
+      "plans": [
+        {
+          "name": "Starter",
+          "price": "$0",
+          "period": "forever",
+          "description": "Perfect for coaches just getting started.",
+          "cta": "Get started free",
+          "featured": false,
+          "features": [
+            "Up to 5 active clients",
+            "2 package templates",
+            "Session tracking",
+            "Basic client profiles",
+            "Invite links"
+          ]
+        },
+        {
+          "name": "Pro",
+          "price": "$29",
+          "period": "/ month",
+          "description": "For coaches ready to scale their business.",
+          "cta": "Start 14-day trial",
+          "featured": true,
+          "features": [
+            "Unlimited clients",
+            "Unlimited packages",
+            "Progress analytics",
+            "Goals & coach notes",
+            "Marketplace listing",
+            "Priority support"
+          ]
+        },
+        {
+          "name": "Team",
+          "price": "$79",
+          "period": "/ month",
+          "description": "Multiple coaches, one account.",
+          "cta": "Contact us",
+          "featured": false,
+          "features": [
+            "Everything in Pro",
+            "Up to 5 coach seats",
+            "Shared client pool",
+            "Team analytics",
+            "Custom branding",
+            "Dedicated support"
+          ]
+        }
+      ]
+    },
+    "testimonials": {
+      "badge": "Coaches love it",
+      "heading": "Real coaches, real results",
+      "items": [
+        {
+          "name": "Carlos M.",
+          "role": "Online Fitness Coach",
+          "avatar": "CM",
+          "quote": "I used to track everything in a Google Sheet. Now my clients have a proper dashboard and I actually look professional."
+        },
+        {
+          "name": "Priya R.",
+          "role": "Nutrition & Wellness Coach",
+          "avatar": "PR",
+          "quote": "The package system is exactly what I needed. I can see which clients are progressing and which ones need a check-in."
+        },
+        {
+          "name": "Derek T.",
+          "role": "Strength & Conditioning Coach",
+          "avatar": "DT",
+          "quote": "Onboarding new clients through the invite link saves me 30 minutes per client. They arrive with their profile already filled in."
+        }
+      ]
+    },
+    "cta": {
+      "heading": "Ready to run a better coaching business?",
+      "description": "Join 500+ coaches who replaced spreadsheets and sticky notes with a platform built for them. Free to start, no credit card needed.",
+      "primary": "Start for free",
+      "secondary": "Read our story"
+    },
+    "footer": {
+      "tagline": "A coaching management platform built to help fitness professionals grow their business and deliver better results.",
+      "product": "Product",
+      "company": "Company",
+      "linkFeatures": "Features",
+      "linkPricing": "Pricing",
+      "linkHowItWorks": "How it works",
+      "linkStory": "Our story",
+      "linkLogin": "Log in",
+      "linkSignup": "Sign up",
+      "copyright": "All rights reserved.",
+      "moto": "Built for coaches who take results seriously."
+    }
   }
 }

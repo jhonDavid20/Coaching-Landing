@@ -1,4 +1,4 @@
-{   
+{
   "NavBarSection": {
     "Home": "Inicio",
     "Assessment": "Evaluación",
@@ -94,18 +94,27 @@
     "title": "¿Por qué fallan las dietas?",
     "subtitle": "Deja de empezar dietas cada lunes",
     "stats": [
-      { "number": "95%", "label": "de las dietas fallan en un año" },
-      { "number": "0", "label": "restricciones extremas" },
-      { "number": "100%", "label": "educación primero" }
+      {
+        "number": "95%",
+        "label": "de las dietas fallan en un año"
+      },
+      {
+        "number": "0",
+        "label": "restricciones extremas"
+      },
+      {
+        "number": "100%",
+        "label": "educación primero"
+      }
     ],
     "keyPoints": [
       {
-      "title": "🔍 Educación antes que restricción",
-      "text": "En lugar de eliminar alimentos, te ayudo a entender lo que tu cuerpo realmente necesita. Identificamos qué no está funcionando en tus hábitos actuales."
+        "title": "🔍 Educación antes que restricción",
+        "text": "En lugar de eliminar alimentos, te ayudo a entender lo que tu cuerpo realmente necesita. Identificamos qué no está funcionando en tus hábitos actuales."
       },
       {
-      "title": "🎯 Hábitos sostenibles",
-      "text": "Construimos hábitos que se vuelven parte de quién eres, no solo lo que haces por 12 semanas. No más depender solo de la fuerza de voluntad."
+        "title": "🎯 Hábitos sostenibles",
+        "text": "Construimos hábitos que se vuelven parte de quién eres, no solo lo que haces por 12 semanas. No más depender solo de la fuerza de voluntad."
       }
     ],
     "analogy": {
@@ -173,7 +182,267 @@
     "welcome": "Bienvenido de nuevo,",
     "loading": "Cargando...",
     "error": "Ocurrió un error",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+    "adminSection": "Administrador",
+    "coachSection": "Coach",
+    "overview": "Resumen",
+    "invites": "Invitaciones",
+    "myClients": "Mis Clientes",
+    "profilePlans": "Perfil y Planes",
+    "findCoach": "Buscar Coach",
+    "myCoach": "Mi Coach"
+  },
+  "coachDashboard": {
+    "greeting": "¡Buen día, {name}!",
+    "greetingSubtitle": "Aquí tienes un resumen de tu actividad de coaching.",
+    "refresh": "Actualizar",
+    "activeClients": "Clientes activos",
+    "trialClientsCount": "+{n} en prueba",
+    "sessionsThisMonth": "Sesiones este mes",
+    "revenueThisMonth": "Ingresos este mes",
+    "totalClients": "Todos los clientes",
+    "allTime": "Total histórico",
+    "activeClientsTitle": "Clientes activos",
+    "noActiveClients": "Aún no tienes clientes activos.",
+    "sessions": "sesiones",
+    "andMore": "+{n} más — ver todos en Mis Clientes",
+    "upcomingSessions": "Próximas sesiones",
+    "noUpcomingSessions": "No hay sesiones programadas.",
+    "trial": "Prueba",
+    "regular": "Sesión",
+    "goalWeightLoss": "Pérdida de peso",
+    "goalMuscleGain": "Ganancia muscular",
+    "goalMaintenance": "Mantenimiento",
+    "goalEndurance": "Resistencia",
+    "clientsTitle": "Mis Clientes",
+    "clientsSubtitle": "{n} clientes en total",
+    "searchPlaceholder": "Buscar por nombre o correo…",
+    "filterAll": "Todos",
+    "statusActive": "Activo",
+    "statusTrial": "Prueba",
+    "statusInactive": "Inactivo",
+    "noClients": "Aún no tienes clientes.",
+    "noResults": "Ningún cliente coincide con tu búsqueda.",
+    "drawerSessions": "Sesiones",
+    "drawerJoined": "Ingresó",
+    "drawerNextSession": "Próxima sesión",
+    "drawerLastSession": "Última sesión",
+    "drawerFitness": "Fitness",
+    "drawerWeight": "Peso",
+    "drawerHeight": "Altura",
+    "drawerActivity": "Nivel de actividad",
+    "drawerHealth": "Salud",
+    "drawerConditions": "Condiciones médicas",
+    "drawerInjuries": "Lesiones",
+    "drawerAllergies": "Alergias",
+    "drawerDiet": "Restricciones alimentarias",
+    "drawerNone": "Ninguna registrada",
+    "drawerNotes": "Notas del coach",
+    "profilePlansTitle": "Perfil y Planes",
+    "profilePlansSubtitle": "Actualiza tu perfil público y gestiona tus paquetes de servicio.",
+    "tabProfile": "Perfil de Coach",
+    "tabPlans": "Planes de Servicio",
+    "saveButton": "Guardar cambios",
+    "saving": "Guardando…",
+    "profileSaved": "Perfil guardado correctamente",
+    "plansSaved": "Planes guardados",
+    "sectionIdentity": "Identidad e Historia",
+    "sectionExpertise": "Especialización",
+    "sectionAvailability": "Disponibilidad",
+    "sectionRates": "Tarifas y Precios",
+    "sectionLinks": "Enlaces",
+    "fieldHeadline": "Titular de perfil",
+    "fieldBio": "Biografía",
+    "fieldYears": "Años de experiencia",
+    "fieldCoachingType": "Tipo de coaching",
+    "fieldSpecialties": "Especialidades",
+    "fieldModalities": "Modalidades de entrenamiento",
+    "fieldClientTypes": "Tipos de clientes objetivo",
+    "fieldCertifications": "Certificaciones",
+    "fieldLanguages": "Idiomas hablados",
+    "fieldTimezone": "Zona horaria",
+    "fieldSessionDuration": "Duración de sesión",
+    "minutes": "min",
+    "fieldMaxClients": "Capacidad máxima de clientes",
+    "fieldTotalTrained": "Total de clientes entrenados",
+    "fieldAccepting": "Aceptando nuevos clientes",
+    "fieldAcceptingHint": "Desactiva para pausar solicitudes de nuevos clientes",
+    "fieldSessionRate": "Tarifa por sesión (USD)",
+    "fieldTrialAvailable": "Sesión de prueba disponible",
+    "fieldTrialRatePlaceholder": "Tarifa gratuita o con descuento",
+    "fieldVideoIntro": "URL de video de presentación",
+    "fieldWebsite": "Sitio web",
+    "fieldInstagram": "Usuario de Instagram",
+    "plansHint": "Define los paquetes que ofreces a los clientes. Los planes se guardan localmente hasta que se configure el backend.",
+    "addPlan": "Agregar plan",
+    "noPlans": "Aún no tienes planes.",
+    "addFirstPlan": "Crear tu primer plan",
+    "planName": "Nombre del plan",
+    "planPrice": "Precio (USD)",
+    "planDuration": "Duración",
+    "weeks": "semanas",
+    "planSessions": "Sesiones incluidas",
+    "planDescription": "Descripción",
+    "planFeatures": "Qué incluye",
+    "planFeaturePlaceholder": "Ej. Videollamada 1:1 semanal",
+    "addFeature": "Agregar elemento",
+    "inviteClientButton": "Invitar Cliente",
+    "inviteClientTitle": "Invitar un cliente",
+    "inviteClientHint": "Ingresa el correo del cliente. Recibirá un enlace para crear su cuenta y completar su perfil fitness.",
+    "inviteClientEmail": "Correo del cliente",
+    "inviteSendButton": "Enviar invitación",
+    "inviteSending": "Enviando…",
+    "inviteSentTitle": "¡Invitación enviada!",
+    "inviteSentDesc": "Se ha creado un enlace de invitación para {email}.",
+    "inviteLinkLabel": "Copia y comparte este enlace",
+    "inviteLinkCopied": "¡Enlace copiado!",
+    "inviteDoneButton": "Listo",
+    "pendingRequestsTitle": "Solicitudes de conexión pendientes",
+    "acceptRequest": "Aceptar",
+    "declineRequest": "Rechazar",
+    "requestAccepted": "Cliente aceptado",
+    "requestDeclined": "Solicitud rechazada"
+  },
+  "marketplace": {
+    "title": "Buscar Coach",
+    "subtitle": "{n} coaches disponibles",
+    "searchPlaceholder": "Buscar por nombre, especialidad o estilo…",
+    "filterAll": "Todos",
+    "trialFilter": "Con sesión de prueba",
+    "noResults": "Ningún coach coincide con tus filtros.",
+    "yearsExp": "{n} años de experiencia",
+    "clientsTrained": "{n} clientes",
+    "freeTrial": "Prueba gratis",
+    "paidTrial": "Prueba ${price}",
+    "requestConnect": "Solicitar conexión",
+    "requestSent": "Solicitud enviada",
+    "requestSentToast": "Tu solicitud fue enviada al coach.",
+    "viewProfile": "Ver perfil completo",
+    "drawerCertifications": "Certificaciones",
+    "drawerModalities": "Estilo de entrenamiento",
+    "drawerTargetClients": "Ideal para",
+    "drawerLanguages": "Idiomas",
+    "drawerPricing": "Precios",
+    "drawerPerSession": "/sesión",
+    "drawerTrialAvailable": "Sesión de prueba disponible",
+    "drawerMaxCapacity": "Hasta {n} clientes",
+    "drawerSocialLinks": "Encuéntralo en línea",
+    "drawerVideoIntro": "Video de presentación",
+    "drawerClose": "Cerrar",
+    "drawerOpenToClients": "Acepta nuevos clientes",
+    "drawerTimezone": "Zona horaria",
+    "drawerSpotsAvailable": "{available} de {total} cupos disponibles",
+    "drawerSpotsLabel": "Disponibilidad",
+    "drawerEmail": "Email de contacto",
+    "drawerSessionFormat": "Formato de sesión",
+    "drawerFullyBooked": "Sin cupos disponibles"
+  },
+  "adminInvites": {
+    "title": "Invitaciones de coaches",
+    "subtitle": "Envía y gestiona links de invitación para nuevos coaches",
+    "createTitle": "Enviar nueva invitación",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "coach@ejemplo.com",
+    "createButton": "Enviar invitación",
+    "creating": "Enviando…",
+    "createSuccess": "Invitación enviada con éxito",
+    "createError": "Error al enviar la invitación",
+    "listTitle": "Todas las invitaciones",
+    "total": "total",
+    "refresh": "Actualizar",
+    "noInvites": "Sin invitaciones todavía — envía una arriba",
+    "created": "Creado",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "pageOf": "Página {page} de {total}"
+  },
+  "auth": {
+    "signInHeading": "Iniciar Sesión",
+    "createAccountHeading": "Crear Cuenta",
+    "signInSubtitle": "¡Bienvenido de nuevo! Por favor inicia sesión en tu cuenta.",
+    "createAccountSubtitle": "Únete hoy y comienza tu viaje fitness.",
+    "firstNameLabel": "Nombre",
+    "lastNameLabel": "Apellido",
+    "usernameLabel": "Nombre de usuario",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "firstNamePlaceholder": "Ingresa tu nombre",
+    "lastNamePlaceholder": "Ingresa tu apellido",
+    "usernamePlaceholder": "Elige un nombre de usuario",
+    "emailPlaceholder": "Ingresa tu correo",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu contraseña",
+    "signingIn": "Iniciando sesión...",
+    "creatingAccount": "Creando cuenta...",
+    "signInButton": "Iniciar Sesión",
+    "createAccountButton": "Crear Cuenta",
+    "noAccount": "¿No tienes cuenta?",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "signUp": "Regístrate",
+    "signIn": "Inicia sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "invitePrompt": "¿tienes una invitacion?",
+    "enterInviteToken": "Ingresa tu codigo de invitación!"
+  },
+  "inviteLanding": {
+    "brandSubtitle": "Invitación de coach",
+    "heading": "Ingresa tu token de invitación",
+    "subtitle": "Pega el token de tu correo de invitación para crear tu cuenta de coach.",
+    "tokenLabel": "Token de invitación",
+    "tokenPlaceholder": "Pega tu token aquí…",
+    "emptyError": "Por favor ingresa tu token de invitación.",
+    "validating": "Validando…",
+    "continueButton": "Continuar",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "signIn": "Inicia sesión",
+    "noInvite": "¿No tienes invitación? Contacta al administrador de la plataforma."
+  },
+  "inviteSignup": {
+    "heading": "¡Has sido invitado!",
+    "subtitle": "Crea tu cuenta de coach para comenzar.",
+    "invitedEmail": "Correo invitado",
+    "firstNameLabel": "Nombre",
+    "lastNameLabel": "Apellido",
+    "passwordLabel": "Contraseña",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "firstNamePlaceholder": "Jane",
+    "lastNamePlaceholder": "Smith",
+    "passwordPlaceholder": "Crea una contraseña segura",
+    "confirmPasswordPlaceholder": "Repite tu contraseña",
+    "creating": "Creando cuenta…",
+    "createButton": "Crear cuenta de coach"
+  },
+  "adminOverview": {
+    "heading": "Resumen de Administrador",
+    "lastRefreshed": "Actualizado a las {time}",
+    "loading": "Cargando…",
+    "refresh": "Actualizar",
+    "totalUsers": "Usuarios totales",
+    "newThisWeek": "Nuevos esta semana",
+    "sinceMonday": "+{n} desde el lunes",
+    "coaches": "Coaches",
+    "pendingInvites": "Invitaciones pendientes",
+    "signupsChart": "Registros — últimos 30 días",
+    "signupsSummary": "{total} total · pico {count} el {date}",
+    "usersByRole": "Usuarios por rol",
+    "noData": "Sin datos aún",
+    "signup": "registro",
+    "signups": "registros",
+    "user": "usuario",
+    "users": "usuarios",
+    "invitePipeline": "Pipeline de invitaciones",
+    "totalSent": "Total enviadas",
+    "pending": "Pendientes",
+    "accepted": "Aceptadas",
+    "expired": "Expiradas",
+    "quickInviteTitle": "Invitación rápida",
+    "quickInviteSubtitle": "Envía una invitación de coach al instante",
+    "sendButton": "Enviar",
+    "manageAll": "Ver todas",
+    "failedToLoad": "Error al cargar las estadísticas",
+    "inviteSent": "¡Invitación enviada!",
+    "inviteFailed": "Error al enviar la invitación"
   },
   "profile": {
     "title": "Perfil",
@@ -261,11 +530,203 @@
     "currentWeightLabel": "Actual",
     "goalLabel": "Meta",
     "remaining": "Faltan",
-    "verified": "Verificado",
     "medicalConditionsLabel": "Condiciones médicas",
     "medicationsLabel": "Medicamentos",
     "injuriesLabel": "Lesiones previas",
     "allergiesLabel": "Alergias",
     "dietaryRestrictionsLabel": "Restricciones dietéticas"
+  },
+  "landing": {
+    "nav": {
+      "features": "Características",
+      "howItWorks": "Cómo funciona",
+      "pricing": "Precios",
+      "testimonials": "Testimonios",
+      "login": "Iniciar sesión",
+      "getStarted": "Comenzar gratis"
+    },
+    "hero": {
+      "badge": "Usado por más de 500 coaches",
+      "headlinePart1": "La plataforma de coaching",
+      "headlinePart2": "hecha para resultados",
+      "description": "Gestiona clientes, asigna paquetes personalizados, da seguimiento a sesiones y progreso — todo en un dashboard limpio. Deja las hojas de cálculo y empieza a entrenar.",
+      "trust1": "Sin tarjeta de crédito",
+      "trust2": "14 días de prueba gratis",
+      "trust3": "Cancela cuando quieras",
+      "ctaPrimary": "Empieza gratis",
+      "ctaSecondary": "Nuestra historia",
+      "mockTitle": "SteadyVitality — Panel del Coach",
+      "mockActiveClients": "Clientes activos",
+      "mockSessionsDone": "Sesiones hechas",
+      "mockMonthlyRev": "Ingresos mes",
+      "mockThisMonth": "Este mes",
+      "mockNewClients": "+3 nuevos clientes"
+    },
+    "social": {
+      "coachesValue": "500+",
+      "coachesLabel": "Coaches activos",
+      "clientsValue": "8,200+",
+      "clientsLabel": "Clientes gestionados",
+      "retentionValue": "94%",
+      "retentionLabel": "Tasa de retención",
+      "ratingValue": "4.9 ★",
+      "ratingLabel": "Calificación promedio"
+    },
+    "features": {
+      "badge": "Todo lo que necesitas",
+      "heading": "Herramientas completas para coaches profesionales",
+      "description": "Diseñado para los flujos de trabajo reales de los coaches — no gestión de proyectos genérica con logo de gimnasio.",
+      "items": [
+        {
+          "title": "Gestión de clientes",
+          "description": "Un perfil completo por cliente — historial de salud, objetivos, métricas corporales y nivel de actividad en un solo lugar."
+        },
+        {
+          "title": "Paquetes personalizados",
+          "description": "Crea paquetes con sesiones, duración, características y precio. Asígnalos con objetivos y notas para cada cliente."
+        },
+        {
+          "title": "Seguimiento de progreso",
+          "description": "Burbujas de sesiones, barras de progreso y estadísticas para que tú y tus clientes siempre sepan dónde están."
+        },
+        {
+          "title": "Programación de sesiones",
+          "description": "Registra sesiones completadas, fija metas y da seguimiento semanal — sin necesitar una herramienta de calendario aparte."
+        },
+        {
+          "title": "Notas y objetivos del coach",
+          "description": "Agrega notas privadas y objetivos personalizados al paquete de cada cliente. Mantén tu contexto organizado."
+        },
+        {
+          "title": "Registro solo por invitación",
+          "description": "Envía links de invitación. Los clientes llenan su perfil, tú recibes la notificación y quedan en tu lista."
+        }
+      ]
+    },
+    "howItWorks": {
+      "badge": "Diseño simple",
+      "heading": "Listo en cuatro pasos",
+      "description": "Sin llamadas de incorporación. La mayoría de los coaches tienen su primer cliente asignado en un día.",
+      "steps": [
+        {
+          "num": "01",
+          "title": "Crea tu perfil de coach",
+          "description": "Configura tus especialidades, modalidades de entrenamiento, bio y disponibilidad. Tu perfil público es lo que los clientes ven."
+        },
+        {
+          "num": "02",
+          "title": "Construye tus paquetes",
+          "description": "Define paquetes con número de sesiones, duración, precio y características. Tú controlas la oferta."
+        },
+        {
+          "num": "03",
+          "title": "Invita o acepta clientes",
+          "description": "Envía links de invitación o recibe solicitudes del marketplace. Los clientes completan su perfil al registrarse."
+        },
+        {
+          "num": "04",
+          "title": "Asigna y da seguimiento",
+          "description": "Asigna un paquete, agrega objetivos y notas, registra sesiones y mira el progreso actualizarse en tiempo real."
+        }
+      ]
+    },
+    "pricing": {
+      "badge": "Precios",
+      "heading": "Precios simples y transparentes",
+      "description": "Empieza gratis. Mejora cuando estés listo.",
+      "popular": "Más popular",
+      "plans": [
+        {
+          "name": "Básico",
+          "price": "$0",
+          "period": "siempre",
+          "description": "Perfecto para coaches que están comenzando.",
+          "cta": "Comenzar gratis",
+          "featured": false,
+          "features": [
+            "Hasta 5 clientes activos",
+            "2 plantillas de paquetes",
+            "Seguimiento de sesiones",
+            "Perfiles básicos",
+            "Links de invitación"
+          ]
+        },
+        {
+          "name": "Pro",
+          "price": "$29",
+          "period": "/ mes",
+          "description": "Para coaches listos para escalar su negocio.",
+          "cta": "Prueba 14 días gratis",
+          "featured": true,
+          "features": [
+            "Clientes ilimitados",
+            "Paquetes ilimitados",
+            "Analíticas de progreso",
+            "Objetivos y notas",
+            "Listado en marketplace",
+            "Soporte prioritario"
+          ]
+        },
+        {
+          "name": "Equipo",
+          "price": "$79",
+          "period": "/ mes",
+          "description": "Varios coaches, una cuenta.",
+          "cta": "Contáctanos",
+          "featured": false,
+          "features": [
+            "Todo lo de Pro",
+            "Hasta 5 coaches",
+            "Pool de clientes compartido",
+            "Analíticas de equipo",
+            "Marca personalizada",
+            "Soporte dedicado"
+          ]
+        }
+      ]
+    },
+    "testimonials": {
+      "badge": "Los coaches lo aman",
+      "heading": "Coaches reales, resultados reales",
+      "items": [
+        {
+          "name": "Carlos M.",
+          "role": "Coach de Fitness Online",
+          "avatar": "CM",
+          "quote": "Antes rastreaba todo en una hoja de Google. Ahora mis clientes tienen un dashboard propio y realmente me veo profesional."
+        },
+        {
+          "name": "Priya R.",
+          "role": "Coach de Nutrición y Bienestar",
+          "avatar": "PR",
+          "quote": "El sistema de paquetes es exactamente lo que necesitaba. Puedo ver qué clientes progresan y cuáles necesitan seguimiento."
+        },
+        {
+          "name": "Derek T.",
+          "role": "Coach de Fuerza y Acondicionamiento",
+          "avatar": "DT",
+          "quote": "El link de invitación me ahorra 30 minutos por cliente. Llegan con su perfil ya lleno."
+        }
+      ]
+    },
+    "cta": {
+      "heading": "¿Listo para tener un negocio de coaching más profesional?",
+      "description": "Únete a más de 500 coaches que reemplazaron hojas de cálculo con una plataforma hecha para ellos. Gratis para comenzar.",
+      "primary": "Empieza gratis",
+      "secondary": "Lee nuestra historia"
+    },
+    "footer": {
+      "tagline": "Una plataforma de gestión de coaching para ayudar a profesionales del fitness a crecer su negocio y entregar mejores resultados.",
+      "product": "Producto",
+      "company": "Empresa",
+      "linkFeatures": "Características",
+      "linkPricing": "Precios",
+      "linkHowItWorks": "Cómo funciona",
+      "linkStory": "Nuestra historia",
+      "linkLogin": "Iniciar sesión",
+      "linkSignup": "Registrarse",
+      "copyright": "Todos los derechos reservados.",
+      "moto": "Hecho para coaches que se toman los resultados en serio."
+    }
   }
 }

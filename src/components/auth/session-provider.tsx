@@ -14,6 +14,8 @@ interface User {
   role: string;
   isEmailVerified: boolean;
   hasCompletedOnboarding?: boolean;
+  /** Set once a client is connected to a coach. Null/undefined = no coach yet. */
+  coachId?: string | null;
 }
 
 interface AuthContextType {

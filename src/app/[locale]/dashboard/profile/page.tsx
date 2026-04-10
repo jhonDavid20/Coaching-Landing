@@ -2,9 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import { useAuth } from '@/components/auth/session-provider';
 import { getFullUserProfile } from '@/actions/user';
 import type { UserWithProfile } from '@/actions/user';
+import { getCoachProfileById } from '@/actions/coach';
+import type { CoachPublicProfile } from '@/actions/coach';
+import { getMyActivePackage } from '@/actions/packages';
+import type { ClientPackage } from '@/actions/packages';
 import EditProfileDrawer from '@/components/profile/edit-profile-drawer';
 import {
   User,
@@ -12,6 +17,8 @@ import {
   HeartPulse,
   ChevronDown,
   Pencil,
+  Package,
+  ExternalLink,
 } from 'lucide-react';
 import { cn, formatUTCDate } from '@/lib/utils';
 
@@ -263,18 +270,35 @@ function ProfileSkeleton() {
 
 export default function ProfilePage() {
   const t = useTranslations('profile');
+  const params = useParams();
+  const locale = params.locale as string;
   const { user, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState<UserWithProfile | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
-  const [open, setOpen] = useState([false, false, false]);
+  const [open, setOpen] = useState([false, false, false, false]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // My Coach & Plan — only populated for clients with a coachId
+  const [myCoach, setMyCoach] = useState<CoachPublicProfile | null>(null);
+  const [myPlan, setMyPlan] = useState<ClientPackage | null>(null);
 
   const section1Ref = useRef<HTMLDivElement | null>(null);
 
   const loadProfile = useCallback(() => {
     setProfileLoading(true);
     getFullUserProfile()
-      .then(setProfile)
+      .then((p) => {
+        setProfile(p);
+        // If this client has an assigned coach, load coach + plan data in parallel
+        if (p?.coachId) {
+          getCoachProfileById(p.coachId).then((res) => {
+            if (res.success) setMyCoach(res.coach);
+          });
+          getMyActivePackage().then((res) => {
+            if (res.success) setMyPlan(res.clientPackage);
+          });
+        }
+      })
       .catch(() => setProfile(null))
       .finally(() => setProfileLoading(false));
   }, []);
@@ -542,6 +566,116 @@ export default function ProfilePage() {
           )}
         </div>
       </AccordionSection>
+
+      {/* ── Section 4: My Coach & Plan (clients with an assigned coach) ── */}
+      {profile?.role === 'client' && profile.coachId && (
+        <AccordionSection
+          isOpen={open[3]}
+          onToggle={() => toggle(3)}
+          iconBg="bg-purple-500/15 border border-purple-500/30"
+          icon={<Package className="w-5 h-5 text-purple-400" />}
+          title="My Coach & Plan"
+          subtitle={
+            myCoach
+              ? `${myCoach.firstName ?? ''} ${myCoach.lastName ?? ''}`.trim() || 'Your assigned coach'
+              : 'Loading coach info…'
+          }
+        >
+          <div className="space-y-6">
+            {/* ── Coach card ── */}
+            {myCoach ? (
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center flex-shrink-0 text-white text-base font-bold">
+                  {`${myCoach.firstName?.[0] ?? ''}${myCoach.lastName?.[0] ?? ''}`.toUpperCase() || '?'}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                    {`${myCoach.firstName ?? ''} ${myCoach.lastName ?? ''}`.trim() || '—'}
+                  </p>
+                  {myCoach.profileHeadline && (
+                    <p className="text-xs text-gray-500 mt-0.5">{myCoach.profileHeadline}</p>
+                  )}
+                  {myCoach.bio && (
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 line-clamp-3">{myCoach.bio}</p>
+                  )}
+                  {myCoach.specialties && myCoach.specialties.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {myCoach.specialties.slice(0, 4).map((s) => (
+                        <span key={s} className="px-2 py-0.5 text-xs rounded-full bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300 border border-purple-300 dark:border-purple-700">
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex flex-wrap gap-3 mt-3 text-xs text-gray-500">
+                    {myCoach.yearsOfExperience != null && (
+                      <span>{myCoach.yearsOfExperience} yrs experience</span>
+                    )}
+                    {myCoach.coachingType && (
+                      <span className="capitalize">{myCoach.coachingType.replace(/_/g, ' ')}</span>
+                    )}
+                    {myCoach.sessionRateUSD != null && (
+                      <span>${myCoach.sessionRateUSD}/session</span>
+                    )}
+                  </div>
+                  <a
+                    href={`/${locale}/dashboard/coaches`}
+                    className="inline-flex items-center gap-1 mt-3 text-xs text-blue-500 hover:text-blue-600 transition-colors"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    Browse coaches
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400 italic">Coach info not available.</p>
+            )}
+
+            {/* ── Active plan ── */}
+            <div className="border-t border-gray-100 dark:border-gray-800 pt-5">
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">Active Plan</p>
+              {myPlan?.package ? (
+                <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{myPlan.package.name}</p>
+                  {myPlan.package.description && (
+                    <p className="text-xs text-gray-500 mt-0.5">{myPlan.package.description}</p>
+                  )}
+                  <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-600 dark:text-gray-300">
+                    <span className="flex items-center gap-1">
+                      <span className="font-medium">{myPlan.package.durationWeeks}</span> weeks
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="font-medium">{myPlan.package.sessionsIncluded}</span> sessions included
+                    </span>
+                    <span className="flex items-center gap-1">
+                      $<span className="font-medium">{myPlan.package.priceUSD}</span>
+                    </span>
+                  </div>
+                  <div className="mt-3">
+                    <span className={cn(
+                      'inline-block px-2.5 py-0.5 text-xs rounded-full border capitalize',
+                      myPlan.status === 'active'
+                        ? 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30'
+                        : myPlan.status === 'completed'
+                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 border-gray-300 dark:border-gray-600'
+                          : 'bg-red-500/10 text-red-500 border-red-500/30'
+                    )}>
+                      {myPlan.status}
+                    </span>
+                    {myPlan.startDate && (
+                      <span className="ml-2 text-xs text-gray-400">
+                        Started {new Date(myPlan.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-400 italic">No plan assigned yet. Your coach will assign one soon.</p>
+              )}
+            </div>
+          </div>
+        </AccordionSection>
+      )}
 
       {/* ── Edit drawer ── */}
       {profile && (

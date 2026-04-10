@@ -7,6 +7,7 @@ import { Toaster } from "sonner";
 import AuthSessionProvider from "@/components/auth/session-provider";
 import ConditionalNavbar from "@/components/layout/conditional-navbar";
 import LoadingProvider from "@/components/providers/loading-provider";
+import { LocaleSwitchProvider } from "@/components/providers/locale-switch-provider";
 
 
 export default async function RootLayout({
@@ -29,9 +30,11 @@ export default async function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <LoadingProvider>
               <NextIntlClientProvider>
-                <ConditionalNavbar />
-                {children}
-                <Toaster />
+                <LocaleSwitchProvider>
+                  <ConditionalNavbar />
+                  {children}
+                  <Toaster />
+                </LocaleSwitchProvider>
               </NextIntlClientProvider>
             </LoadingProvider>
           </ThemeProvider>

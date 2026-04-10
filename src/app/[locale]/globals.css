@@ -3,27 +3,83 @@
 @tailwind utilities;
 
 @layer base {
+  /* ─── Steady Vitality Design System ─────────────────────────────────── */
+  /* Light mode — off-white canvas, forest green primary                   */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Canvas */
+    --background: 120 14% 97%;          /* #f6f8f5 — warm off-white */
+    --foreground: 140 30% 8%;           /* #0f1f10 — near-black with green tint */
+
+    /* Cards & surfaces */
+    --card: 0 0% 100%;                  /* pure white cards */
+    --card-foreground: 140 30% 8%;
+
+    /* Popovers */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 47.4% 11.2%;
-    --radius: 0.5rem;
+    --popover-foreground: 140 30% 8%;
+
+    /* Primary — forest green (sidebar, CTAs, active states) */
+    --primary: 140 42% 18%;             /* #1a3a1e — dark forest green */
+    --primary-foreground: 120 40% 96%;  /* #eef6ee — near-white for text on green */
+
+    /* Secondary — medium sage */
+    --secondary: 120 20% 92%;           /* #e4ede4 */
+    --secondary-foreground: 140 30% 18%;
+
+    /* Muted */
+    --muted: 120 12% 94%;               /* #eff2ee */
+    --muted-foreground: 140 12% 45%;    /* #617061 */
+
+    /* Accent — bright action green */
+    --accent: 140 38% 28%;              /* #2d5a31 — mid forest green */
+    --accent-foreground: 120 40% 96%;
+
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Borders & inputs */
+    --border: 120 14% 88%;              /* #d8e0d8 */
+    --input: 120 14% 88%;
+    --ring: 140 42% 28%;
+
+    /* Radius */
+    --radius: 0.625rem;
+
+    /* Brand-specific tokens (use directly in components) */
+    --sv-sidebar: #162318;              /* deepest sidebar bg */
+    --sv-sidebar-active: #243d27;       /* active nav item */
+    --sv-sidebar-hover: #1e2f20;
+    --sv-sidebar-text: #c8dcc9;         /* muted sidebar label */
+    --sv-green-500: #3a7d44;            /* mid-tone interactive green */
+    --sv-green-400: #52a85e;            /* hover state */
+    --sv-green-100: #ddf0df;            /* chip / badge fill */
+    --sv-green-50: #f0faf0;             /* very light tint */
+    --sv-status-active: #22c55e;        /* status dot — active */
+    --sv-status-paused: #f59e0b;        /* status dot — paused */
+  }
+
+  /* Dark mode — keeps sidebar dark, flips content to deep slate-green */
+  .dark {
+    --background: 140 18% 9%;
+    --foreground: 120 20% 92%;
+    --card: 140 18% 12%;
+    --card-foreground: 120 20% 92%;
+    --popover: 140 18% 12%;
+    --popover-foreground: 120 20% 92%;
+    --primary: 140 38% 55%;
+    --primary-foreground: 140 18% 9%;
+    --secondary: 140 18% 18%;
+    --secondary-foreground: 120 20% 92%;
+    --muted: 140 18% 16%;
+    --muted-foreground: 140 12% 55%;
+    --accent: 140 38% 45%;
+    --accent-foreground: 140 18% 9%;
+    --destructive: 0 62% 40%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 140 14% 20%;
+    --input: 140 14% 20%;
+    --ring: 140 38% 45%;
   }
 }
 
@@ -36,22 +92,22 @@
   }
 }
 
-/* Custom scrollbar for webkit browsers */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2d3748;
-  border-radius: 4px;
+  background: var(--sv-green-500);
+  border-radius: 99px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #1a202c;
+  background: var(--sv-green-400);
 }
 
 /* Smooth focus transitions */

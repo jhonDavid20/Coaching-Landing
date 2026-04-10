@@ -36,6 +36,8 @@ export interface UserWithProfile {
   role: 'client' | 'coach' | 'admin';
   isEmailVerified: boolean;
   hasCompletedOnboarding: boolean;
+  /** ID of the User record of the assigned coach (source of truth: users.coachId) */
+  coachId?: string;
   profile: UserProfile;
 }
 

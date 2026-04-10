@@ -63,7 +63,13 @@ export async function completeOnboarding(
     if (data.gymLocation?.trim()) payload.gymLocation = data.gymLocation.trim();
     if (data.phone?.trim()) payload.phone = data.phone.trim();
 
-    console.log('completeOnboarding payload:', JSON.stringify(payload));
+    const COOKIE_OPTS = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      maxAge: 60 * 60 * 24 * 7,
+      path: '/',
+    };
 
     const response = await apiClient.completeOnboarding(accessToken.value, payload);
 
@@ -77,13 +83,7 @@ export async function completeOnboarding(
         }
       })();
 
-      cookieStore.set('user_data', JSON.stringify({ ...updatedUser, hasCompletedOnboarding: true }), {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60,
-        path: '/',
-      });
+      cookieStore.set('user_data', JSON.stringify({ ...updatedUser, hasCompletedOnboarding: true }), COOKIE_OPTS);
     }
 
     return { success: response.success, message: response.message };
