@@ -1,38 +1,47 @@
-# Fitness Coaching Landing Page
+# SteadyVitality — Coaching Platform
 
-A modern, minimalistic landing page for fitness and nutrition coaching services with an interactive assessment form and real-time BMI calculator.
+A full-stack fitness coaching platform with coach and client dashboards, invite-based onboarding, and a coach marketplace.
 
-## ✨ Features
+## Features
 
-- **Interactive Assessment Form** - Collects client information with real-time BMI calculation
-- **Personalized Recommendations** - Generates custom advice based on goals and fitness level
-- **Cal.com Integration** - Multiple booking touchpoints for consultations
-- **Responsive Design** - Optimized for all devices
-- **Lead Generation** - Strategic conversion flow with form validation
-- **Minimalistic UI** - Clean design with 3 neutral colors
+- **Coach Dashboard** — overview stats, client list with drawer, client detail view, and profile/plans management
+- **Client Dashboard** — personal profile, my-coach view, and coach marketplace
+- **Invite Flow** — token-based coach onboarding with smart redirect handling (already signed up, already onboarded)
+- **Coach Marketplace** — browse and connect with coaches; accurate coach-assignment state prevents duplicate connection requests
+- **Role-based Access** — coach, client, and admin roles with server-side route protection
+- **Internationalization** — next-intl with `[locale]` dynamic segments
+- **SteadyVitality Design System** — green design tokens replacing the previous FitCoach dark theme
 
-## 🚀 Demo
+## Design tokens
 
-[Live Demo](https://coaching-landing-kappa.vercel.app/en)
+| Token | Value | Usage |
+|---|---|---|
+| `--sv-sidebar` | `#162318` | Sidebar, dark buttons, avatar backgrounds |
+| `--sv-green-500` | `#3a7d44` | Primary accent, progress bars, active states |
+| `--background` | `#f6f8f5` | Page background |
+| Border | `#d8e0d8` | Card and input borders |
+| Muted text | `#617061` | Secondary text |
+| Dark text | `#0f1f10` | Headings |
+| Light green | `#ddf0df` | Badges, tag backgrounds |
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-- **Framework**: Next.js with App Router
+- **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Forms**: React Hook Form 
-- **UI Components**: Custom components with Radix UI primitives
+- **Forms**: React Hook Form + Zod
+- **UI Components**: Radix UI primitives + custom components
 - **Icons**: Lucide React
-- **Booking**: Cal.com integration
+- **Auth**: httpOnly cookie-based JWT (`access_token` + `user_data`)
 - **Deployment**: Vercel (recommended)
 
-## 📋 Prerequisites
+## Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
-- Git
+- Backend API running (see `API_BASE_URL` below)
 
-## ⚡ Quick Start
+## Quick Start
 
 1. **Clone the repository**
    ```bash
@@ -45,51 +54,68 @@ A modern, minimalistic landing page for fitness and nutrition coaching services 
    npm install
    ```
 
-3. **Start development server**
+3. **Configure environment**
+   ```bash
+   cp .env.example .env.local
+   ```
+
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-4. **Open your browser**
+5. **Open your browser**
    ```
    http://localhost:3000
    ```
 
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env.local` file in the root directory:
+## Environment Variables
 
 ```env
-# Optional: Analytics
-NEXT_PUBLIC_GA_ID=your-google-analytics-id
+# Backend API base URL
+API_BASE_URL=http://localhost:3001
 
-# Optional: Cal.com
-NEXT_PUBLIC_CAL_LINK=your-cal-com-username
-
-# Optional: Email service (for form submissions)
-EMAIL_SERVICE_API_KEY=your-email-service-key
+# Next.js public URL
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-### Customization
-
-1. **Update Content**: Edit text content in each component file
-2. **Branding**: Modify colors in `tailwind.config.js`
-3. **Form Fields**: Adjust form schema in `lib/validations.ts`
-4. **Cal.com**: Update booking links in `components/CalBooking.tsx`
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
-├── app/
-│   ├── page.tsx                 # Main landing page
-│   ├── layout.tsx               # Root layout
-│   └── globals.css              # Global styles
+├── actions/              # Server actions (API calls)
+│   ├── auth.ts           # Login, register, invite token validation
+│   ├── marketplace.ts    # Coach marketplace + getMyCoach()
+│   ├── coach.ts          # Coach-side actions
+│   └── user.ts           # User profile + getFullUserProfile()
+├── app/[locale]/
+│   ├── invite/[token]/   # Coach invite flow (token validation + signup)
+│   ├── onboarding/coach/ # Coach onboarding wizard
+│   ├── dashboard/
+│   │   ├── coach/        # Coach dashboard (overview, clients, profile)
+│   │   ├── coaches/      # Client: find-a-coach marketplace
+│   │   ├── my-coach/     # Client: current coach view
+│   │   └── profile/      # Client profile
+│   └── (auth)/           # Login / register pages
 ├── components/
-│   ├── sections/
-│   │   ├── Hero.tsx             # Hero section with CTAs
-│   │   ├── Assessment.tsx       # Assessment form section
-│   │   ├── Services.tsx         # Services overview
-│   │   └── About.
+│   ├── layout/           # Sidebar, navbar, conditional wrappers
+│   └── ui/               # Shared UI primitives
+└── lib/                  # Utilities, validators, helpers
+```
+
+## Key Behaviours
+
+### Invite flow
+- Valid unused token → signup form with locked email
+- Token already used + active session → redirect to `/onboarding/coach`
+- Token already used + no session → "Account already created" card with login button
+- Genuinely invalid token → error state
+
+### Coach assignment (source of truth)
+`GET /api/users/me` returns `coachId` on the user record. `getMyCoach()` reads this field first; if set the user is shown as already having a coach and the "Request to connect" button is hidden. Falls back to `GET /api/clients/me/coach` if the primary check is inconclusive.
+
+### Role-based middleware
+- `requireAdmin` — composed from `requireRole('admin')`
+- Login endpoint is role-agnostic
+- `/me` strips sensitive fields before returning
+- Invite routes are admin-only; the public `/validate` endpoint is left open

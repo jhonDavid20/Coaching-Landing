@@ -136,14 +136,14 @@ const SESSION_DURATIONS = [30, 45, 60, 75, 90, 120];
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
-  return <p className="text-red-400 text-xs mt-1.5">{message}</p>;
+  return <p className="text-red-500 text-xs mt-1.5">{message}</p>;
 }
 
 function Label({ children, optional }: { children: React.ReactNode; optional?: boolean }) {
   return (
-    <p className="text-sm font-medium text-gray-300 mb-2">
+    <p className="text-sm font-medium text-[#0f1f10] mb-2">
       {children}
-      {optional && <span className="text-gray-500 font-normal ml-1">— optional</span>}
+      {optional && <span className="text-[#617061] font-normal ml-1">— optional</span>}
     </p>
   );
 }
@@ -157,9 +157,9 @@ function TextInput({
     <input
       placeholder={placeholder}
       className={cn(
-        'w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white',
-        'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-        'placeholder-gray-500',
+        'w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10]',
+        'focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44]',
+        'placeholder-[#a0b0a0]',
         className,
       )}
       {...props}
@@ -173,9 +173,9 @@ function Textarea({ placeholder, rows = 4, className, ...props }: React.Textarea
       placeholder={placeholder}
       rows={rows}
       className={cn(
-        'w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white resize-none',
-        'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-        'placeholder-gray-500',
+        'w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] resize-none',
+        'focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44]',
+        'placeholder-[#a0b0a0]',
         className,
       )}
       {...props}
@@ -198,14 +198,14 @@ function SelectCard({ label, icon, description, selected, onClick }: SelectCardP
       className={cn(
         'border-2 rounded-xl p-4 text-left transition-all duration-200 w-full',
         selected
-          ? 'border-blue-500 bg-blue-500/10 text-white'
-          : 'border-gray-700 bg-[#1a1d27] text-gray-300 hover:border-gray-500 hover:bg-gray-700/50',
+          ? 'border-[#3a7d44] bg-[#ddf0df] text-[#162318]'
+          : 'border-[#d8e0d8] bg-[#f6f8f5] text-[#617061] hover:border-[#3a7d44] hover:bg-[#f0faf0]',
       )}
     >
       {icon && <span className="text-2xl mb-2 block">{icon}</span>}
       <span className="font-medium block">{label}</span>
       {description && (
-        <span className={cn('text-sm mt-0.5 block', selected ? 'text-blue-200' : 'text-gray-500')}>
+        <span className={cn('text-sm mt-0.5 block', selected ? 'text-[#2d5a31]' : 'text-[#617061]')}>
           {description}
         </span>
       )}
@@ -234,8 +234,8 @@ function Chips({
           className={cn(
             'px-3 py-1.5 rounded-full border text-sm transition-all duration-200',
             selected.includes(o)
-              ? 'border-blue-500 bg-blue-500/20 text-blue-300'
-              : 'border-gray-600 bg-[#1a1d27] text-gray-400 hover:border-gray-500',
+              ? 'border-[#3a7d44] bg-[#ddf0df] text-[#2d5a31]'
+              : 'border-[#d8e0d8] bg-white text-[#617061] hover:border-[#3a7d44]',
           )}
         >
           {o}
@@ -269,8 +269,8 @@ function TagInput({ tags, onChange }: { tags: string[]; onChange: (t: string[]) 
             className={cn(
               'px-2.5 py-1 rounded-full border text-xs transition-all',
               tags.includes(c)
-                ? 'border-blue-500/40 bg-blue-500/10 text-blue-400 cursor-default'
-                : 'border-gray-600 text-gray-400 hover:border-gray-400',
+                ? 'border-[#3a7d44]/40 bg-[#ddf0df] text-[#3a7d44] cursor-default'
+                : 'border-[#d8e0d8] text-[#617061] hover:border-[#3a7d44]',
             )}
           >
             {tags.includes(c) ? '✓ ' : '+ '}{c}
@@ -290,7 +290,7 @@ function TagInput({ tags, onChange }: { tags: string[]; onChange: (t: string[]) 
         <button
           type="button"
           onClick={() => add(input)}
-          className="px-3 py-2 rounded-lg bg-blue-500/20 border border-blue-500/40 text-blue-400 hover:bg-blue-500/30 transition-colors"
+          className="px-3 py-2 rounded-lg bg-[#ddf0df] border border-[#3a7d44]/30 text-[#3a7d44] hover:bg-[#c8dcc9] transition-colors"
         >
           <Plus className="w-4 h-4" />
         </button>
@@ -302,7 +302,7 @@ function TagInput({ tags, onChange }: { tags: string[]; onChange: (t: string[]) 
           {tags.map((t) => (
             <span
               key={t}
-              className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/15 border border-blue-500/30 rounded-full text-sm text-blue-300"
+              className="flex items-center gap-1.5 px-3 py-1 bg-[#ddf0df] border border-[#3a7d44]/30 rounded-full text-sm text-[#2d5a31]"
             >
               {t}
               <button type="button" onClick={() => onChange(tags.filter((x) => x !== t))}>
@@ -320,9 +320,9 @@ function TagInput({ tags, onChange }: { tags: string[]; onChange: (t: string[]) 
 
 function SummaryRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="bg-gray-800/50 rounded-lg px-4 py-3">
-      <p className="text-xs text-gray-500 mb-0.5">{label}</p>
-      <div className="text-sm text-white font-medium">{value || '—'}</div>
+    <div className="bg-[#f6f8f5] rounded-lg px-4 py-3">
+      <p className="text-xs text-[#617061] mb-0.5">{label}</p>
+      <div className="text-sm text-[#0f1f10] font-medium">{value || '—'}</div>
     </div>
   );
 }
@@ -441,7 +441,7 @@ export default function CoachOnboardingPage() {
           <Label>Profile headline</Label>
           <TextInput {...register('profileHeadline')} placeholder="e.g. Strength & Mobility Coach for Busy Professionals" />
           <FieldError message={errors.profileHeadline?.message} />
-          <p className="text-xs text-gray-600 mt-1">Max 160 characters — shows under your name on your profile</p>
+          <p className="text-xs text-[#617061] mt-1">Max 160 characters — shows under your name on your profile</p>
         </div>
         <div>
           <Label>Professional bio</Label>
@@ -452,7 +452,7 @@ export default function CoachOnboardingPage() {
           <Label optional>Intro video URL</Label>
           <TextInput {...register('videoIntroUrl')} placeholder="https://youtube.com/watch?v=..." type="url" />
           <FieldError message={errors.videoIntroUrl?.message} />
-          <p className="text-xs text-gray-600 mt-1">YouTube or Vimeo link — profiles with video convert 3× better</p>
+          <p className="text-xs text-[#617061] mt-1">YouTube or Vimeo link — profiles with video convert 3× better</p>
         </div>
       </div>
     );
@@ -519,11 +519,11 @@ export default function CoachOnboardingPage() {
           <div>
             <Label optional>Instagram</Label>
             <div className="flex items-center">
-              <span className="px-3 py-2.5 rounded-l-lg border-y border-l border-gray-600 bg-gray-800 text-gray-500 text-sm select-none">@</span>
+              <span className="px-3 py-2.5 rounded-l-lg border-y border-l border-[#d8e0d8] bg-[#f6f8f5] text-[#617061] text-sm select-none">@</span>
               <input
                 {...register('instagramHandle')}
                 placeholder="yourhandle"
-                className="flex-1 px-3 py-2.5 rounded-r-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+                className="flex-1 px-3 py-2.5 rounded-r-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
               />
             </div>
           </div>
@@ -545,7 +545,7 @@ export default function CoachOnboardingPage() {
       <div className="space-y-6">
         <div>
           <Label>Timezone</Label>
-          <select {...register('timezone')} className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select {...register('timezone')} className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value="" disabled className="bg-gray-800">Select your timezone</option>
             {TIMEZONES.map((tz) => <option key={tz} value={tz} className="bg-gray-800">{tz}</option>)}
           </select>
@@ -562,8 +562,8 @@ export default function CoachOnboardingPage() {
                 className={cn(
                   'px-4 py-2 rounded-lg border text-sm font-medium transition-all',
                   duration === d
-                    ? 'border-blue-500 bg-blue-500/20 text-blue-300'
-                    : 'border-gray-600 text-gray-400 hover:border-gray-400',
+                    ? 'border-[#3a7d44] bg-[#ddf0df] text-[#2d5a31]'
+                    : 'border-[#d8e0d8] text-[#617061] hover:border-[#3a7d44]',
                 )}
               >
                 {d} min
@@ -602,18 +602,18 @@ export default function CoachOnboardingPage() {
         <div>
           <Label>Session rate (USD)</Label>
           <div className="flex items-center">
-            <span className="px-3 py-2.5 rounded-l-lg border-y border-l border-gray-600 bg-gray-800 text-gray-500 text-sm select-none">$</span>
+            <span className="px-3 py-2.5 rounded-l-lg border-y border-l border-[#d8e0d8] bg-[#f6f8f5] text-[#617061] text-sm select-none">$</span>
             <input
               type="number"
               min={1}
               step="0.01"
               placeholder="75.00"
               {...register('sessionRateUSD', { valueAsNumber: true })}
-              className="flex-1 px-3 py-2.5 rounded-r-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+              className="flex-1 px-3 py-2.5 rounded-r-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
             />
           </div>
           <FieldError message={errors.sessionRateUSD?.message} />
-          <p className="text-xs text-gray-600 mt-1">Per session, before any platform fees</p>
+          <p className="text-xs text-[#617061] mt-1">Per session, before any platform fees</p>
         </div>
         <div>
           <Label>Offer a trial session?</Label>
@@ -626,20 +626,20 @@ export default function CoachOnboardingPage() {
           <div>
             <Label optional>Trial session rate (USD)</Label>
             <div className="flex items-center">
-              <span className="px-3 py-2.5 rounded-l-lg border-y border-l border-gray-600 bg-gray-800 text-gray-500 text-sm select-none">$</span>
+              <span className="px-3 py-2.5 rounded-l-lg border-y border-l border-[#d8e0d8] bg-[#f6f8f5] text-[#617061] text-sm select-none">$</span>
               <input
                 type="number"
                 min={0}
                 step="0.01"
                 placeholder="25.00"
                 {...register('trialSessionRateUSD', { valueAsNumber: true })}
-                className="flex-1 px-3 py-2.5 rounded-r-lg border border-gray-600 bg-gray-700/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500"
+                className="flex-1 px-3 py-2.5 rounded-r-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
               />
             </div>
             <FieldError message={errors.trialSessionRateUSD?.message} />
           </div>
         )}
-        <p className="text-sm text-gray-500 bg-gray-800/50 rounded-lg px-4 py-3">
+        <p className="text-sm text-gray-500 bg-[#f6f8f5] rounded-lg px-4 py-3">
           💡 You can adjust pricing at any time from your dashboard settings.
         </p>
       </div>
@@ -655,11 +655,11 @@ export default function CoachOnboardingPage() {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-center mb-2">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-            <CheckCircle2 className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 rounded-full bg-[#ddf0df] border-2 border-[#3a7d44] flex items-center justify-center">
+            <CheckCircle2 className="w-8 h-8 text-[#3a7d44]" />
           </div>
         </div>
-        <p className="text-center text-gray-400 text-sm mb-4">
+        <p className="text-center text-[#617061] text-sm mb-4">
           Looking good! Review your details below — you can update everything later from your dashboard.
         </p>
 
@@ -681,7 +681,7 @@ export default function CoachOnboardingPage() {
         {merged.specialties.length > 0 && (
           <SummaryRow label="Specialties" value={
             <div className="flex flex-wrap gap-1 mt-1">
-              {merged.specialties.map((s) => <span key={s} className="text-xs bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">{s}</span>)}
+              {merged.specialties.map((s) => <span key={s} className="text-xs bg-[#ddf0df] text-[#2d5a31] px-2 py-0.5 rounded-full">{s}</span>)}
             </div>
           } />
         )}
@@ -691,7 +691,7 @@ export default function CoachOnboardingPage() {
 
         {submitError && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3">
-            <p className="text-red-400 text-sm">{submitError}</p>
+            <p className="text-red-500 text-sm">{submitError}</p>
           </div>
         )}
       </div>
@@ -716,25 +716,25 @@ export default function CoachOnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f1117] flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-[#f6f8f5] flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-2xl">
 
         {/* Brand */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            Fit<span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Coach</span>
+          <h1 className="text-2xl font-bold text-[#162318] tracking-tight">
+            Steady<span className="text-[#3a7d44]">Vitality</span>
           </h1>
-          <p className="text-gray-500 text-sm mt-1">Coach onboarding</p>
+          <p className="text-[#617061] text-sm mt-1">Coach onboarding</p>
         </div>
 
         {/* Progress */}
-        <div className="mb-2 flex items-center justify-between text-xs text-gray-500">
+        <div className="mb-2 flex items-center justify-between text-xs text-[#617061]">
           <span>Step {step} of {TOTAL}</span>
           <span>{Math.round((step / TOTAL) * 100)}%</span>
         </div>
-        <div className="w-full bg-gray-700/50 rounded-full h-1.5 mb-8">
+        <div className="w-full bg-[#d8e0d8] rounded-full h-1.5 mb-8">
           <div
-            className="h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-500 ease-out"
+            className="h-1.5 rounded-full bg-[#3a7d44] transition-all duration-500 ease-out"
             style={{ width: `${(step / TOTAL) * 100}%` }}
           />
         </div>
@@ -746,25 +746,25 @@ export default function CoachOnboardingPage() {
               key={i}
               className={cn(
                 'rounded-full transition-all duration-300',
-                i + 1 < step  ? 'w-5 h-1.5 bg-blue-500' :
-                i + 1 === step ? 'w-5 h-1.5 bg-purple-500' :
-                                 'w-1.5 h-1.5 bg-gray-700',
+                i + 1 < step  ? 'w-5 h-1.5 bg-[#3a7d44]' :
+                i + 1 === step ? 'w-5 h-1.5 bg-[#3a7d44]' :
+                                 'w-1.5 h-1.5 bg-[#d8e0d8]',
               )}
             />
           ))}
         </div>
 
         {/* Card */}
-        <div className="bg-[#1a1d27] rounded-2xl shadow-2xl border border-gray-800 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-[#d8e0d8] overflow-hidden">
           {/* Header */}
-          <div className="px-8 pt-8 pb-6 border-b border-gray-800">
+          <div className="px-8 pt-8 pb-6 border-b border-[#d8e0d8]">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                <StepIcon className="w-5 h-5 text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-[#ddf0df] border border-[#3a7d44]/20 flex items-center justify-center flex-shrink-0">
+                <StepIcon className="w-5 h-5 text-[#3a7d44]" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-white">{cfg.title}</h2>
-                <p className="text-sm text-gray-400">{cfg.subtitle}</p>
+                <h2 className="text-lg font-semibold text-[#0f1f10]">{cfg.title}</h2>
+                <p className="text-sm text-[#617061]">{cfg.subtitle}</p>
               </div>
             </div>
           </div>
@@ -783,13 +783,13 @@ export default function CoachOnboardingPage() {
           </div>
 
           {/* Navigation */}
-          <div className="px-8 pb-8 pt-6 border-t border-gray-800 flex items-center justify-between">
+          <div className="px-8 pb-8 pt-6 border-t border-[#d8e0d8] flex items-center justify-between">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={back}
                 disabled={submitting}
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-gray-600 text-gray-300 text-sm font-medium hover:bg-gray-700/50 transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-[#d8e0d8] text-[#617061] text-sm font-medium hover:bg-[#f0faf0] transition-colors disabled:opacity-50"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Back
@@ -800,7 +800,7 @@ export default function CoachOnboardingPage() {
               <button
                 type="button"
                 onClick={next}
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium hover:opacity-90 transition-opacity"
+                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#162318] hover:bg-[#243d27] text-white text-sm font-medium transition-colors"
               >
                 Next
                 <ChevronRight className="w-4 h-4" />
@@ -810,7 +810,7 @@ export default function CoachOnboardingPage() {
                 type="button"
                 onClick={submit}
                 disabled={submitting}
-                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#162318] hover:bg-[#243d27] text-white text-sm font-medium transition-colors disabled:opacity-50"
               >
                 {submitting ? (
                   <><Loader2 className="w-4 h-4 animate-spin" />Saving…</>

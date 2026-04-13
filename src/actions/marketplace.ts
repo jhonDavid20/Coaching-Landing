@@ -209,21 +209,50 @@ export async function getMyCoach(): Promise<{
     const token = await getAccessToken();
     if (!token) return { hasCoach: false };
 
-    const response = await fetch(`${apiUrl()}/api/clients/me/coach`, {
+    // ── Primary check: GET /api/users/me ──────────────────────────────────────
+    // users.coachId is the authoritative source of truth for coach assignment.
+    // If it's set, the user already has (or is pending) a coach — no need to
+    // show "Request to connect".
+    const meRes = await fetch(`${apiUrl()}/api/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: 'no-store',
     });
 
-    if (!response.ok) return { hasCoach: false };
+    if (meRes.ok) {
+      const meData = await meRes.json();
+      const user = meData?.user ?? meData;
+      if (user?.coachId) {
+        // User has a coach assigned — try to fetch the coach's details too
+        const coachRes = await fetch(`${apiUrl()}/api/clients/me/coach`, {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: 'no-store',
+        });
+        if (coachRes.ok) {
+          const coachData = await coachRes.json();
+          if (coachData?.coach || coachData?.id) {
+            return { hasCoach: true, coach: normalizeCoach(coachData.coach ?? coachData) };
+          }
+        }
+        // coachId is set but couldn't fetch details — still mark as having a coach
+        return { hasCoach: true };
+      }
+    }
 
-    const data = await response.json();
-    if (!data?.coach && !data?.id) return { hasCoach: false };
+    // ── Fallback: check /api/clients/me/coach directly ────────────────────────
+    const coachRes = await fetch(`${apiUrl()}/api/clients/me/coach`, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: 'no-store',
+    });
 
-    // Backend may return the coach directly or nested under `coach`
-    const raw = data.coach ?? data;
-    return { hasCoach: true, coach: normalizeCoach(raw) };
+    if (coachRes.ok) {
+      const data = await coachRes.json();
+      if (data?.coach || data?.id) {
+        return { hasCoach: true, coach: normalizeCoach(data.coach ?? data) };
+      }
+    }
+
+    return { hasCoach: false };
   } catch {
-    // Endpoint doesn't exist yet — default to no coach
     return { hasCoach: false };
   }
 }
