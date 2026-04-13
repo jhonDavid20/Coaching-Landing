@@ -383,17 +383,7 @@
     "signIn": "Sign in",
     "forgotPassword": "Forgot your password?",
     "invitePrompt": "Do you have an invite?",
-    "enterInviteToken": "Enter your invite code!",
-    "panelLabel": "For fitness coaches",
-    "panelHeading": "Everything you need to run a professional coaching business",
-    "panelDescription": "Join 500+ coaches who replaced messy spreadsheets with a platform built for real coaching workflows.",
-    "feature1": "Manage unlimited clients",
-    "feature2": "Assign personalized packages",
-    "feature3": "Track sessions & progress",
-    "feature4": "Send invite links",
-    "testimonialQuote": "I used to track everything in a Google Sheet. Now my clients have a proper dashboard and I actually look professional.",
-    "testimonialName": "Carlos M.",
-    "testimonialRole": "Online Fitness Coach"
+    "enterInviteToken": "Enter your invite code!"
   },
   "inviteLanding": {
     "brandSubtitle": "Coach invitation",

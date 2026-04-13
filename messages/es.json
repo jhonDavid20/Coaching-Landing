@@ -383,17 +383,7 @@
     "signIn": "Inicia sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "invitePrompt": "¿tienes una invitacion?",
-    "enterInviteToken": "Ingresa tu codigo de invitación!",
-    "panelLabel": "Para coaches de fitness",
-    "panelHeading": "Todo lo que necesitas para llevar un negocio de coaching profesional",
-    "panelDescription": "Únete a más de 500 coaches que reemplazaron las hojas de cálculo con una plataforma hecha para flujos de trabajo reales.",
-    "feature1": "Gestiona clientes ilimitados",
-    "feature2": "Asigna paquetes personalizados",
-    "feature3": "Seguimiento de sesiones y progreso",
-    "feature4": "Envía links de invitación",
-    "testimonialQuote": "Antes rastreaba todo en una hoja de Google. Ahora mis clientes tienen un dashboard propio y realmente me veo profesional.",
-    "testimonialName": "Carlos M.",
-    "testimonialRole": "Coach de Fitness Online"
+    "enterInviteToken": "Ingresa tu codigo de invitación!"
   },
   "inviteLanding": {
     "brandSubtitle": "Invitación de coach",

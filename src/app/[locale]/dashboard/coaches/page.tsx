@@ -43,10 +43,10 @@ function getInitials(first: string, last: string) {
 }
 
 const AVATAR_GRADIENTS = [
-  '[#3a7d44]',
+  'from-blue-500 to-purple-600',
   'from-teal-500 to-blue-600',
-  '[#3a7d44]',
-  '[#2d5a31]',
+  'from-purple-500 to-pink-600',
+  'from-amber-500 to-orange-600',
   'from-green-500 to-teal-600',
 ];
 
@@ -62,9 +62,9 @@ const COACHING_TYPE_LABELS: Record<string, string> = {
 };
 
 const COACHING_TYPE_STYLES: Record<string, string> = {
-  online: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
-  in_person: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
-  hybrid: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+  online: 'bg-blue-500/10 text-blue-600 dark:text-blue-300 border-blue-400/30',
+  in_person: 'bg-teal-500/10 text-teal-600 dark:text-teal-300 border-teal-400/30',
+  hybrid: 'bg-purple-500/10 text-purple-600 dark:text-purple-300 border-purple-400/30',
 };
 
 // ─── Coach profile drawer ──────────────────────────────────────────────────
@@ -137,27 +137,27 @@ function CoachDrawer({
     >
       <div
         ref={drawerRef}
-        className="relative w-full max-w-md h-full bg-white shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-right duration-200"
+        className="relative w-full max-w-md h-full bg-white dark:bg-[#1a1d27] shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-right duration-200"
       >
         {/* ── Header ─────────────────────────────────────────────────────── */}
         <div className={cn('h-1.5 bg-gradient-to-r', avatarGradient(coach.id))} />
 
-        <div className="px-6 pt-5 pb-4 border-b border-[#d8e0d8] flex items-start gap-4">
+        <div className="px-6 pt-5 pb-4 border-b border-gray-100 dark:border-gray-800 flex items-start gap-4">
           {/* Avatar */}
           <div className={cn('w-14 h-14 rounded-2xl bg-gradient-to-br flex items-center justify-center flex-shrink-0 text-white text-lg font-bold', avatarGradient(coach.id))}>
             {getInitials(coach.firstName, coach.lastName)}
           </div>
 
           <div className="flex-1 min-w-0">
-            <p className="text-base font-semibold text-[#0f1f10] leading-tight">
+            <p className="text-base font-semibold text-gray-900 dark:text-white leading-tight">
               {coach.firstName} {coach.lastName}
             </p>
             {p.profileHeadline && (
-              <p className="text-xs text-[#617061] mt-0.5 line-clamp-2">{p.profileHeadline}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">{p.profileHeadline}</p>
             )}
             <div className="flex items-center gap-2 mt-2 flex-wrap">
               {/* Always accepting since backend filters by acceptingClients=true */}
-              <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 border border-green-400/30 font-medium">
+              <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-400/30 font-medium">
                 <ShieldCheck className="w-3 h-3" />
                 {t('drawerOpenToClients')}
               </span>
@@ -165,7 +165,7 @@ function CoachDrawer({
                 {COACHING_TYPE_LABELS[coachingType]}
               </span>
               {p.trialSessionAvailable && (
-                <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-400/30 font-medium">
+                <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-400/30 font-medium">
                   <Flame className="w-3 h-3" />
                   {p.trialSessionRateUSD === 0 ? t('freeTrial') : t('paidTrial', { price: p.trialSessionRateUSD ?? 0 })}
                 </span>
@@ -175,7 +175,7 @@ function CoachDrawer({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#617061] hover:bg-[#f6f8f5]  transition-colors flex-shrink-0"
+            className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex-shrink-0"
             aria-label={t('drawerClose')}
           >
             <X className="w-5 h-5" />
@@ -188,38 +188,38 @@ function CoachDrawer({
           {/* Quick stats grid */}
           <div className="grid grid-cols-2 gap-3">
             {p.yearsOfExperience != null && (
-              <div className="flex items-center gap-2 bg-[#f6f8f5]  rounded-xl p-3">
+              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
                 <Star className="w-4 h-4 text-amber-400 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-[#617061]">Experience</p>
-                  <p className="text-sm font-semibold text-[#0f1f10]">{p.yearsOfExperience} yrs</p>
+                  <p className="text-xs text-gray-500">Experience</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{p.yearsOfExperience} yrs</p>
                 </div>
               </div>
             )}
             {coach.activeClientsCount != null && (
-              <div className="flex items-center gap-2 bg-[#f6f8f5]  rounded-xl p-3">
-                <TrendingUp className="w-4 h-4 text-[#3a7d44] flex-shrink-0" />
+              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+                <TrendingUp className="w-4 h-4 text-blue-400 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-[#617061]">Clients on platform</p>
-                  <p className="text-sm font-semibold text-[#0f1f10]">{coach.activeClientsCount}</p>
+                  <p className="text-xs text-gray-500">Clients on platform</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{coach.activeClientsCount}</p>
                 </div>
               </div>
             )}
             {p.sessionDurationMinutes != null && (
-              <div className="flex items-center gap-2 bg-[#f6f8f5]  rounded-xl p-3">
-                <Clock className="w-4 h-4 text-[#3a7d44] flex-shrink-0" />
+              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+                <Clock className="w-4 h-4 text-teal-400 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-[#617061]">Session length</p>
-                  <p className="text-sm font-semibold text-[#0f1f10]">{p.sessionDurationMinutes} min</p>
+                  <p className="text-xs text-gray-500">Session length</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{p.sessionDurationMinutes} min</p>
                 </div>
               </div>
             )}
             {p.timezone && (
-              <div className="flex items-center gap-2 bg-[#f6f8f5]  rounded-xl p-3">
-                <MapPin className="w-4 h-4 text-[#3a7d44] flex-shrink-0" />
+              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3">
+                <MapPin className="w-4 h-4 text-purple-400 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-[#617061]">{t('drawerTimezone')}</p>
-                  <p className="text-sm font-semibold text-[#0f1f10] truncate">{p.timezone}</p>
+                  <p className="text-xs text-gray-500">{t('drawerTimezone')}</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{p.timezone}</p>
                 </div>
               </div>
             )}
@@ -228,7 +228,7 @@ function CoachDrawer({
           {/* Capacity / availability bar */}
           {p.maxClientCapacity != null && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <UserCheck className="w-3.5 h-3.5" />
                 {t('drawerSpotsLabel')}
               </h3>
@@ -239,16 +239,16 @@ function CoachDrawer({
                 const pct = Math.min(100, Math.round((taken / total) * 100));
                 const barColor = pct >= 90 ? 'bg-red-500' : pct >= 60 ? 'bg-amber-500' : 'bg-green-500';
                 return (
-                  <div className="bg-[#f6f8f5]  rounded-xl p-3 space-y-2">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3 space-y-2">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-[#617061]">
+                      <span className="text-gray-600 dark:text-gray-300">
                         {available === 0
                           ? t('drawerFullyBooked')
                           : t('drawerSpotsAvailable', { available, total })}
                       </span>
-                      <span className="font-semibold text-[#0f1f10]">{pct}%</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{pct}%</span>
                     </div>
-                    <div className="h-1.5 bg-gray-200  rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div className={cn('h-full rounded-full transition-all', barColor)} style={{ width: `${pct}%` }} />
                     </div>
                   </div>
@@ -260,34 +260,34 @@ function CoachDrawer({
           {/* Bio */}
           {p.bio && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2">About</h3>
-              <p className="text-sm text-[#617061] leading-relaxed">{p.bio}</p>
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">About</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{p.bio}</p>
             </section>
           )}
 
           {/* Pricing */}
           {(p.sessionRateUSD != null || p.trialSessionAvailable) && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <DollarSign className="w-3.5 h-3.5" />
                 {t('drawerPricing')}
               </h3>
               <div className="space-y-2">
                 {p.sessionRateUSD != null && (
-                  <div className="flex items-center justify-between bg-[#f6f8f5]  rounded-xl px-4 py-3">
-                    <span className="text-sm text-[#617061]">Regular session</span>
-                    <span className="text-sm font-semibold text-[#0f1f10]">
-                      ${p.sessionRateUSD}<span className="text-xs font-normal text-[#617061]">{t('drawerPerSession')}</span>
+                  <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 rounded-xl px-4 py-3">
+                    <span className="text-sm text-gray-600 dark:text-gray-300">Regular session</span>
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                      ${p.sessionRateUSD}<span className="text-xs font-normal text-gray-400">{t('drawerPerSession')}</span>
                     </span>
                   </div>
                 )}
                 {p.trialSessionAvailable && (
                   <div className="flex items-center justify-between bg-amber-500/5 border border-amber-400/20 rounded-xl px-4 py-3">
-                    <span className="text-sm text-amber-700 flex items-center gap-1.5">
+                    <span className="text-sm text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
                       <Flame className="w-3.5 h-3.5" />
                       {t('drawerTrialAvailable')}
                     </span>
-                    <span className="text-sm font-semibold text-amber-700">
+                    <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">
                       {p.trialSessionRateUSD === 0 ? 'Free' : `$${p.trialSessionRateUSD}`}
                     </span>
                   </div>
@@ -299,13 +299,13 @@ function CoachDrawer({
           {/* Specialties */}
           {p.specialties && p.specialties.length > 0 && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5" />
                 Specialties
               </h3>
               <div className="flex flex-wrap gap-1.5">
                 {p.specialties.map((s) => (
-                  <span key={s} className="px-2.5 py-1 text-xs rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20">
+                  <span key={s} className="px-2.5 py-1 text-xs rounded-full bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-400/20">
                     {s}
                   </span>
                 ))}
@@ -316,14 +316,14 @@ function CoachDrawer({
           {/* Certifications */}
           {p.certifications && p.certifications.length > 0 && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <Award className="w-3.5 h-3.5" />
                 {t('drawerCertifications')}
               </h3>
               <div className="space-y-1.5">
                 {p.certifications.map((cert) => (
-                  <div key={cert} className="flex items-center gap-2 text-sm text-[#617061]">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#3a7d44] flex-shrink-0" />
+                  <div key={cert} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
                     {cert}
                   </div>
                 ))}
@@ -334,7 +334,7 @@ function CoachDrawer({
           {/* Session format — coaching type + modalities combined */}
           {(p.coachingType || (p.trainingModalities && p.trainingModalities.length > 0)) && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <Dumbbell className="w-3.5 h-3.5" />
                 {t('drawerSessionFormat')}
               </h3>
@@ -345,7 +345,7 @@ function CoachDrawer({
                   </span>
                 )}
                 {(p.trainingModalities ?? []).map((m) => (
-                  <span key={m} className="px-2.5 py-1 text-xs rounded-full bg-[#f6f8f5]  text-[#617061] border border-[#d8e0d8]">
+                  <span key={m} className="px-2.5 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
                     {m}
                   </span>
                 ))}
@@ -356,13 +356,13 @@ function CoachDrawer({
           {/* Target client types */}
           {p.targetClientTypes && p.targetClientTypes.length > 0 && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <Target className="w-3.5 h-3.5" />
                 {t('drawerTargetClients')}
               </h3>
               <div className="flex flex-wrap gap-1.5">
                 {p.targetClientTypes.map((tc) => (
-                  <span key={tc} className="px-2.5 py-1 text-xs rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20">
+                  <span key={tc} className="px-2.5 py-1 text-xs rounded-full bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-400/20">
                     {tc}
                   </span>
                 ))}
@@ -373,13 +373,13 @@ function CoachDrawer({
           {/* Languages */}
           {p.languagesSpoken && p.languagesSpoken.length > 0 && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <Languages className="w-3.5 h-3.5" />
                 {t('drawerLanguages')}
               </h3>
               <div className="flex flex-wrap gap-1.5">
                 {p.languagesSpoken.map((lang) => (
-                  <span key={lang} className="px-2.5 py-1 text-xs rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20">
+                  <span key={lang} className="px-2.5 py-1 text-xs rounded-full bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-400/20">
                     {lang}
                   </span>
                 ))}
@@ -389,18 +389,18 @@ function CoachDrawer({
 
           {/* ── Packages / Plans ── */}
           <section>
-            <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-3 flex items-center gap-1.5">
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
               <Package className="w-3.5 h-3.5" />
               Available Plans
             </h3>
 
             {packagesLoading ? (
-              <div className="flex items-center gap-2 text-xs text-[#617061]">
+              <div className="flex items-center gap-2 text-xs text-gray-400">
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 Loading plans…
               </div>
             ) : packages.length === 0 ? (
-              <p className="text-xs text-[#617061] italic">No plans available yet.</p>
+              <p className="text-xs text-gray-400 italic">No plans available yet.</p>
             ) : (
               <div className="space-y-3">
                 {packages.map((pkg) => {
@@ -409,26 +409,26 @@ function CoachDrawer({
                   return (
                     <div
                       key={pkg.id}
-                      className="bg-[#f6f8f5]  rounded-xl p-4 border border-[#d8e0d8] space-y-3"
+                      className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 border border-gray-200 dark:border-gray-700 space-y-3"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-[#0f1f10]">{pkg.name}</p>
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white">{pkg.name}</p>
                           {pkg.description && (
-                            <p className="text-xs text-[#617061] mt-0.5 line-clamp-2">{pkg.description}</p>
+                            <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{pkg.description}</p>
                           )}
                         </div>
-                        <p className="text-base font-bold text-[#0f1f10] flex-shrink-0">
+                        <p className="text-base font-bold text-gray-900 dark:text-white flex-shrink-0">
                           ${pkg.priceUSD}
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-3 text-xs text-[#617061]">
+                      <div className="flex items-center gap-3 text-xs text-gray-500">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           {pkg.durationWeeks} weeks
                         </span>
-                        <span className="text-[#c8dcc9] ">·</span>
+                        <span className="text-gray-300 dark:text-gray-700">·</span>
                         <span className="flex items-center gap-1">
                           <Dumbbell className="w-3 h-3" />
                           {pkg.sessionsIncluded} sessions
@@ -436,7 +436,7 @@ function CoachDrawer({
                       </div>
 
                       {isRequested ? (
-                        <div className="flex items-center gap-1.5 text-xs text-[#3a7d44] font-medium">
+                        <div className="flex items-center gap-1.5 text-xs text-teal-600 dark:text-teal-400 font-medium">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           Requested — your coach will confirm
                         </div>
@@ -444,7 +444,7 @@ function CoachDrawer({
                         <button
                           onClick={() => handleRequestPackage(pkg)}
                           disabled={isRequesting || !!requestingId}
-                          className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-[#3a7d44] text-white text-xs font-medium hover:opacity-90 transition-opacity disabled:opacity-60"
+                          className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs font-medium hover:opacity-90 transition-opacity disabled:opacity-60"
                         >
                           {isRequesting && <Loader2 className="w-3 h-3 animate-spin" />}
                           {isRequesting ? 'Requesting…' : 'Select this plan'}
@@ -460,13 +460,13 @@ function CoachDrawer({
           {/* Contact email */}
           {coach.email && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <Mail className="w-3.5 h-3.5" />
                 {t('drawerEmail')}
               </h3>
               <a
                 href={`mailto:${coach.email}`}
-                className="text-sm text-[#3a7d44] hover:underline break-all"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline break-all"
               >
                 {coach.email}
               </a>
@@ -476,7 +476,7 @@ function CoachDrawer({
           {/* Social / external links */}
           {(p.instagramHandle || p.websiteUrl || p.videoIntroUrl) && (
             <section>
-              <h3 className="text-xs font-semibold text-[#617061] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <ExternalLink className="w-3.5 h-3.5" />
                 {t('drawerSocialLinks')}
               </h3>
@@ -486,7 +486,7 @@ function CoachDrawer({
                     href={`https://instagram.com/${p.instagramHandle.replace('@', '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 text-sm text-[#3a7d44] hover:underline"
+                    className="flex items-center gap-2.5 text-sm text-pink-600 dark:text-pink-400 hover:underline"
                   >
                     <Instagram className="w-4 h-4 flex-shrink-0" />
                     @{p.instagramHandle.replace('@', '')}
@@ -497,7 +497,7 @@ function CoachDrawer({
                     href={p.websiteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 text-sm text-[#3a7d44] hover:underline"
+                    className="flex items-center gap-2.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
                   >
                     <ExternalLink className="w-4 h-4 flex-shrink-0" />
                     {p.websiteUrl.replace(/^https?:\/\//, '')}
@@ -508,7 +508,7 @@ function CoachDrawer({
                     href={p.videoIntroUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 text-sm text-[#3a7d44] hover:underline"
+                    className="flex items-center gap-2.5 text-sm text-purple-600 dark:text-purple-400 hover:underline"
                   >
                     <Video className="w-4 h-4 flex-shrink-0" />
                     {t('drawerVideoIntro')}
@@ -520,21 +520,21 @@ function CoachDrawer({
         </div>
 
         {/* ── Sticky footer CTA ──────────────────────────────────────────── */}
-        <div className="px-6 py-4 border-t border-[#d8e0d8] bg-white">
+        <div className="px-6 py-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-[#1a1d27]">
           {hasCoach ? (
-            <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-[#f6f8f5]  text-[#617061] text-sm font-medium">
+            <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 text-sm font-medium">
               <UserCheck className="w-4 h-4" />
               You already have a coach
             </div>
           ) : requested ? (
-            <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20 text-sm font-medium">
+            <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-400/30 text-sm font-medium">
               <CheckCircle2 className="w-4 h-4" />
               {t('requestSent')}
             </div>
           ) : (
             <button
               onClick={onRequest}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#3a7d44] text-white text-sm font-medium hover:opacity-90 transition-opacity"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <Dumbbell className="w-4 h-4" />
               {t('requestConnect')}
@@ -567,9 +567,9 @@ function CoachCard({
   const coachingType = p.coachingType ?? 'online';
 
   return (
-    <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden flex flex-col hover:border-[#3a7d44] dark:hover:border-[#3a7d44] hover:shadow-lg transition-all">
+    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden flex flex-col hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg transition-all">
       {/* Top accent bar */}
-      <div className="h-1 bg-[#3a7d44]" />
+      <div className="h-1 bg-gradient-to-r from-blue-500 to-purple-600" />
 
       <div className="p-5 flex flex-col flex-1">
         {/* Header */}
@@ -578,11 +578,11 @@ function CoachCard({
             {getInitials(coach.firstName, coach.lastName)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-[#0f1f10]">
+            <p className="text-sm font-semibold text-gray-900 dark:text-white">
               {coach.firstName} {coach.lastName}
             </p>
             {p.profileHeadline && (
-              <p className="text-xs text-[#617061] mt-0.5 line-clamp-2">{p.profileHeadline}</p>
+              <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{p.profileHeadline}</p>
             )}
           </div>
           {/* Coaching type badge */}
@@ -593,19 +593,19 @@ function CoachCard({
 
         {/* Bio */}
         {p.bio && (
-          <p className="text-xs text-[#617061] line-clamp-3 mb-4">{p.bio}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-3 mb-4">{p.bio}</p>
         )}
 
         {/* Specialties */}
         {p.specialties && p.specialties.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-4">
             {p.specialties.slice(0, 3).map((s) => (
-              <span key={s} className="px-2 py-0.5 text-xs rounded-full bg-[#f6f8f5]  text-[#617061] border border-[#d8e0d8]">
+              <span key={s} className="px-2 py-0.5 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
                 {s}
               </span>
             ))}
             {p.specialties.length > 3 && (
-              <span className="px-2 py-0.5 text-xs rounded-full bg-[#f6f8f5]  text-[#617061]">
+              <span className="px-2 py-0.5 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400">
                 +{p.specialties.length - 3}
               </span>
             )}
@@ -615,26 +615,26 @@ function CoachCard({
         {/* Stats row */}
         <div className="grid grid-cols-2 gap-2 mb-4">
           {p.yearsOfExperience != null && (
-            <div className="flex items-center gap-1.5 text-xs text-[#617061]">
+            <div className="flex items-center gap-1.5 text-xs text-gray-500">
               <Star className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
               <span>{t('yearsExp', { n: p.yearsOfExperience })}</span>
             </div>
           )}
           {coach.activeClientsCount != null && (
-            <div className="flex items-center gap-1.5 text-xs text-[#617061]">
-              <Users className="w-3.5 h-3.5 text-[#3a7d44] flex-shrink-0" />
+            <div className="flex items-center gap-1.5 text-xs text-gray-500">
+              <Users className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
               <span>{t('clientsTrained', { n: coach.activeClientsCount })}</span>
             </div>
           )}
           {p.sessionDurationMinutes != null && (
-            <div className="flex items-center gap-1.5 text-xs text-[#617061]">
-              <Clock className="w-3.5 h-3.5 text-[#3a7d44] flex-shrink-0" />
+            <div className="flex items-center gap-1.5 text-xs text-gray-500">
+              <Clock className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
               <span>{p.sessionDurationMinutes} min</span>
             </div>
           )}
           {p.languagesSpoken && p.languagesSpoken.length > 0 && (
-            <div className="flex items-center gap-1.5 text-xs text-[#617061]">
-              <Languages className="w-3.5 h-3.5 text-[#3a7d44] flex-shrink-0" />
+            <div className="flex items-center gap-1.5 text-xs text-gray-500">
+              <Languages className="w-3.5 h-3.5 text-purple-400 flex-shrink-0" />
               <span className="truncate">{p.languagesSpoken.slice(0, 2).join(', ')}</span>
             </div>
           )}
@@ -643,13 +643,13 @@ function CoachCard({
         {/* Pricing */}
         <div className="flex items-center gap-3 mb-4">
           {p.sessionRateUSD != null && (
-            <div className="flex items-center gap-1 text-sm font-semibold text-[#0f1f10]">
-              <DollarSign className="w-3.5 h-3.5 text-[#617061]" />
-              {p.sessionRateUSD}<span className="text-xs font-normal text-[#617061]">/session</span>
+            <div className="flex items-center gap-1 text-sm font-semibold text-gray-900 dark:text-white">
+              <DollarSign className="w-3.5 h-3.5 text-gray-400" />
+              {p.sessionRateUSD}<span className="text-xs font-normal text-gray-500">/session</span>
             </div>
           )}
           {p.trialSessionAvailable && (
-            <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-400/30 font-medium">
+            <span className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-400/30 font-medium">
               <Flame className="w-3 h-3" />
               {p.trialSessionRateUSD === 0 ? t('freeTrial') : t('paidTrial', { price: p.trialSessionRateUSD ?? 0 })}
             </span>
@@ -659,19 +659,19 @@ function CoachCard({
         {/* CTAs */}
         <div className="mt-auto space-y-2">
           {hasCoach ? (
-            <div className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#f6f8f5]  text-[#617061] text-xs font-medium">
+            <div className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 text-xs font-medium">
               <UserCheck className="w-3.5 h-3.5" />
               You already have a coach
             </div>
           ) : requested ? (
-            <div className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20 text-sm font-medium">
+            <div className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-400/30 text-sm font-medium">
               <CheckCircle2 className="w-4 h-4" />
               {t('requestSent')}
             </div>
           ) : (
             <button
               onClick={onRequest}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#3a7d44] text-white text-sm font-medium hover:opacity-90 transition-opacity"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <Dumbbell className="w-4 h-4" />
               {t('requestConnect')}
@@ -679,7 +679,7 @@ function CoachCard({
           )}
           <button
             onClick={onViewProfile}
-            className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-[#d8e0d8] text-xs font-medium text-[#617061] hover:border-[#3a7d44] hover:text-[#3a7d44] transition-colors"
+            className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-xs font-medium text-gray-500 dark:text-gray-400 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
           >
             {t('viewProfile')}
             <ChevronRight className="w-3.5 h-3.5" />
@@ -696,7 +696,7 @@ function MarketplaceSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 animate-pulse">
       {[1, 2, 3, 4, 5].map((i) => (
-        <div key={i} className="bg-white rounded-2xl border border-[#d8e0d8] h-80" />
+        <div key={i} className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 h-80" />
       ))}
     </div>
   );
@@ -791,26 +791,26 @@ export default function CoachMarketplacePage() {
       <div className="space-y-6">
         {/* ── Header ── */}
         <div>
-          <h1 className="text-2xl font-bold text-[#0f1f10]">{t('title')}</h1>
-          <p className="text-sm text-[#617061] mt-0.5">{t('subtitle', { n: coaches.length })}</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('title')}</h1>
+          <p className="text-sm text-gray-500 mt-0.5">{t('subtitle', { n: coaches.length })}</p>
         </div>
 
         {/* ── Your current coach banner ── */}
         {myCoach.hasCoach && myCoach.coach && (
-          <div className="flex items-center gap-4 bg-[#ddf0df] border border-[#3a7d44]/20 rounded-2xl px-5 py-4">
+          <div className="flex items-center gap-4 bg-teal-500/10 border border-teal-400/30 rounded-2xl px-5 py-4">
             <div className={cn('w-11 h-11 rounded-full bg-gradient-to-br flex items-center justify-center flex-shrink-0 text-white text-sm font-bold', avatarGradient(myCoach.coach.id))}>
               {getInitials(myCoach.coach.firstName, myCoach.coach.lastName)}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-[#3a7d44] uppercase tracking-wide mb-0.5">Your coach</p>
-              <p className="text-sm font-medium text-[#0f1f10]">
+              <p className="text-xs font-semibold text-teal-600 dark:text-teal-400 uppercase tracking-wide mb-0.5">Your coach</p>
+              <p className="text-sm font-medium text-gray-900 dark:text-white">
                 {myCoach.coach.firstName} {myCoach.coach.lastName}
               </p>
               {myCoach.coach.profile?.profileHeadline && (
-                <p className="text-xs text-[#617061] truncate">{myCoach.coach.profile.profileHeadline}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{myCoach.coach.profile.profileHeadline}</p>
               )}
             </div>
-            <UserCheck className="w-5 h-5 text-[#3a7d44] flex-shrink-0" />
+            <UserCheck className="w-5 h-5 text-teal-500 flex-shrink-0" />
           </div>
         )}
 
@@ -818,23 +818,23 @@ export default function CoachMarketplacePage() {
         <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
           {/* Search */}
           <div className="relative flex-1 min-w-[200px] max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#617061]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t('searchPlaceholder')}
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
+              className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1a1d27] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
             />
             {search && (
-              <button onClick={() => setSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#617061] hover:text-[#617061]">
+              <button onClick={() => setSearch('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                 <span className="text-xs">×</span>
               </button>
             )}
           </div>
 
           {/* Type filter tabs */}
-          <div className="flex gap-1 bg-[#f6f8f5]  rounded-xl p-1">
+          <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
             {COACHING_TYPE_FILTERS.map((f) => (
               <button
                 key={f}
@@ -842,8 +842,8 @@ export default function CoachMarketplacePage() {
                 className={cn(
                   'px-3 py-1.5 text-xs font-medium rounded-lg transition-colors',
                   typeFilter === f
-                    ? 'bg-white text-[#0f1f10] shadow-sm'
-                    : 'text-[#617061] hover:text-[#617061]'
+                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
                 )}
               >
                 {f === 'all' ? t('filterAll') : COACHING_TYPE_LABELS[f]}
@@ -857,8 +857,8 @@ export default function CoachMarketplacePage() {
             className={cn(
               'flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-xl border transition-colors',
               trialOnly
-                ? 'bg-amber-500/10 border-amber-400/40 text-amber-600'
-                : 'border-[#d8e0d8] text-[#617061] hover:border-amber-400 hover:text-amber-600'
+                ? 'bg-amber-500/10 border-amber-400/40 text-amber-600 dark:text-amber-400'
+                : 'border-gray-200 dark:border-gray-700 text-gray-500 hover:border-amber-400 hover:text-amber-600'
             )}
           >
             <Flame className="w-3.5 h-3.5" />
@@ -874,21 +874,21 @@ export default function CoachMarketplacePage() {
             <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
               <ServerCrash className="w-7 h-7 text-red-400" />
             </div>
-            <p className="text-sm font-semibold text-[#617061]">Could not load coaches</p>
-            <p className="text-xs text-[#617061] mt-1">Make sure the API server is running and try again.</p>
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Could not load coaches</p>
+            <p className="text-xs text-gray-400 mt-1">Make sure the API server is running and try again.</p>
             <button
               onClick={load}
-              className="mt-4 px-4 py-2 text-xs font-semibold bg-[#ddf0df] hover:bg-[#ddf0df] text-white rounded-lg transition-colors"
+              className="mt-4 px-4 py-2 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
             >
               Retry
             </button>
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="w-14 h-14 rounded-2xl bg-[#f6f8f5]  flex items-center justify-center mb-4">
-              <Filter className="w-7 h-7 text-[#617061]" />
+            <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
+              <Filter className="w-7 h-7 text-gray-400" />
             </div>
-            <p className="text-sm font-medium text-[#617061]">{t('noResults')}</p>
+            <p className="text-sm font-medium text-gray-500">{t('noResults')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">

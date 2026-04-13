@@ -14,13 +14,13 @@ export default async function InvitePage({
 
   if (!setup.success || !setup.email) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f6f8f5] px-4">
-        <div className="max-w-md w-full bg-white rounded-2xl border border-[#d8e0d8] shadow-sm p-8 text-center">
-          <div className="w-14 h-14 rounded-full bg-red-50 border border-red-200 flex items-center justify-center mx-auto mb-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#0f1117] px-4">
+        <div className="max-w-md w-full bg-[#1a1d27] rounded-2xl border border-gray-800 shadow-lg p-8 text-center">
+          <div className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-4">
             <Ban className="w-7 h-7 text-red-500" />
           </div>
-          <h1 className="text-xl font-bold text-[#0f1f10] mb-2">Invalid Invite</h1>
-          <p className="text-sm text-[#617061]">
+          <h1 className="text-xl font-bold text-white mb-2">Invalid Invite</h1>
+          <p className="text-sm text-gray-500">
             {setup.message ?? 'This invite link is invalid or has already expired.'}
           </p>
         </div>
@@ -28,5 +28,9 @@ export default async function InvitePage({
     );
   }
 
-  return <InviteSignupClient inviteToken={token} lockedEmail={setup.email} />;
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#0f1117] px-4 py-12">
+      <InviteSignupClient inviteToken={token} lockedEmail={setup.email} />
+    </div>
+  );
 }

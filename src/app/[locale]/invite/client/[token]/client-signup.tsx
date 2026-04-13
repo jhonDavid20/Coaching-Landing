@@ -40,7 +40,9 @@ export default function ClientInviteSignup({ inviteToken, lockedEmail, coachName
   const [error, setError] = useState<string | null>(null);
   const [existingRole, setExistingRole] = useState<string | null>(null);
 
-  // Detect if the visitor already has an active session
+  // Detect if the visitor already has an active session (e.g. a coach testing their
+  // own invite link). We read the non-httpOnly user_data cookie via document.cookie.
+  // If found, we show a warning instead of letting them create a second account.
   useEffect(() => {
     try {
       const match = document.cookie
@@ -66,11 +68,6 @@ export default function ClientInviteSignup({ inviteToken, lockedEmail, coachName
     setSubmitting(true);
     setError(null);
     try {
-      // Clear any existing session to avoid session conflicts during onboarding
-      if (existingRole) {
-        await fetch('/api/auth/logout', { method: 'POST' });
-      }
-
       const result = await registerClient({
         token: inviteToken,
         firstName: data.firstName,
@@ -83,7 +80,7 @@ export default function ClientInviteSignup({ inviteToken, lockedEmail, coachName
         return;
       }
 
-      // Redirect to client onboarding
+      // Redirect to client onboarding — the coach link is already established on the backend
       window.location.href = `/${locale}/onboarding`;
     } catch {
       setError('Network error. Please check your connection and try again.');
@@ -93,129 +90,127 @@ export default function ClientInviteSignup({ inviteToken, lockedEmail, coachName
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f8f5] flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-[#0f1117] flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-md">
         {/* Brand */}
         <div className="text-center mb-8">
-          <a href={`/${locale}`} className="inline-block">
-            <h1 className="text-2xl font-bold text-[#162318] tracking-tight">
-              Steady<span className="text-[#3a7d44]">Vitality</span>
-            </h1>
-          </a>
+          <h1 className="text-2xl font-bold text-white tracking-tight">
+            Fit<span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Coach</span>
+          </h1>
         </div>
 
         {/* Already-logged-in warning */}
         {existingRole && (
-          <div className="mb-4 flex gap-3 items-start bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-            <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+          <div className="mb-4 flex gap-3 items-start bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3">
+            <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-amber-700">You&apos;re already signed in</p>
-              <p className="text-xs text-amber-600 mt-0.5">
-                You have an active <strong>{existingRole}</strong> session. Submitting this form
-                will sign you out and create your new client account.
+              <p className="text-sm font-medium text-amber-300">You&apos;re already signed in</p>
+              <p className="text-xs text-amber-400/80 mt-0.5">
+                You have an active <strong>{existingRole}</strong> session. To use this invite link,{' '}
+                <a href="/api/auth/logout" className="underline hover:text-amber-300">
+                  sign out first
+                </a>{' '}
+                or open this link in a private browser window.
               </p>
             </div>
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-sm border border-[#d8e0d8] overflow-hidden">
-          {/* Top accent */}
-          <div className="h-1 bg-[#3a7d44]" />
-
+        <div className="bg-[#1a1d27] rounded-2xl shadow-2xl border border-gray-800 overflow-hidden">
           {/* Header */}
-          <div className="px-8 pt-8 pb-6 border-b border-[#d8e0d8] text-center">
-            <div className="w-14 h-14 rounded-2xl bg-[#ddf0df] border border-[#3a7d44]/20 flex items-center justify-center mx-auto mb-4">
-              <UserCheck className="w-7 h-7 text-[#3a7d44]" />
+          <div className="px-8 pt-8 pb-6 border-b border-gray-800 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 border border-blue-500/30 flex items-center justify-center mx-auto mb-4">
+              <UserCheck className="w-7 h-7 text-blue-400" />
             </div>
-            <h2 className="text-xl font-semibold text-[#0f1f10]">You&apos;ve been invited!</h2>
-            <p className="text-sm text-[#617061] mt-1">
-              <span className="text-[#3a7d44] font-medium">{coachName}</span> has invited you to join as a client.
+            <h2 className="text-xl font-semibold text-white">You've been invited!</h2>
+            <p className="text-sm text-gray-400 mt-1">
+              <span className="text-blue-400 font-medium">{coachName}</span> has invited you to join as a client.
             </p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="px-8 py-6 space-y-5">
             {/* Locked email */}
             <div>
-              <label className="block text-xs font-medium text-[#617061] uppercase tracking-wide mb-1.5">
+              <label className="block text-xs font-medium text-gray-400 uppercase tracking-wide mb-1.5">
                 Invited email
               </label>
-              <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-[#f6f8f5]">
-                <Mail className="w-4 h-4 text-[#3a7d44] flex-shrink-0" />
-                <span className="text-sm text-[#0f1f10]">{lockedEmail}</span>
+              <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-gray-700 bg-gray-700/30">
+                <Mail className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                <span className="text-sm text-gray-300">{lockedEmail}</span>
               </div>
             </div>
 
             {/* Name row */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-[#617061] uppercase tracking-wide mb-1.5">
+                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wide mb-1.5">
                   First name
                 </label>
                 <input
                   {...register('firstName')}
                   placeholder="Jane"
-                  className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-[#a0b0a0] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 />
                 {errors.firstName && (
-                  <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>
+                  <p className="text-red-400 text-xs mt-1">{errors.firstName.message}</p>
                 )}
               </div>
               <div>
-                <label className="block text-xs font-medium text-[#617061] uppercase tracking-wide mb-1.5">
+                <label className="block text-xs font-medium text-gray-400 uppercase tracking-wide mb-1.5">
                   Last name
                 </label>
                 <input
                   {...register('lastName')}
                   placeholder="Smith"
-                  className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-[#a0b0a0] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] text-sm"
+                  className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 />
                 {errors.lastName && (
-                  <p className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>
+                  <p className="text-red-400 text-xs mt-1">{errors.lastName.message}</p>
                 )}
               </div>
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-xs font-medium text-[#617061] uppercase tracking-wide mb-1.5">
+              <label className="block text-xs font-medium text-gray-400 uppercase tracking-wide mb-1.5">
                 Password
               </label>
               <input
                 type="password"
                 {...register('password')}
                 placeholder="Create a strong password"
-                className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-[#a0b0a0] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] text-sm"
+                className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
               {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+                <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#617061] uppercase tracking-wide mb-1.5">
+              <label className="block text-xs font-medium text-gray-400 uppercase tracking-wide mb-1.5">
                 Confirm password
               </label>
               <input
                 type="password"
                 {...register('confirmPassword')}
                 placeholder="Repeat your password"
-                className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-[#a0b0a0] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] text-sm"
+                className="w-full px-3 py-2.5 rounded-lg border border-gray-600 bg-gray-700/50 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
               {errors.confirmPassword && (
-                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
+                <p className="text-red-400 text-xs mt-1">{errors.confirmPassword.message}</p>
               )}
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-                <p className="text-red-600 text-sm">{error}</p>
+              <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3">
+                <p className="text-red-400 text-sm">{error}</p>
               </div>
             )}
 
             <button
               type="submit"
               disabled={submitting}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#3a7d44] hover:bg-[#52a85e] text-white text-sm font-semibold transition-colors disabled:opacity-60"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60"
             >
               {submitting ? (
                 <>
@@ -225,13 +220,13 @@ export default function ClientInviteSignup({ inviteToken, lockedEmail, coachName
               ) : (
                 <>
                   <Dumbbell className="w-4 h-4" />
-                  Create account &amp; get started
+                  Create account & get started
                 </>
               )}
             </button>
 
-            <p className="text-center text-xs text-[#617061]">
-              After creating your account you&apos;ll complete a short fitness questionnaire
+            <p className="text-center text-xs text-gray-500">
+              After creating your account you'll complete a short fitness questionnaire
               so {coachName} can personalize your program.
             </p>
           </form>

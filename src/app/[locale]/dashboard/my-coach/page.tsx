@@ -71,17 +71,17 @@ function CoachingTypeBadge({ type }: { type?: string }) {
     online: {
       label: 'Online',
       icon: <Video className="w-3.5 h-3.5" />,
-      cls: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+      cls: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30',
     },
     in_person: {
       label: 'In-Person',
       icon: <MapPin className="w-3.5 h-3.5" />,
-      cls: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30',
+      cls: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
     },
     hybrid: {
       label: 'Hybrid',
       icon: <Shuffle className="w-3.5 h-3.5" />,
-      cls: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+      cls: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30',
     },
   };
   const cfg = map[type] ?? map.online;
@@ -110,16 +110,16 @@ function StatCard({
     accent === 'amber'
       ? 'text-amber-500'
       : accent === 'teal'
-      ? 'text-[#3a7d44]'
+      ? 'text-teal-500'
       : accent === 'blue'
-      ? 'text-[#3a7d44]'
-      : 'text-[#0f1f10]';
+      ? 'text-blue-500'
+      : 'text-gray-900 dark:text-white';
 
   return (
-    <div className="bg-white rounded-2xl border border-[#d8e0d8] p-4 text-center">
+    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 p-4 text-center">
       <p className={cn('text-2xl font-bold', accentCls)}>{value}</p>
-      <p className="text-xs font-medium text-[#617061] mt-0.5">{label}</p>
-      {sub && <p className="text-xs text-[#617061] mt-0.5">{sub}</p>}
+      <p className="text-xs font-medium text-gray-500 mt-0.5">{label}</p>
+      {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
     </div>
   );
 }
@@ -147,15 +147,15 @@ function SessionBubbles({
             'w-6 h-6 rounded-full flex items-center justify-center transition-all',
             i < completed
               ? 'bg-teal-500 shadow-sm shadow-teal-500/30'
-              : 'bg-[#f6f8f5]  border border-[#d8e0d8]'
+              : 'bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
           )}
         >
           {i < completed && <CheckCircle2 className="w-3 h-3 text-white" />}
         </div>
       ))}
       {overflow > 0 && (
-        <div className="w-6 h-6 rounded-full bg-[#f6f8f5]  border border-[#d8e0d8] flex items-center justify-center">
-          <span className="text-[9px] font-bold text-[#617061]">+{overflow}</span>
+        <div className="w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
+          <span className="text-[9px] font-bold text-gray-400">+{overflow}</span>
         </div>
       )}
     </div>
@@ -182,24 +182,24 @@ function PlanTimeline({
 
   return (
     <div className="mt-4">
-      <div className="flex justify-between text-xs text-[#617061] mb-1.5">
+      <div className="flex justify-between text-xs text-gray-400 mb-1.5">
         <span>{formatDate(startDate)}</span>
         <span>{formatDate(end.toISOString())}</span>
       </div>
-      <div className="relative h-2 bg-[#f6f8f5]  rounded-full overflow-hidden">
+      <div className="relative h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
         <div
-          className="h-full bg-[#3a7d44] rounded-full transition-all duration-700"
+          className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-700"
           style={{ width: `${pct}%` }}
         />
         {/* Today marker */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white border-2 border-[#3a7d44] rounded-full shadow"
+          className="absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white dark:bg-gray-900 border-2 border-blue-500 rounded-full shadow"
           style={{ left: `calc(${pct}% - 5px)` }}
         />
       </div>
-      <div className="flex justify-between text-[10px] text-[#617061] mt-1">
+      <div className="flex justify-between text-[10px] text-gray-400 mt-1">
         <span>Start</span>
-        <span className="text-[#3a7d44] font-medium">Today ({pct}%)</span>
+        <span className="text-blue-500 font-medium">Today ({pct}%)</span>
         <span>End</span>
       </div>
     </div>
@@ -223,21 +223,21 @@ function PlanCard({ plan }: { plan: ClientPackage }) {
   const hasFeatures = pkg.features && pkg.features.length > 0;
 
   return (
-    <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
       {/* Plan header */}
       <div className="px-6 pt-6 pb-5">
         <div className="flex items-start justify-between mb-1">
           <div>
-            <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-1">Active Plan</p>
-            <h3 className="text-lg font-bold text-[#0f1f10]">{pkg.name}</h3>
+            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Active Plan</p>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{pkg.name}</h3>
           </div>
           <span
             className={cn(
               'inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border capitalize flex-shrink-0',
               plan.status === 'active'
-                ? 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20'
+                ? 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30'
                 : plan.status === 'completed'
-                ? 'bg-[#f6f8f5]  text-[#617061] border-[#d8e0d8] '
+                ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 border-gray-300 dark:border-gray-600'
                 : 'bg-red-500/10 text-red-500 border-red-500/30'
             )}
           >
@@ -251,21 +251,21 @@ function PlanCard({ plan }: { plan: ClientPackage }) {
         </div>
 
         {pkg.description && (
-          <p className="text-sm text-[#617061] mt-1 leading-relaxed">{pkg.description}</p>
+          <p className="text-sm text-gray-500 mt-1 leading-relaxed">{pkg.description}</p>
         )}
       </div>
 
       {/* Timeline */}
-      <div className="px-6 pb-5 border-b border-[#d8e0d8]">
+      <div className="px-6 pb-5 border-b border-gray-100 dark:border-gray-800">
         <PlanTimeline startDate={plan.startDate} durationWeeks={pkg.durationWeeks} />
       </div>
 
       {/* Session progress */}
-      <div className="px-6 py-5 border-b border-[#d8e0d8]">
+      <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <p className="text-sm font-semibold text-[#0f1f10]">Sessions</p>
-            <p className="text-xs text-[#617061] mt-0.5">
+            <p className="text-sm font-semibold text-gray-900 dark:text-white">Sessions</p>
+            <p className="text-xs text-gray-400 mt-0.5">
               {completed} completed · {total - completed} remaining
             </p>
           </div>
@@ -273,10 +273,10 @@ function PlanCard({ plan }: { plan: ClientPackage }) {
             className={cn(
               'text-2xl font-bold tabular-nums',
               sessionPct === 100
-                ? 'text-[#3a7d44]'
+                ? 'text-teal-500'
                 : sessionPct >= 60
-                ? 'text-[#3a7d44]'
-                : 'text-[#617061]'
+                ? 'text-blue-500'
+                : 'text-gray-700 dark:text-gray-200'
             )}
           >
             {sessionPct}%
@@ -284,9 +284,9 @@ function PlanCard({ plan }: { plan: ClientPackage }) {
         </div>
 
         {/* Progress bar */}
-        <div className="h-2 bg-[#f6f8f5]  rounded-full overflow-hidden mb-3">
+        <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden mb-3">
           <div
-            className="h-full bg-[#52a85e] rounded-full transition-all duration-700"
+            className="h-full bg-gradient-to-r from-teal-400 to-blue-500 rounded-full transition-all duration-700"
             style={{ width: `${sessionPct}%` }}
           />
         </div>
@@ -296,42 +296,42 @@ function PlanCard({ plan }: { plan: ClientPackage }) {
       </div>
 
       {/* Key plan numbers */}
-      <div className="grid grid-cols-3 divide-x divide-[#f0f4f0]  border-b border-[#d8e0d8]">
+      <div className="grid grid-cols-3 divide-x divide-gray-100 dark:divide-gray-800 border-b border-gray-100 dark:border-gray-800">
         <div className="px-4 py-4 text-center">
-          <p className="text-base font-bold text-[#0f1f10]">{pkg.durationWeeks}w</p>
-          <p className="text-[11px] text-[#617061] mt-0.5">duration</p>
+          <p className="text-base font-bold text-gray-900 dark:text-white">{pkg.durationWeeks}w</p>
+          <p className="text-[11px] text-gray-400 mt-0.5">duration</p>
         </div>
         <div className="px-4 py-4 text-center">
           <p
             className={cn(
               'text-base font-bold',
-              isExpired ? 'text-red-500' : isExpiringSoon ? 'text-amber-500' : 'text-[#0f1f10]'
+              isExpired ? 'text-red-500' : isExpiringSoon ? 'text-amber-500' : 'text-gray-900 dark:text-white'
             )}
           >
             {isExpired ? 'Ended' : weeksLeft !== null ? `${weeksLeft}w` : '—'}
           </p>
-          <p className="text-[11px] text-[#617061] mt-0.5">
+          <p className="text-[11px] text-gray-400 mt-0.5">
             {isExpired ? '' : 'weeks left'}
           </p>
         </div>
         <div className="px-4 py-4 text-center">
-          <p className="text-base font-bold text-[#0f1f10]">${pkg.priceUSD}</p>
-          <p className="text-[11px] text-[#617061] mt-0.5">plan price</p>
+          <p className="text-base font-bold text-gray-900 dark:text-white">${pkg.priceUSD}</p>
+          <p className="text-[11px] text-gray-400 mt-0.5">plan price</p>
         </div>
       </div>
 
       {/* What's included */}
       {hasFeatures && (
-        <div className="px-6 py-5 border-b border-[#d8e0d8]">
-          <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-3 flex items-center gap-1.5">
+        <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-1.5">
             <Gift className="w-3.5 h-3.5" />
             What&apos;s included
           </p>
           <div className="space-y-2">
             {pkg.features!.map((feat, i) => (
               <div key={i} className="flex items-start gap-2.5">
-                <BadgeCheck className="w-4 h-4 text-[#3a7d44] flex-shrink-0 mt-0.5" />
-                <span className="text-sm text-[#617061]">{feat}</span>
+                <BadgeCheck className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-700 dark:text-gray-300">{feat}</span>
               </div>
             ))}
           </div>
@@ -340,18 +340,18 @@ function PlanCard({ plan }: { plan: ClientPackage }) {
 
       {/* Goals */}
       {hasGoals && (
-        <div className="px-6 py-5 border-b border-[#d8e0d8]">
-          <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-3 flex items-center gap-1.5">
+        <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-1.5">
             <Target className="w-3.5 h-3.5" />
             Your goals
           </p>
           <div className="space-y-2">
             {plan.goals!.map((goal, i) => (
               <div key={i} className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded-full border-2 border-[#3a7d44] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-[9px] font-bold text-[#3a7d44]">{i + 1}</span>
+                <div className="w-5 h-5 rounded-full border-2 border-blue-400 dark:border-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-[9px] font-bold text-blue-500">{i + 1}</span>
                 </div>
-                <span className="text-sm text-[#617061]">{goal}</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">{goal}</span>
               </div>
             ))}
           </div>
@@ -360,13 +360,13 @@ function PlanCard({ plan }: { plan: ClientPackage }) {
 
       {/* Coach notes */}
       {hasNotes && (
-        <div className="px-6 py-5 border-b border-[#d8e0d8]">
-          <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-3 flex items-center gap-1.5">
+        <div className="px-6 py-5 border-b border-gray-100 dark:border-gray-800">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-1.5">
             <StickyNote className="w-3.5 h-3.5" />
             Note from your coach
           </p>
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-            <p className="text-sm text-amber-800 leading-relaxed">{plan.notes}</p>
+          <div className="bg-amber-50 dark:bg-amber-900/15 border border-amber-200 dark:border-amber-800/50 rounded-xl p-4">
+            <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">{plan.notes}</p>
           </div>
         </div>
       )}
@@ -377,8 +377,8 @@ function PlanCard({ plan }: { plan: ClientPackage }) {
           className={cn(
             'mx-6 mb-5 mt-1 p-3 rounded-xl border text-xs font-medium',
             isExpired
-              ? 'bg-red-50 border-red-200 dark:border-red-700 text-red-700'
-              : 'bg-amber-50 border-amber-200 dark:border-amber-700 text-amber-700'
+              ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-700 text-red-700 dark:text-red-400'
+              : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-700 text-amber-700 dark:text-amber-400'
           )}
         >
           {isExpired
@@ -398,23 +398,23 @@ function SessionTypeCard({ coach }: { coach: CoachPublicProfile }) {
   const isInPerson = type === 'in_person' || type === 'hybrid';
 
   return (
-    <div className="bg-white rounded-2xl border border-[#d8e0d8] p-6 space-y-4">
-      <p className="text-xs font-medium text-[#617061] uppercase tracking-wide">How you train</p>
+    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">How you train</p>
 
       {isOnline && (
         <div className="flex items-start gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#ddf0df] border border-[#3a7d44]/20 flex items-center justify-center flex-shrink-0">
-            <Video className="w-4 h-4 text-[#3a7d44]" />
+          <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+            <Video className="w-4 h-4 text-blue-500" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-[#0f1f10]">Online Sessions</p>
-            <p className="text-xs text-[#617061] mt-0.5">
+            <p className="text-sm font-semibold text-gray-900 dark:text-white">Online Sessions</p>
+            <p className="text-xs text-gray-500 mt-0.5">
               {coach.timezone
                 ? `Coach is in ${coach.timezone.replace(/_/g, ' ')}`
                 : 'Remote coaching via video call'}
             </p>
             {coach.sessionDurationMinutes && (
-              <p className="text-xs text-[#617061] mt-0.5">
+              <p className="text-xs text-gray-400 mt-0.5">
                 <Clock className="inline w-3 h-3 mr-1" />
                 {coach.sessionDurationMinutes} min per session
               </p>
@@ -429,10 +429,10 @@ function SessionTypeCard({ coach }: { coach: CoachPublicProfile }) {
             <MapPin className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-[#0f1f10]">In-Person Sessions</p>
-            <p className="text-xs text-[#617061] mt-0.5">Meet with your coach at an agreed location</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-white">In-Person Sessions</p>
+            <p className="text-xs text-gray-500 mt-0.5">Meet with your coach at an agreed location</p>
             {coach.sessionDurationMinutes && (
-              <p className="text-xs text-[#617061] mt-0.5">
+              <p className="text-xs text-gray-400 mt-0.5">
                 <Clock className="inline w-3 h-3 mr-1" />
                 {coach.sessionDurationMinutes} min per session
               </p>
@@ -451,8 +451,8 @@ function ContactCoachCard({ coach }: { coach: CoachPublicProfile }) {
   if (!hasLinks) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-[#d8e0d8] p-6">
-      <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-4 flex items-center gap-1.5">
+    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+      <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-4 flex items-center gap-1.5">
         <MessageCircle className="w-3.5 h-3.5" />
         Contact your coach
       </p>
@@ -462,7 +462,7 @@ function ContactCoachCard({ coach }: { coach: CoachPublicProfile }) {
             href={`https://instagram.com/${coach.instagramHandle.replace('@', '')}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-xl bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20 dark:border-[#3a7d44]/20 hover:border-[#d8e0d8] transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-xl bg-gradient-to-r from-pink-500/10 to-purple-500/10 text-pink-600 dark:text-pink-400 border border-pink-300/40 dark:border-pink-700/40 hover:border-pink-400 transition-colors"
           >
             <Instagram className="w-4 h-4" />
             Instagram
@@ -473,7 +473,7 @@ function ContactCoachCard({ coach }: { coach: CoachPublicProfile }) {
             href={coach.websiteUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-xl bg-[#f6f8f5]  text-[#617061] border border-[#d8e0d8] hover:border-gray-400 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-gray-400 transition-colors"
           >
             <Globe className="w-4 h-4" />
             Website
@@ -483,7 +483,7 @@ function ContactCoachCard({ coach }: { coach: CoachPublicProfile }) {
         {coach.email && (
           <a
             href={`mailto:${coach.email}`}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-xl bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20/20 hover:border-[#3a7d44] transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-300/40 dark:border-blue-700/40 hover:border-blue-400 transition-colors"
           >
             <MessageCircle className="w-4 h-4" />
             Email
@@ -499,16 +499,16 @@ function ContactCoachCard({ coach }: { coach: CoachPublicProfile }) {
 function NoCoachState({ onBrowse }: { onBrowse: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
-      <div className="w-20 h-20 rounded-3xl bg-[#f6f8f5]  border border-dashed border-[#d8e0d8]  flex items-center justify-center mb-6">
-        <UserX className="w-9 h-9 text-[#617061]" />
+      <div className="w-20 h-20 rounded-3xl bg-gray-100 dark:bg-gray-800 border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center mb-6">
+        <UserX className="w-9 h-9 text-gray-400" />
       </div>
-      <h2 className="text-xl font-bold text-[#0f1f10] mb-2">No coach yet</h2>
-      <p className="text-sm text-[#617061] max-w-xs mb-6">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No coach yet</h2>
+      <p className="text-sm text-gray-500 max-w-xs mb-6">
         You haven't been connected with a coach. Browse our marketplace to find the right fit for your goals.
       </p>
       <button
         onClick={onBrowse}
-        className="inline-flex items-center gap-2 px-6 py-3 bg-[#ddf0df] hover:bg-[#ddf0df] text-white text-sm font-semibold rounded-xl transition-colors"
+        className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors"
       >
         <Search className="w-4 h-4" />
         Browse Coaches
@@ -556,7 +556,7 @@ export default function MyCoachPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-6 h-6 animate-spin text-[#617061]" />
+        <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
       </div>
     );
   }
@@ -584,19 +584,19 @@ export default function MyCoachPage() {
     <div className="max-w-2xl mx-auto px-4 py-8 space-y-5">
 
       {/* ── Hero card ──────────────────────────────────────────────────────── */}
-      <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
         {/* Gradient banner */}
-        <div className="h-24 bg-[#162318]" />
+        <div className="h-24 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700" />
 
         <div className="px-6 pb-6">
           {/* Avatar + coaching type badge */}
           <div className="flex items-end justify-between -mt-10 mb-4">
-            <div className="w-20 h-20 rounded-2xl bg-[#3a7d44] border-4 border-white flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 border-4 border-white dark:border-[#1a1d27] flex items-center justify-center text-white text-2xl font-bold shadow-lg">
               {initials}
             </div>
             <div className="flex items-center gap-2 mb-1">
               {coach?.acceptingClients && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/30">
                   <Zap className="w-3 h-3" />
                   Accepting clients
                 </span>
@@ -605,22 +605,22 @@ export default function MyCoachPage() {
             </div>
           </div>
 
-          <h1 className="text-xl font-bold text-[#0f1f10]">{fullName}</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">{fullName}</h1>
 
           {coach?.profileHeadline && (
-            <p className="text-sm text-[#617061] mt-0.5">{coach.profileHeadline}</p>
+            <p className="text-sm text-gray-500 mt-0.5">{coach.profileHeadline}</p>
           )}
 
           {/* Bio with expand/collapse */}
           {bioText && (
             <div className="mt-3">
-              <p className="text-sm text-[#617061] leading-relaxed">
+              <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                 {bioDisplay}
               </p>
               {bioLong && (
                 <button
                   onClick={() => setBioExpanded(!bioExpanded)}
-                  className="inline-flex items-center gap-1 text-xs text-[#3a7d44] hover:text-[#3a7d44] mt-1 font-medium transition-colors"
+                  className="inline-flex items-center gap-1 text-xs text-blue-500 hover:text-blue-600 mt-1 font-medium transition-colors"
                 >
                   {bioExpanded ? (
                     <>Show less <ChevronUp className="w-3.5 h-3.5" /></>
@@ -638,7 +638,7 @@ export default function MyCoachPage() {
               {coach.specialties.map((s) => (
                 <span
                   key={s}
-                  className="px-2 py-0.5 text-xs rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#d8e0d8]"
+                  className="px-2 py-0.5 text-xs rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-700"
                 >
                   {s}
                 </span>
@@ -652,7 +652,7 @@ export default function MyCoachPage() {
               {coach.trainingModalities.map((m) => (
                 <span
                   key={m}
-                  className="px-2 py-0.5 text-xs rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20"
+                  className="px-2 py-0.5 text-xs rounded-full bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-700"
                 >
                   {m}
                 </span>
@@ -661,7 +661,7 @@ export default function MyCoachPage() {
           )}
 
           {/* Meta row */}
-          <div className="flex flex-wrap items-center gap-4 mt-4 text-xs text-[#617061]">
+          <div className="flex flex-wrap items-center gap-4 mt-4 text-xs text-gray-500">
             {coach?.yearsOfExperience != null && (
               <span className="flex items-center gap-1">
                 <Star className="w-3.5 h-3.5 text-amber-400" />
@@ -681,7 +681,7 @@ export default function MyCoachPage() {
               </span>
             )}
             {coach?.trialSessionAvailable && (
-              <span className="flex items-center gap-1 text-[#3a7d44] font-medium">
+              <span className="flex items-center gap-1 text-teal-600 dark:text-teal-400 font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 Trial available
                 {coach.trialSessionRateUSD != null && ` · $${coach.trialSessionRateUSD}`}
@@ -691,15 +691,15 @@ export default function MyCoachPage() {
 
           {/* Certifications */}
           {coach?.certifications && coach.certifications.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-[#d8e0d8]">
-              <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-2">
+            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
                 Certifications
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {coach.certifications.map((c) => (
                   <span
                     key={c}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-[#f6f8f5]  text-[#617061] border border-[#d8e0d8]"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700"
                   >
                     <Dumbbell className="w-3 h-3" />
                     {c}
@@ -739,15 +739,15 @@ export default function MyCoachPage() {
       {plan ? (
         <PlanCard plan={plan} />
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-[#d8e0d8] p-8 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-[#f6f8f5]  flex items-center justify-center mx-auto mb-3">
-            <Calendar className="w-6 h-6 text-[#c8dcc9] " />
+        <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-dashed border-gray-200 dark:border-gray-700 p-8 text-center">
+          <div className="w-12 h-12 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mx-auto mb-3">
+            <Calendar className="w-6 h-6 text-gray-300 dark:text-gray-700" />
           </div>
-          <p className="text-sm font-medium text-[#617061]">No active plan</p>
-          <p className="text-xs text-[#617061] mt-1">Your coach hasn't assigned a plan yet.</p>
+          <p className="text-sm font-medium text-gray-500">No active plan</p>
+          <p className="text-xs text-gray-400 mt-1">Your coach hasn't assigned a plan yet.</p>
           <div className="flex items-center justify-center gap-1.5 mt-4">
-            <TrendingUp className="w-4 h-4 text-[#3a7d44]" />
-            <p className="text-xs text-[#3a7d44]">Plans include sessions, goals, and your coach's notes</p>
+            <TrendingUp className="w-4 h-4 text-blue-400" />
+            <p className="text-xs text-blue-500">Plans include sessions, goals, and your coach's notes</p>
           </div>
         </div>
       )}
@@ -761,13 +761,13 @@ export default function MyCoachPage() {
       {/* ── Browse other coaches ───────────────────────────────────────────── */}
       <button
         onClick={() => router.push(`/${locale}/dashboard/coaches`)}
-        className="w-full flex items-center justify-between px-5 py-4 bg-white rounded-2xl border border-[#d8e0d8] text-sm font-medium text-[#617061] hover:border-[#3a7d44] dark:hover:border-[#3a7d44] transition-colors group"
+        className="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:border-blue-400 dark:hover:border-blue-600 transition-colors group"
       >
         <span className="flex items-center gap-2">
-          <Search className="w-4 h-4 text-[#617061] group-hover:text-[#3a7d44] transition-colors" />
+          <Search className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
           Browse other coaches
         </span>
-        <ChevronRight className="w-4 h-4 text-[#617061] group-hover:text-[#3a7d44] transition-colors" />
+        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
       </button>
     </div>
   );
