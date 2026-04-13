@@ -67,9 +67,9 @@ function weeksRemaining(startDate?: string, durationWeeks?: number): number | nu
 // ─── Status styles ────────────────────────────────────────────────────────────
 
 const STATUS_STYLES: Record<string, string> = {
-  active: 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border-teal-500/30',
-  trial: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30',
-  inactive: 'bg-gray-100 text-gray-500 dark:bg-gray-700/60 dark:text-gray-400 border-gray-300 dark:border-gray-600',
+  active: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+  trial: 'bg-amber-500/15 text-amber-600 border-amber-500/30',
+  inactive: 'bg-[#f6f8f5] text-[#617061]   border-[#d8e0d8] ',
 };
 
 const GOAL_LABELS: Record<string, string> = {
@@ -80,10 +80,10 @@ const GOAL_LABELS: Record<string, string> = {
 };
 
 const GOAL_COLORS: Record<string, string> = {
-  weight_loss: 'bg-blue-500/10 text-blue-600 dark:text-blue-300 border-blue-400/30',
-  muscle_gain: 'bg-purple-500/10 text-purple-600 dark:text-purple-300 border-purple-400/30',
-  maintenance: 'bg-teal-500/10 text-teal-600 dark:text-teal-300 border-teal-400/30',
-  endurance: 'bg-orange-500/10 text-orange-600 dark:text-orange-300 border-orange-400/30',
+  weight_loss: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+  muscle_gain: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+  maintenance: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+  endurance: 'bg-orange-500/10 text-orange-600 border-orange-400/30',
 };
 
 const ACTIVITY_LABELS: Record<string, string> = {
@@ -97,12 +97,12 @@ const ACTIVITY_LABELS: Record<string, string> = {
 
 function Section({ title, icon, children }: { title: string; icon: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-      <div className="flex items-center gap-2.5 px-6 py-4 border-b border-gray-100 dark:border-gray-800">
-        <div className="w-7 h-7 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
+    <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+      <div className="flex items-center gap-2.5 px-6 py-4 border-b border-[#d8e0d8]">
+        <div className="w-7 h-7 rounded-lg bg-[#f6f8f5]  flex items-center justify-center flex-shrink-0">
           {icon}
         </div>
-        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{title}</p>
+        <p className="text-sm font-semibold text-[#0f1f10] ">{title}</p>
       </div>
       <div className="p-6">{children}</div>
     </div>
@@ -114,9 +114,9 @@ function Section({ title, icon, children }: { title: string; icon: React.ReactNo
 function InfoRow({ label, value }: { label: string; value?: string | number | null }) {
   if (!value && value !== 0) return null;
   return (
-    <div className="flex items-start justify-between gap-4 py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
-      <span className="text-xs text-gray-400 uppercase tracking-wide flex-shrink-0">{label}</span>
-      <span className="text-sm text-gray-700 dark:text-gray-300 text-right">{value}</span>
+    <div className="flex items-start justify-between gap-4 py-2 border-b border-[#d8e0d8] last:border-0">
+      <span className="text-xs text-[#617061] uppercase tracking-wide flex-shrink-0">{label}</span>
+      <span className="text-sm text-[#617061] text-right">{value}</span>
     </div>
   );
 }
@@ -125,12 +125,12 @@ function InfoRow({ label, value }: { label: string; value?: string | number | nu
 
 function TagList({ tags, empty }: { tags?: string[] | null; empty?: string }) {
   if (!tags || tags.length === 0) {
-    return empty ? <p className="text-xs text-gray-400 italic">{empty}</p> : null;
+    return empty ? <p className="text-xs text-[#617061] italic">{empty}</p> : null;
   }
   return (
     <div className="flex flex-wrap gap-1.5">
       {tags.map((tag) => (
-        <span key={tag} className="px-2.5 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
+        <span key={tag} className="px-2.5 py-1 text-xs rounded-full bg-[#f6f8f5]  text-[#617061] border border-[#d8e0d8]">
           {tag}
         </span>
       ))}
@@ -153,14 +153,14 @@ function WeightProgress({ weight, targetWeight, fitnessGoal }: { weight: number;
 
   return (
     <div className="space-y-2">
-      <div className="flex justify-between text-xs text-gray-500">
-        <span className="font-medium">{weight} kg <span className="text-gray-400 font-normal">current</span></span>
-        <span className="text-blue-500 font-semibold">{gap.toFixed(1)} kg {isLoss ? 'to lose' : 'to gain'}</span>
-        <span className="font-medium">{targetWeight} kg <span className="text-gray-400 font-normal">goal</span></span>
+      <div className="flex justify-between text-xs text-[#617061]">
+        <span className="font-medium">{weight} kg <span className="text-[#617061] font-normal">current</span></span>
+        <span className="text-[#3a7d44] font-semibold">{gap.toFixed(1)} kg {isLoss ? 'to lose' : 'to gain'}</span>
+        <span className="font-medium">{targetWeight} kg <span className="text-[#617061] font-normal">goal</span></span>
       </div>
-      <div className="relative h-2.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+      <div className="relative h-2.5 bg-[#f6f8f5]  rounded-full overflow-hidden">
         <div
-          className={cn('absolute h-full rounded-full', isLoss ? 'bg-gradient-to-r from-blue-500 to-teal-400' : 'bg-gradient-to-r from-teal-400 to-blue-500')}
+          className={cn('absolute h-full rounded-full', isLoss ? 'bg-[#3a7d44]' : 'bg-[#52a85e]')}
           style={{ left: `${filledFrom}%`, width: `${filledWidth}%` }}
         />
       </div>
@@ -182,15 +182,15 @@ function SessionBubbles({ total, completed }: { total: number; completed: number
             'w-7 h-7 rounded-full flex items-center justify-center transition-all',
             i < completed
               ? 'bg-teal-500 shadow-sm shadow-teal-500/30'
-              : 'bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
+              : 'bg-[#f6f8f5]  border border-[#d8e0d8]'
           )}
         >
           {i < completed && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
         </div>
       ))}
       {overflow > 0 && (
-        <div className="w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
-          <span className="text-[9px] font-bold text-gray-400">+{overflow}</span>
+        <div className="w-7 h-7 rounded-full bg-[#f6f8f5]  border border-[#d8e0d8] flex items-center justify-center">
+          <span className="text-[9px] font-bold text-[#617061]">+{overflow}</span>
         </div>
       )}
     </div>
@@ -211,11 +211,11 @@ function GoalInput({ goals, onChange }: { goals: string[]; onChange: (goals: str
     <div className="space-y-2">
       {goals.map((g, i) => (
         <div key={i} className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-full border-2 border-blue-400 flex items-center justify-center flex-shrink-0">
-            <span className="text-[9px] font-bold text-blue-400">{i + 1}</span>
+          <div className="w-5 h-5 rounded-full border-2 border-[#3a7d44] flex items-center justify-center flex-shrink-0">
+            <span className="text-[9px] font-bold text-[#3a7d44]">{i + 1}</span>
           </div>
-          <span className="flex-1 text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-1.5 border border-gray-200 dark:border-gray-700">{g}</span>
-          <button onClick={() => onChange(goals.filter((_, idx) => idx !== i))} className="text-gray-400 hover:text-red-500 transition-colors">
+          <span className="flex-1 text-sm text-[#617061] bg-[#f6f8f5]  rounded-lg px-3 py-1.5 border border-[#d8e0d8]">{g}</span>
+          <button onClick={() => onChange(goals.filter((_, idx) => idx !== i))} className="text-[#617061] hover:text-red-500 transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -226,9 +226,9 @@ function GoalInput({ goals, onChange }: { goals: string[]; onChange: (goals: str
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }}
           placeholder="Add a goal and press Enter…"
-          className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+          className="flex-1 px-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
         />
-        <button onClick={add} className="px-3 py-2 bg-blue-500 text-white text-sm rounded-lg hover:bg-blue-600 transition-colors">
+        <button onClick={add} className="px-3 py-2 bg-[#ddf0df] text-white text-sm rounded-lg hover:bg-[#ddf0df] transition-colors">
           <Plus className="w-4 h-4" />
         </button>
       </div>
@@ -326,7 +326,7 @@ function PackageSection({
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-gray-400 py-4">
+      <div className="flex items-center gap-2 text-[#617061] py-4">
         <Loader2 className="w-4 h-4 animate-spin" /> Loading plan…
       </div>
     );
@@ -337,19 +337,19 @@ function PackageSection({
 
       {/* ── No package yet ── */}
       {!assignedPackage && mode !== 'assign' && (
-        <div className="text-center py-6 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-2xl">
-          <Package className="w-8 h-8 text-gray-300 dark:text-gray-700 mx-auto mb-3" />
-          <p className="text-sm font-medium text-gray-500 mb-1">No plan assigned yet</p>
-          <p className="text-xs text-gray-400 mb-4">Assign a package to start tracking this client's progress</p>
+        <div className="text-center py-6 border-2 border-dashed border-[#d8e0d8] rounded-2xl">
+          <Package className="w-8 h-8 text-[#c8dcc9]  mx-auto mb-3" />
+          <p className="text-sm font-medium text-[#617061] mb-1">No plan assigned yet</p>
+          <p className="text-xs text-[#617061] mb-4">Assign a package to start tracking this client's progress</p>
           {activePackages.length > 0 ? (
             <button
               onClick={() => setMode('assign')}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#3a7d44] text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity"
             >
               <Plus className="w-4 h-4" /> Assign Package
             </button>
           ) : (
-            <p className="text-xs text-gray-400 italic">Create packages in your profile first</p>
+            <p className="text-xs text-[#617061] italic">Create packages in your profile first</p>
           )}
         </div>
       )}
@@ -360,18 +360,18 @@ function PackageSection({
           {/* Header */}
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">{assignedPackage.package.name}</h3>
+              <h3 className="text-base font-bold text-[#0f1f10]">{assignedPackage.package.name}</h3>
               {assignedPackage.package.description && (
-                <p className="text-sm text-gray-500 mt-0.5">{assignedPackage.package.description}</p>
+                <p className="text-sm text-[#617061] mt-0.5">{assignedPackage.package.description}</p>
               )}
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
               <span className={cn(
                 'inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border capitalize',
                 assignedPackage.status === 'active'
-                  ? 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30'
+                  ? 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20'
                   : assignedPackage.status === 'completed'
-                  ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 border-gray-300'
+                  ? 'bg-[#f6f8f5]  text-[#617061] border-[#d8e0d8]'
                   : 'bg-red-500/10 text-red-500 border-red-500/30'
               )}>
                 {assignedPackage.status === 'active' ? <CheckCircle2 className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
@@ -379,7 +379,7 @@ function PackageSection({
               </span>
               <button
                 onClick={openEdit}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#3a7d44] bg-[#ddf0df] border border-[#d8e0d8] rounded-lg hover:bg-[#ddf0df] transition-colors"
               >
                 <Pencil className="w-3.5 h-3.5" /> Edit plan
               </button>
@@ -388,33 +388,33 @@ function PackageSection({
 
           {/* Stats row */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-3 text-center">
-              <p className="text-lg font-bold text-gray-900 dark:text-white">{assignedPackage.package.durationWeeks}w</p>
-              <p className="text-xs text-gray-400 mt-0.5">duration</p>
+            <div className="bg-[#f6f8f5]  rounded-xl p-3 text-center">
+              <p className="text-lg font-bold text-[#0f1f10]">{assignedPackage.package.durationWeeks}w</p>
+              <p className="text-xs text-[#617061] mt-0.5">duration</p>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-3 text-center">
-              <p className="text-lg font-bold text-teal-600 dark:text-teal-400">
+            <div className="bg-[#f6f8f5]  rounded-xl p-3 text-center">
+              <p className="text-lg font-bold text-[#3a7d44]">
                 {assignedPackage.sessionsCompleted ?? 0}/{assignedPackage.package.sessionsIncluded}
               </p>
-              <p className="text-xs text-gray-400 mt-0.5">sessions done</p>
+              <p className="text-xs text-[#617061] mt-0.5">sessions done</p>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-3 text-center">
+            <div className="bg-[#f6f8f5]  rounded-xl p-3 text-center">
               <p className={cn(
                 'text-lg font-bold',
                 (() => {
                   const wl = weeksRemaining(assignedPackage.startDate, assignedPackage.package.durationWeeks);
-                  return wl !== null && wl <= 2 ? 'text-amber-500' : 'text-gray-900 dark:text-white';
+                  return wl !== null && wl <= 2 ? 'text-amber-500' : 'text-[#0f1f10]';
                 })()
               )}>
                 {weeksRemaining(assignedPackage.startDate, assignedPackage.package.durationWeeks) ?? '—'}w
               </p>
-              <p className="text-xs text-gray-400 mt-0.5">weeks left</p>
+              <p className="text-xs text-[#617061] mt-0.5">weeks left</p>
             </div>
           </div>
 
           {/* Session bubble map */}
           <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Session progress</p>
+            <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-2">Session progress</p>
             <SessionBubbles
               total={assignedPackage.package.sessionsIncluded}
               completed={assignedPackage.sessionsCompleted ?? 0}
@@ -423,15 +423,15 @@ function PackageSection({
 
           {/* Progress bar */}
           <div>
-            <div className="flex justify-between text-xs text-gray-400 mb-1.5">
+            <div className="flex justify-between text-xs text-[#617061] mb-1.5">
               <span>Started {fmtDate(assignedPackage.startDate)}</span>
               <span>{assignedPackage.package.sessionsIncluded > 0
                 ? Math.round(((assignedPackage.sessionsCompleted ?? 0) / assignedPackage.package.sessionsIncluded) * 100)
                 : 0}% complete</span>
             </div>
-            <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+            <div className="h-2 bg-[#f6f8f5]  rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-teal-400 to-blue-500 rounded-full transition-all duration-700"
+                className="h-full bg-[#52a85e] rounded-full transition-all duration-700"
                 style={{
                   width: `${assignedPackage.package.sessionsIncluded > 0
                     ? Math.round(((assignedPackage.sessionsCompleted ?? 0) / assignedPackage.package.sessionsIncluded) * 100)
@@ -444,12 +444,12 @@ function PackageSection({
           {/* Features */}
           {assignedPackage.package.features && assignedPackage.package.features.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">What&apos;s included</p>
+              <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-2">What&apos;s included</p>
               <div className="space-y-1.5">
                 {assignedPackage.package.features.map((feat, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <BadgeCheck className="w-4 h-4 text-teal-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{feat}</span>
+                    <BadgeCheck className="w-4 h-4 text-[#3a7d44] flex-shrink-0" />
+                    <span className="text-sm text-[#617061]">{feat}</span>
                   </div>
                 ))}
               </div>
@@ -459,16 +459,16 @@ function PackageSection({
           {/* Goals */}
           {(assignedPackage.goals ?? []).length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+              <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-2 flex items-center gap-1.5">
                 <Target className="w-3.5 h-3.5" /> Goals
               </p>
               <div className="space-y-2">
                 {assignedPackage.goals!.map((g, i) => (
                   <div key={i} className="flex items-start gap-2.5">
-                    <div className="w-5 h-5 rounded-full border-2 border-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-[9px] font-bold text-blue-400">{i + 1}</span>
+                    <div className="w-5 h-5 rounded-full border-2 border-[#3a7d44] flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-[9px] font-bold text-[#3a7d44]">{i + 1}</span>
                     </div>
-                    <span className="text-sm text-gray-700 dark:text-gray-300">{g}</span>
+                    <span className="text-sm text-[#617061]">{g}</span>
                   </div>
                 ))}
               </div>
@@ -477,11 +477,11 @@ function PackageSection({
 
           {/* Coach note */}
           {assignedPackage.notes && (
-            <div className="p-4 bg-amber-50 dark:bg-amber-900/15 border border-amber-200 dark:border-amber-800/50 rounded-xl">
-              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1.5 flex items-center gap-1.5">
+            <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+              <p className="text-xs font-semibold text-amber-600 mb-1.5 flex items-center gap-1.5">
                 <StickyNote className="w-3.5 h-3.5" /> Your note
               </p>
-              <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">{assignedPackage.notes}</p>
+              <p className="text-sm text-amber-800 leading-relaxed">{assignedPackage.notes}</p>
             </div>
           )}
 
@@ -489,7 +489,7 @@ function PackageSection({
           {activePackages.length > 0 && (
             <button
               onClick={() => setMode('assign')}
-              className="text-xs text-gray-400 hover:text-blue-500 transition-colors underline"
+              className="text-xs text-[#617061] hover:text-[#3a7d44] transition-colors underline"
             >
               Assign a different package
             </button>
@@ -501,48 +501,48 @@ function PackageSection({
       {mode === 'edit' && assignedPackage?.package && (
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-gray-900 dark:text-white">
+            <p className="text-sm font-semibold text-[#0f1f10]">
               Editing: {assignedPackage.package.name}
             </p>
-            <button onClick={() => setMode('view')} className="text-xs text-gray-400 hover:text-gray-600">
+            <button onClick={() => setMode('view')} className="text-xs text-[#617061] hover:text-[#617061]">
               Cancel
             </button>
           </div>
 
           {/* Sessions stepper */}
           <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Sessions completed</p>
+            <p className="text-sm font-medium text-[#617061] mb-3">Sessions completed</p>
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setEditSessions((n) => Math.max(0, n - 1))}
-                className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="w-10 h-10 rounded-xl bg-[#f6f8f5]  border border-[#d8e0d8] flex items-center justify-center hover:bg-gray-200  transition-colors"
               >
-                <Minus className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                <Minus className="w-4 h-4 text-[#617061]" />
               </button>
               <div className="text-center">
-                <p className="text-3xl font-bold text-gray-900 dark:text-white tabular-nums">{editSessions}</p>
-                <p className="text-xs text-gray-400">of {assignedPackage.package.sessionsIncluded}</p>
+                <p className="text-3xl font-bold text-[#0f1f10] tabular-nums">{editSessions}</p>
+                <p className="text-xs text-[#617061]">of {assignedPackage.package.sessionsIncluded}</p>
               </div>
               <button
                 onClick={() => setEditSessions((n) => Math.min(assignedPackage.package!.sessionsIncluded, n + 1))}
-                className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                className="w-10 h-10 rounded-xl bg-[#f6f8f5]  border border-[#d8e0d8] flex items-center justify-center hover:bg-gray-200  transition-colors"
               >
-                <Plus className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                <Plus className="w-4 h-4 text-[#617061]" />
               </button>
             </div>
           </div>
 
           {/* Goals */}
           <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-              <Target className="w-4 h-4 text-blue-500" /> Goals for this client
+            <p className="text-sm font-medium text-[#617061] mb-3 flex items-center gap-2">
+              <Target className="w-4 h-4 text-[#3a7d44]" /> Goals for this client
             </p>
             <GoalInput goals={editGoals} onChange={setEditGoals} />
           </div>
 
           {/* Note */}
           <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+            <p className="text-sm font-medium text-[#617061] mb-2 flex items-center gap-2">
               <StickyNote className="w-4 h-4 text-amber-500" /> Note for client
             </p>
             <textarea
@@ -550,7 +550,7 @@ function PackageSection({
               onChange={(e) => setEditNotes(e.target.value)}
               rows={3}
               placeholder="e.g. Focus on form before increasing weight…"
-              className="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 resize-none"
+              className="w-full px-3 py-2.5 text-sm rounded-xl border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40 resize-none"
             />
           </div>
 
@@ -558,14 +558,14 @@ function PackageSection({
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#3a7d44] text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60"
             >
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               {saving ? 'Saving…' : 'Save changes'}
             </button>
             <button
               onClick={() => setMode('view')}
-              className="px-4 py-2.5 text-sm text-gray-500 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="px-4 py-2.5 text-sm text-[#617061] border border-[#d8e0d8] rounded-xl hover:bg-[#f6f8f5]  transition-colors"
             >
               Cancel
             </button>
@@ -577,17 +577,17 @@ function PackageSection({
       {mode === 'assign' && (
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-gray-900 dark:text-white">
+            <p className="text-sm font-semibold text-[#0f1f10]">
               {assignedPackage ? 'Change package' : 'Assign a package'}
             </p>
-            <button onClick={() => setMode('view')} className="text-xs text-gray-400 hover:text-gray-600">
+            <button onClick={() => setMode('view')} className="text-xs text-[#617061] hover:text-[#617061]">
               Cancel
             </button>
           </div>
 
           {/* Package picker */}
           <div>
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Choose a package</p>
+            <p className="text-sm font-medium text-[#617061] mb-2">Choose a package</p>
             <div className="space-y-2">
               {activePackages.map((pkg) => (
                 <button
@@ -597,18 +597,18 @@ function PackageSection({
                   className={cn(
                     'w-full text-left px-4 py-3.5 rounded-xl border transition-all',
                     selectedPkgId === pkg.id
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300'
+                      ? 'border-blue-500 bg-[#ddf0df]'
+                      : 'border-[#d8e0d8] bg-white hover:border-[#d8e0d8]'
                   )}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">{pkg.name}</p>
-                      {pkg.description && <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{pkg.description}</p>}
+                      <p className="text-sm font-semibold text-[#0f1f10]">{pkg.name}</p>
+                      {pkg.description && <p className="text-xs text-[#617061] mt-0.5 line-clamp-1">{pkg.description}</p>}
                     </div>
-                    <span className="text-sm font-bold text-blue-600 dark:text-blue-400 flex-shrink-0">${pkg.priceUSD}</span>
+                    <span className="text-sm font-bold text-[#3a7d44] flex-shrink-0">${pkg.priceUSD}</span>
                   </div>
-                  <div className="flex gap-3 mt-2 text-xs text-gray-400">
+                  <div className="flex gap-3 mt-2 text-xs text-[#617061]">
                     <span>{pkg.durationWeeks} weeks</span>
                     <span>·</span>
                     <span>{pkg.sessionsIncluded} sessions</span>
@@ -622,22 +622,22 @@ function PackageSection({
           {selectedPkgId && (
             <>
               <div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                  <Target className="w-4 h-4 text-blue-500" /> Goals <span className="text-xs text-gray-400 font-normal">(optional)</span>
+                <p className="text-sm font-medium text-[#617061] mb-3 flex items-center gap-2">
+                  <Target className="w-4 h-4 text-[#3a7d44]" /> Goals <span className="text-xs text-[#617061] font-normal">(optional)</span>
                 </p>
                 <GoalInput goals={assignGoals} onChange={setAssignGoals} />
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
-                  <StickyNote className="w-4 h-4 text-amber-500" /> Note for client <span className="text-xs text-gray-400 font-normal">(optional)</span>
+                <p className="text-sm font-medium text-[#617061] mb-2 flex items-center gap-2">
+                  <StickyNote className="w-4 h-4 text-amber-500" /> Note for client <span className="text-xs text-[#617061] font-normal">(optional)</span>
                 </p>
                 <textarea
                   value={assignNotes}
                   onChange={(e) => setAssignNotes(e.target.value)}
                   rows={3}
                   placeholder="e.g. Focus on form before increasing weight…"
-                  className="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 resize-none"
+                  className="w-full px-3 py-2.5 text-sm rounded-xl border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40 resize-none"
                 />
               </div>
             </>
@@ -646,7 +646,7 @@ function PackageSection({
           <button
             onClick={handleAssign}
             disabled={assigning || !selectedPkgId}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#3a7d44] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60"
           >
             {assigning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Package className="w-4 h-4" />}
             {assigning ? 'Assigning…' : 'Assign Package'}
@@ -697,7 +697,7 @@ export default function ClientProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+        <Loader2 className="w-6 h-6 animate-spin text-[#617061]" />
       </div>
     );
   }
@@ -705,10 +705,10 @@ export default function ClientProfilePage() {
   if (error || !client) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <p className="text-gray-500">{error ?? 'Client not found'}</p>
+        <p className="text-[#617061]">{error ?? 'Client not found'}</p>
         <button
           onClick={() => router.push(`/${locale}/dashboard/coach/clients`)}
-          className="text-sm text-blue-500 hover:underline"
+          className="text-sm text-[#3a7d44] hover:underline"
         >
           Back to clients
         </button>
@@ -726,18 +726,18 @@ export default function ClientProfilePage() {
       {/* ── Back button ── */}
       <button
         onClick={() => router.push(`/${locale}/dashboard/coach/clients`)}
-        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 mb-6 transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-[#617061] hover:text-[#0f1f10] mb-6 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to clients
       </button>
 
       {/* ── Header card ── */}
-      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden mb-6">
-        <div className="h-20 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700" />
+      <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden mb-6">
+        <div className="h-20 bg-[#162318]" />
         <div className="px-6 pb-6">
           <div className="flex items-end justify-between -mt-8 mb-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 border-4 border-white dark:border-[#1a1d27] flex items-center justify-center text-white text-xl font-bold shadow-lg">
+            <div className="w-16 h-16 rounded-2xl bg-[#3a7d44] border-4 border-white flex items-center justify-center text-white text-xl font-bold shadow-lg">
               {getInitials(client.firstName, client.lastName)}
             </div>
             <span className={cn('px-2.5 py-1 text-xs font-medium rounded-full border capitalize mb-1', STATUS_STYLES[client.status] ?? STATUS_STYLES.inactive)}>
@@ -747,12 +747,12 @@ export default function ClientProfilePage() {
 
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-xl font-bold text-[#0f1f10]">
                 {client.firstName} {client.lastName}
               </h1>
-              <p className="text-sm text-gray-500 mt-0.5">{client.email}</p>
+              <p className="text-sm text-[#617061] mt-0.5">{client.email}</p>
               {p.fitnessGoal && (
-                <span className={cn('inline-block mt-2 px-2.5 py-0.5 text-xs font-medium rounded-full border', GOAL_COLORS[p.fitnessGoal] ?? 'bg-gray-100 text-gray-500 border-gray-300')}>
+                <span className={cn('inline-block mt-2 px-2.5 py-0.5 text-xs font-medium rounded-full border', GOAL_COLORS[p.fitnessGoal] ?? 'bg-[#f6f8f5] text-[#617061] border-[#d8e0d8]')}>
                   {GOAL_LABELS[p.fitnessGoal] ?? p.fitnessGoal}
                 </span>
               )}
@@ -760,17 +760,17 @@ export default function ClientProfilePage() {
 
             <div className="flex gap-6 text-center">
               <div>
-                <p className="text-xl font-bold text-gray-900 dark:text-white">{client.sessionsCompleted}</p>
-                <p className="text-xs text-gray-400">sessions done</p>
+                <p className="text-xl font-bold text-[#0f1f10]">{client.sessionsCompleted}</p>
+                <p className="text-xs text-[#617061]">sessions done</p>
               </div>
               <div>
-                <p className="text-xl font-bold text-gray-900 dark:text-white">{fmtDate(client.joinedAt)}</p>
-                <p className="text-xs text-gray-400">joined</p>
+                <p className="text-xl font-bold text-[#0f1f10]">{fmtDate(client.joinedAt)}</p>
+                <p className="text-xs text-[#617061]">joined</p>
               </div>
               {client.lastSessionAt && (
                 <div>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">{fmtDate(client.lastSessionAt)}</p>
-                  <p className="text-xs text-gray-400">last session</p>
+                  <p className="text-xl font-bold text-[#0f1f10]">{fmtDate(client.lastSessionAt)}</p>
+                  <p className="text-xs text-[#617061]">last session</p>
                 </div>
               )}
             </div>
@@ -785,7 +785,7 @@ export default function ClientProfilePage() {
         <div className="space-y-5">
 
           {/* Personal info */}
-          <Section title="Personal Info" icon={<User className="w-3.5 h-3.5 text-gray-500" />}>
+          <Section title="Personal Info" icon={<User className="w-3.5 h-3.5 text-[#617061]" />}>
             <div className="space-y-0">
               <InfoRow label="Gender" value={p.gender ? p.gender.charAt(0).toUpperCase() + p.gender.slice(1).replace(/_/g, ' ') : null} />
               <InfoRow label="Age" value={age != null ? `${age} years old` : null} />
@@ -797,28 +797,28 @@ export default function ClientProfilePage() {
           </Section>
 
           {/* Fitness profile */}
-          <Section title="Fitness Profile" icon={<Activity className="w-3.5 h-3.5 text-blue-500" />}>
+          <Section title="Fitness Profile" icon={<Activity className="w-3.5 h-3.5 text-[#3a7d44]" />}>
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-3">
                 {p.weight != null && (
-                  <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-3 text-center">
-                    <Scale className="w-4 h-4 text-gray-400 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">{p.weight}</p>
-                    <p className="text-xs text-gray-400">kg current</p>
+                  <div className="bg-[#f6f8f5]  rounded-xl p-3 text-center">
+                    <Scale className="w-4 h-4 text-[#617061] mx-auto mb-1" />
+                    <p className="text-lg font-bold text-[#0f1f10]">{p.weight}</p>
+                    <p className="text-xs text-[#617061]">kg current</p>
                   </div>
                 )}
                 {p.targetWeight != null && (
-                  <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-3 text-center">
-                    <Target className="w-4 h-4 text-blue-400 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{p.targetWeight}</p>
-                    <p className="text-xs text-gray-400">kg target</p>
+                  <div className="bg-[#f6f8f5]  rounded-xl p-3 text-center">
+                    <Target className="w-4 h-4 text-[#3a7d44] mx-auto mb-1" />
+                    <p className="text-lg font-bold text-[#3a7d44]">{p.targetWeight}</p>
+                    <p className="text-xs text-[#617061]">kg target</p>
                   </div>
                 )}
                 {p.height != null && (
-                  <div className="bg-gray-50 dark:bg-gray-800/60 rounded-xl p-3 text-center">
-                    <Ruler className="w-4 h-4 text-gray-400 mx-auto mb-1" />
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">{p.height}</p>
-                    <p className="text-xs text-gray-400">cm</p>
+                  <div className="bg-[#f6f8f5]  rounded-xl p-3 text-center">
+                    <Ruler className="w-4 h-4 text-[#617061] mx-auto mb-1" />
+                    <p className="text-lg font-bold text-[#0f1f10]">{p.height}</p>
+                    <p className="text-xs text-[#617061]">cm</p>
                   </div>
                 )}
               </div>
@@ -841,25 +841,25 @@ export default function ClientProfilePage() {
           <Section title="Health & Medical" icon={<HeartPulse className="w-3.5 h-3.5 text-red-500" />}>
             <div className="space-y-4">
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Medical conditions</p>
+                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Medical conditions</p>
                 <TagList tags={p.medicalConditions} empty="None reported" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Injuries</p>
+                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Injuries</p>
                 <TagList tags={p.injuries} empty="None reported" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Allergies</p>
+                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Allergies</p>
                 <TagList tags={p.allergies} empty="None reported" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Dietary restrictions</p>
+                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Dietary restrictions</p>
                 <TagList tags={p.dietaryRestrictions} empty="None reported" />
               </div>
               {p.notes && (
-                <div className="pt-3 border-t border-gray-100 dark:border-gray-800">
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">Onboarding notes</p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed bg-amber-50 dark:bg-amber-900/15 rounded-xl p-3 border border-amber-200 dark:border-amber-800/50">
+                <div className="pt-3 border-t border-[#d8e0d8]">
+                  <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Onboarding notes</p>
+                  <p className="text-sm text-[#617061] leading-relaxed bg-amber-50 rounded-xl p-3 border border-amber-200">
                     {p.notes}
                   </p>
                 </div>
@@ -870,7 +870,7 @@ export default function ClientProfilePage() {
 
         {/* ── Right: Package management ── */}
         <div className="space-y-5">
-          <Section title="Plan & Package" icon={<Package className="w-3.5 h-3.5 text-purple-500" />}>
+          <Section title="Plan & Package" icon={<Package className="w-3.5 h-3.5 text-[#3a7d44]" />}>
             <PackageSection clientId={client.id} coachPackages={coachPackages} />
           </Section>
         </div>

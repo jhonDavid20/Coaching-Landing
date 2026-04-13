@@ -35,11 +35,11 @@ function Field({
 }) {
   return (
     <div className="min-w-0">
-      <p className="text-xs font-medium text-gray-500 mb-0.5 uppercase tracking-wide">{label}</p>
+      <p className="text-xs font-medium text-[#617061] mb-0.5 uppercase tracking-wide">{label}</p>
       {value != null && value !== '' ? (
-        <p className="text-sm text-gray-900 dark:text-white break-words">{String(value)}</p>
+        <p className="text-sm text-[#0f1f10] break-words">{String(value)}</p>
       ) : (
-        <p className="text-sm text-gray-400 dark:text-gray-600 italic">{notCompleted}</p>
+        <p className="text-sm text-[#617061] italic">{notCompleted}</p>
       )}
     </div>
   );
@@ -48,7 +48,7 @@ function Field({
 function TagList({ tags, noneRegistered }: { tags?: string[] | null; noneRegistered: string }) {
   if (!tags || tags.length === 0) {
     return (
-      <span className="inline-flex items-center px-3 py-1 text-xs text-gray-400 dark:text-gray-600 border border-dashed border-gray-300 dark:border-gray-700 rounded-full italic">
+      <span className="inline-flex items-center px-3 py-1 text-xs text-[#617061] border border-dashed border-[#d8e0d8]  rounded-full italic">
         {noneRegistered}
       </span>
     );
@@ -58,7 +58,7 @@ function TagList({ tags, noneRegistered }: { tags?: string[] | null; noneRegiste
       {tags.map((tag) => (
         <span
           key={tag}
-          className="px-3 py-1 text-xs text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700/60 rounded-full border border-gray-300 dark:border-gray-600"
+          className="px-3 py-1 text-xs text-[#617061] bg-[#f6f8f5]  rounded-full border border-[#d8e0d8] "
         >
           {tag}
         </span>
@@ -69,9 +69,9 @@ function TagList({ tags, noneRegistered }: { tags?: string[] | null; noneRegiste
 
 function Badge({ label, color }: { label: string; color: 'blue' | 'teal' | 'amber' }) {
   const styles = {
-    blue: 'bg-blue-500/15 text-blue-600 dark:text-blue-300 border-blue-500/30',
-    teal: 'bg-teal-500/15 text-teal-600 dark:text-teal-300 border-teal-500/30',
-    amber: 'bg-amber-500/15 text-amber-600 dark:text-amber-300 border-amber-500/30',
+    blue: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+    teal: 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20',
+    amber: 'bg-amber-500/15 text-amber-600 border-amber-500/30',
   };
   return (
     <span
@@ -121,41 +121,41 @@ function WeightProgress({
   const filledWidth = Math.abs(currentPct - targetPct);
 
   return (
-    <div className="col-span-1 sm:col-span-2 bg-gray-50 dark:bg-gray-800/40 rounded-xl p-4 border border-gray-200 dark:border-gray-700/50">
+    <div className="col-span-1 sm:col-span-2 bg-[#f6f8f5]  rounded-xl p-4 border border-[#d8e0d8]/50">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+        <p className="text-xs font-medium text-[#617061] uppercase tracking-wide">
           {labelProgress}
         </p>
-        <span className="text-xs text-gray-500 dark:text-gray-400">
+        <span className="text-xs text-[#617061]">
           {labelRemaining}{' '}
-          <span className="text-gray-900 dark:text-white font-semibold">{gap.toFixed(1)} kg</span>{' '}
+          <span className="text-[#0f1f10] font-semibold">{gap.toFixed(1)} kg</span>{' '}
           {isLoss ? labelToLose : labelToGain}
         </span>
       </div>
       {/* Scale bar */}
-      <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+      <div className="relative h-2 bg-gray-200  rounded-full overflow-hidden">
         <div
           className={cn(
             'absolute h-full rounded-full',
             isLoss
-              ? 'bg-gradient-to-r from-blue-500 to-teal-400'
+              ? 'bg-[#3a7d44]'
               : 'bg-gradient-to-r from-teal-400 to-blue-500'
           )}
           style={{ left: `${filledFrom}%`, width: `${filledWidth}%` }}
         />
       </div>
-      <div className="flex justify-between mt-1.5 text-xs text-gray-500">
+      <div className="flex justify-between mt-1.5 text-xs text-[#617061]">
         <span>{Math.min(weight, targetWeight).toFixed(1)} kg</span>
         <span>{Math.max(weight, targetWeight).toFixed(1)} kg</span>
       </div>
       <div className="flex items-center gap-4 mt-2 text-xs">
-        <span className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+        <span className="flex items-center gap-1.5 text-[#617061]">
           <span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />
-          {labelCurrent}: <span className="text-gray-900 dark:text-white">{weight} kg</span>
+          {labelCurrent}: <span className="text-[#0f1f10]">{weight} kg</span>
         </span>
-        <span className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400">
+        <span className="flex items-center gap-1.5 text-[#617061]">
           <span className="w-2 h-2 rounded-full bg-teal-400 inline-block" />
-          {labelGoal}: <span className="text-gray-900 dark:text-white">{targetWeight} kg</span>
+          {labelGoal}: <span className="text-[#0f1f10]">{targetWeight} kg</span>
         </span>
       </div>
     </div>
@@ -188,23 +188,23 @@ function AccordionSection({
   return (
     <div
       ref={sectionRef}
-      className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden"
+      className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden"
     >
       {/* Trigger */}
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors"
+        className="w-full flex items-center gap-4 px-6 py-5 text-left hover:bg-[#f6f8f5]  transition-colors"
       >
         <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', iconBg)}>
           {icon}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-gray-900 dark:text-white">{title}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>
+          <p className="text-sm font-semibold text-[#0f1f10]">{title}</p>
+          <p className="text-xs text-[#617061] mt-0.5">{subtitle}</p>
         </div>
         <ChevronDown
-          className="w-4 h-4 text-gray-500 flex-shrink-0"
+          className="w-4 h-4 text-[#617061] flex-shrink-0"
           style={{
             transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -221,7 +221,7 @@ function AccordionSection({
         }}
       >
         <div style={{ overflow: 'hidden' }}>
-          <div className="border-t border-gray-200 dark:border-gray-800 px-6 py-6">
+          <div className="border-t border-[#d8e0d8] px-6 py-6">
             {children}
           </div>
         </div>
@@ -236,29 +236,29 @@ function ProfileSkeleton() {
   return (
     <div className="max-w-3xl mx-auto space-y-4">
       {/* Header skeleton */}
-      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 p-6 animate-pulse">
+      <div className="bg-white rounded-2xl border border-[#d8e0d8] p-6 animate-pulse">
         <div className="flex items-center gap-5">
-          <div className="w-20 h-20 rounded-full bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
+          <div className="w-20 h-20 rounded-full bg-gray-200  flex-shrink-0" />
           <div className="flex-1 space-y-2">
-            <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-48" />
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24" />
+            <div className="h-5 bg-gray-200  rounded w-48" />
+            <div className="h-4 bg-gray-200  rounded w-24" />
           </div>
-          <div className="h-9 w-32 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+          <div className="h-9 w-32 bg-gray-200  rounded-lg" />
         </div>
       </div>
       {/* Three accordion skeletons */}
       {[1, 2, 3].map((i) => (
         <div
           key={i}
-          className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 px-6 py-5 animate-pulse"
+          className="bg-white rounded-2xl border border-[#d8e0d8] px-6 py-5 animate-pulse"
         >
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
+            <div className="w-10 h-10 rounded-xl bg-gray-200  flex-shrink-0" />
             <div className="flex-1 space-y-1.5">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-36" />
-              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-52" />
+              <div className="h-4 bg-gray-200  rounded w-36" />
+              <div className="h-3 bg-gray-200  rounded w-52" />
             </div>
-            <div className="w-4 h-4 rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="w-4 h-4 rounded bg-gray-200 " />
           </div>
         </div>
       ))}
@@ -371,8 +371,8 @@ export default function ProfilePage() {
   return (
     <div className="max-w-3xl mx-auto space-y-4">
       {/* ── Profile header ── */}
-      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-        <div className="h-2 bg-gradient-to-r from-blue-600 to-purple-600" />
+      <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+        <div className="h-2 bg-[#3a7d44]" />
         <div className="px-6 py-6 flex flex-col sm:flex-row sm:items-center gap-4">
           {/* Avatar */}
           {profile?.avatar ? (
@@ -380,29 +380,29 @@ export default function ProfilePage() {
             <img
               src={profile.avatar}
               alt={displayName}
-              className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700 flex-shrink-0"
+              className="w-20 h-20 rounded-full object-cover ring-2 ring-[#d8e0d8] flex-shrink-0"
             />
           ) : (
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center flex-shrink-0 text-white text-2xl font-bold ring-2 ring-gray-200 dark:ring-gray-700">
+            <div className="w-20 h-20 rounded-full bg-[#3a7d44] flex items-center justify-center flex-shrink-0 text-white text-2xl font-bold ring-2 ring-[#d8e0d8]">
               {initials || <User className="w-9 h-9" />}
             </div>
           )}
 
           {/* Name + role */}
           <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate">{displayName}</h1>
+            <h1 className="text-xl font-bold text-[#0f1f10] truncate">{displayName}</h1>
             <div className="flex items-center gap-2 mt-1 flex-wrap">
-              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-blue-600 dark:text-blue-300 border border-blue-500/30 capitalize">
+              <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20 capitalize">
                 {roleLabel}
               </span>
               {profile?.isEmailVerified && (
-                <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/30">
+                <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20">
                   {t('verified')}
                 </span>
               )}
             </div>
             {p.timezone && (
-              <p className="text-xs text-gray-500 mt-1.5">{p.timezone}</p>
+              <p className="text-xs text-[#617061] mt-1.5">{p.timezone}</p>
             )}
           </div>
 
@@ -410,7 +410,7 @@ export default function ProfilePage() {
           <button
             type="button"
             onClick={handleEditProfile}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 transition-opacity flex-shrink-0"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg bg-[#3a7d44] hover:opacity-90 transition-opacity flex-shrink-0"
           >
             <Pencil className="w-3.5 h-3.5" />
             {t('editProfile')}
@@ -423,8 +423,8 @@ export default function ProfilePage() {
         sectionRef={section1Ref}
         isOpen={open[0]}
         onToggle={() => toggle(0)}
-        iconBg="bg-blue-500/15 border border-blue-500/30"
-        icon={<User className="w-5 h-5 text-blue-400" />}
+        iconBg="bg-[#ddf0df] border border-[#3a7d44]/20"
+        icon={<User className="w-5 h-5 text-[#3a7d44]" />}
         title={t('accountSection')}
         subtitle={t('accountSubtitle')}
       >
@@ -455,8 +455,8 @@ export default function ProfilePage() {
       <AccordionSection
         isOpen={open[1]}
         onToggle={() => toggle(1)}
-        iconBg="bg-teal-500/15 border border-teal-500/30"
-        icon={<Zap className="w-5 h-5 text-teal-400" />}
+        iconBg="bg-[#ddf0df] border border-[#3a7d44]/20"
+        icon={<Zap className="w-5 h-5 text-[#3a7d44]" />}
         title={t('fitnessSection')}
         subtitle={t('fitnessSubtitle')}
       >
@@ -476,7 +476,7 @@ export default function ProfilePage() {
               />
             )}
             {!p.fitnessGoal && !p.activityLevel && (
-              <p className="text-sm text-gray-400 dark:text-gray-600 italic">{t('noObjectives')}</p>
+              <p className="text-sm text-[#617061] italic">{t('noObjectives')}</p>
             )}
           </div>
 
@@ -533,35 +533,35 @@ export default function ProfilePage() {
       >
         <div className="space-y-6">
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-2">
               {t('medicalConditions')}
             </p>
             <TagList tags={p.medicalConditions} noneRegistered={noneRegistered} />
           </div>
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-2">
               {t('injuries')}
             </p>
             <TagList tags={p.injuries} noneRegistered={noneRegistered} />
           </div>
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-2">
               {t('allergies')}
             </p>
             <TagList tags={p.allergies} noneRegistered={noneRegistered} />
           </div>
           <div>
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-2">
               {t('dietaryRestrictions')}
             </p>
             <TagList tags={p.dietaryRestrictions} noneRegistered={noneRegistered} />
           </div>
           {p.notes && (
             <div>
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+              <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-2">
                 {t('notes')}
               </p>
-              <p className="text-sm text-gray-900 dark:text-white">{p.notes}</p>
+              <p className="text-sm text-[#0f1f10]">{p.notes}</p>
             </div>
           )}
         </div>
@@ -572,8 +572,8 @@ export default function ProfilePage() {
         <AccordionSection
           isOpen={open[3]}
           onToggle={() => toggle(3)}
-          iconBg="bg-purple-500/15 border border-purple-500/30"
-          icon={<Package className="w-5 h-5 text-purple-400" />}
+          iconBg="bg-[#ddf0df] border border-[#3a7d44]/20"
+          icon={<Package className="w-5 h-5 text-[#3a7d44]" />}
           title="My Coach & Plan"
           subtitle={
             myCoach
@@ -585,29 +585,29 @@ export default function ProfilePage() {
             {/* ── Coach card ── */}
             {myCoach ? (
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center flex-shrink-0 text-white text-base font-bold">
+                <div className="w-12 h-12 rounded-full bg-[#3a7d44] flex items-center justify-center flex-shrink-0 text-white text-base font-bold">
                   {`${myCoach.firstName?.[0] ?? ''}${myCoach.lastName?.[0] ?? ''}`.toUpperCase() || '?'}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                  <p className="text-sm font-semibold text-[#0f1f10]">
                     {`${myCoach.firstName ?? ''} ${myCoach.lastName ?? ''}`.trim() || '—'}
                   </p>
                   {myCoach.profileHeadline && (
-                    <p className="text-xs text-gray-500 mt-0.5">{myCoach.profileHeadline}</p>
+                    <p className="text-xs text-[#617061] mt-0.5">{myCoach.profileHeadline}</p>
                   )}
                   {myCoach.bio && (
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 line-clamp-3">{myCoach.bio}</p>
+                    <p className="text-sm text-[#617061] mt-2 line-clamp-3">{myCoach.bio}</p>
                   )}
                   {myCoach.specialties && myCoach.specialties.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {myCoach.specialties.slice(0, 4).map((s) => (
-                        <span key={s} className="px-2 py-0.5 text-xs rounded-full bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-300 border border-purple-300 dark:border-purple-700">
+                        <span key={s} className="px-2 py-0.5 text-xs rounded-full bg-[#ddf0df] text-[#3a7d44] border border-[#3a7d44]/20">
                           {s}
                         </span>
                       ))}
                     </div>
                   )}
-                  <div className="flex flex-wrap gap-3 mt-3 text-xs text-gray-500">
+                  <div className="flex flex-wrap gap-3 mt-3 text-xs text-[#617061]">
                     {myCoach.yearsOfExperience != null && (
                       <span>{myCoach.yearsOfExperience} yrs experience</span>
                     )}
@@ -620,7 +620,7 @@ export default function ProfilePage() {
                   </div>
                   <a
                     href={`/${locale}/dashboard/coaches`}
-                    className="inline-flex items-center gap-1 mt-3 text-xs text-blue-500 hover:text-blue-600 transition-colors"
+                    className="inline-flex items-center gap-1 mt-3 text-xs text-[#3a7d44] hover:text-[#3a7d44] transition-colors"
                   >
                     <ExternalLink className="w-3 h-3" />
                     Browse coaches
@@ -628,19 +628,19 @@ export default function ProfilePage() {
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-gray-400 italic">Coach info not available.</p>
+              <p className="text-sm text-[#617061] italic">Coach info not available.</p>
             )}
 
             {/* ── Active plan ── */}
-            <div className="border-t border-gray-100 dark:border-gray-800 pt-5">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">Active Plan</p>
+            <div className="border-t border-[#d8e0d8] pt-5">
+              <p className="text-xs font-medium text-[#617061] uppercase tracking-wide mb-3">Active Plan</p>
               {myPlan?.package ? (
-                <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{myPlan.package.name}</p>
+                <div className="bg-[#ddf0df] rounded-xl p-4 border border-[#3a7d44]/20">
+                  <p className="text-sm font-semibold text-[#0f1f10]">{myPlan.package.name}</p>
                   {myPlan.package.description && (
-                    <p className="text-xs text-gray-500 mt-0.5">{myPlan.package.description}</p>
+                    <p className="text-xs text-[#617061] mt-0.5">{myPlan.package.description}</p>
                   )}
-                  <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-600 dark:text-gray-300">
+                  <div className="flex flex-wrap gap-4 mt-3 text-xs text-[#617061]">
                     <span className="flex items-center gap-1">
                       <span className="font-medium">{myPlan.package.durationWeeks}</span> weeks
                     </span>
@@ -655,22 +655,22 @@ export default function ProfilePage() {
                     <span className={cn(
                       'inline-block px-2.5 py-0.5 text-xs rounded-full border capitalize',
                       myPlan.status === 'active'
-                        ? 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30'
+                        ? 'bg-[#ddf0df] text-[#3a7d44] border-[#3a7d44]/20'
                         : myPlan.status === 'completed'
-                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-500 border-gray-300 dark:border-gray-600'
+                          ? 'bg-[#f6f8f5]  text-[#617061] border-[#d8e0d8] '
                           : 'bg-red-500/10 text-red-500 border-red-500/30'
                     )}>
                       {myPlan.status}
                     </span>
                     {myPlan.startDate && (
-                      <span className="ml-2 text-xs text-gray-400">
+                      <span className="ml-2 text-xs text-[#617061]">
                         Started {new Date(myPlan.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                       </span>
                     )}
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-gray-400 italic">No plan assigned yet. Your coach will assign one soon.</p>
+                <p className="text-sm text-[#617061] italic">No plan assigned yet. Your coach will assign one soon.</p>
               )}
             </div>
           </div>

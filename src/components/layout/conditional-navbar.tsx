@@ -22,6 +22,7 @@ export default function ConditionalNavbar() {
     stripped.startsWith('/dashboard') ||
     stripped.startsWith('/onboarding') ||
     stripped.startsWith('/auth') || // auth page has its own minimal navbar
+    stripped.startsWith('/invite') || // invite signup pages have their own header
     stripped === '/'; // new landing page — has its own LandingNavbar
 
   if (isHiddenRoute) {

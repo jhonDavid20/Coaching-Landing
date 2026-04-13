@@ -68,16 +68,16 @@ function PillInput({
 
   return (
     <div className="space-y-1.5">
-      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{label}</label>
+      <label className="block text-xs font-medium text-[#617061] uppercase tracking-wide">{label}</label>
       {/* Pills */}
       <div className="flex flex-wrap gap-1.5 min-h-[2rem]">
         {values.map((v) => (
           <span
             key={v}
-            className="flex items-center gap-1 px-2.5 py-1 text-xs bg-blue-500/10 text-blue-700 dark:text-blue-300 rounded-full border border-blue-400/30"
+            className="flex items-center gap-1 px-2.5 py-1 text-xs bg-[#ddf0df] text-[#3a7d44] rounded-full border border-[#3a7d44]/20"
           >
             {v}
-            <button type="button" onClick={() => remove(v)} className="ml-0.5 text-blue-400 hover:text-blue-600">
+            <button type="button" onClick={() => remove(v)} className="ml-0.5 text-[#3a7d44] hover:text-[#3a7d44]">
               <svg className="w-2.5 h-2.5" viewBox="0 0 10 10" fill="currentColor">
                 <path d="M6.5 5l3-3-1.5-1.5L5 3.5 2 .5.5 2 3.5 5 .5 8 2 9.5 5 6.5l3 3L9.5 8 6.5 5z" />
               </svg>
@@ -92,7 +92,7 @@ function PillInput({
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(input); } }}
         placeholder={placeholder ?? 'Type and press Enter'}
-        className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+        className="w-full px-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
       />
       {/* Suggestions */}
       {suggestions && suggestions.length > 0 && (
@@ -102,7 +102,7 @@ function PillInput({
               key={s}
               type="button"
               onClick={() => add(s)}
-              className="px-2 py-0.5 text-xs rounded-full border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
+              className="px-2 py-0.5 text-xs rounded-full border border-[#d8e0d8] text-[#617061] hover:border-blue-400 hover:text-[#3a7d44] dark:hover:text-[#3a7d44] transition-colors"
             >
               + {s}
             </button>
@@ -122,12 +122,12 @@ function Section({ title, icon: Icon, iconBg, children }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center gap-3">
+    <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+      <div className="px-6 py-4 border-b border-[#d8e0d8] flex items-center gap-3">
         <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center', iconBg)}>
           <Icon className="w-4 h-4 text-white" />
         </div>
-        <h3 className="text-sm font-semibold text-gray-800 dark:text-white">{title}</h3>
+        <h3 className="text-sm font-semibold text-[#0f1f10]">{title}</h3>
       </div>
       <div className="p-6 space-y-5">{children}</div>
     </div>
@@ -139,7 +139,7 @@ function Section({ title, icon: Icon, iconBg, children }: {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
-      <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{label}</label>
+      <label className="block text-xs font-medium text-[#617061] uppercase tracking-wide">{label}</label>
       {children}
     </div>
   );
@@ -159,7 +159,7 @@ function TextInput({
       value={value ?? ''}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+      className="w-full px-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
     />
   );
 }
@@ -176,7 +176,7 @@ function TextArea({ value, onChange, placeholder, rows = 4 }: {
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       rows={rows}
-      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 resize-none"
+      className="w-full px-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40 resize-none"
     />
   );
 }
@@ -190,7 +190,7 @@ function SelectInput({ value, onChange, options }: {
     <select
       value={value ?? ''}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+      className="w-full px-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
     >
       {options.map((o) => (
         <option key={o.value} value={o.value}>{o.label}</option>
@@ -213,21 +213,21 @@ function PackageCard({
   deleting: boolean;
 }) {
   return (
-    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-      <div className="h-1 bg-gradient-to-r from-blue-500 to-purple-600" />
+    <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+      <div className="h-1 bg-[#3a7d44]" />
       <div className="p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="font-semibold text-gray-900 dark:text-white truncate">{pkg.name}</p>
+            <p className="font-semibold text-[#0f1f10] truncate">{pkg.name}</p>
             {pkg.description && (
-              <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{pkg.description}</p>
+              <p className="text-sm text-[#617061] mt-0.5 line-clamp-2">{pkg.description}</p>
             )}
           </div>
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <button
               type="button"
               onClick={onEdit}
-              className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 transition-colors"
+              className="p-1.5 rounded-lg text-[#617061] hover:bg-[#f6f8f5]  hover:text-[#617061] transition-colors"
               title="Edit"
             >
               <Pencil className="w-3.5 h-3.5" />
@@ -236,7 +236,7 @@ function PackageCard({
               type="button"
               onClick={onDelete}
               disabled={deleting}
-              className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition-colors disabled:opacity-50"
+              className="p-1.5 rounded-lg text-[#617061] hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500 transition-colors disabled:opacity-50"
               title="Delete"
             >
               {deleting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
@@ -245,23 +245,23 @@ function PackageCard({
         </div>
         {/* Stats pills */}
         <div className="flex flex-wrap gap-2 mt-4">
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 border border-amber-200/60 dark:border-amber-700/40">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-900/20 text-amber-700 border border-amber-200/60 dark:border-amber-700/40">
             <DollarSign className="w-3 h-3" /> ${pkg.priceUSD}
           </span>
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-700/40">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-[#3a7d44] border border-[#3a7d44]/20/20">
             <Clock className="w-3 h-3" /> {pkg.durationWeeks}w
           </span>
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 border border-teal-200/60 dark:border-teal-700/40">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-teal-50 text-[#3a7d44] border border-[#3a7d44]/20/20">
             <CheckCircle2 className="w-3 h-3" /> {pkg.sessionsIncluded} sessions
           </span>
         </div>
         {/* Features list */}
         {pkg.features && pkg.features.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 space-y-1.5">
+          <div className="mt-4 pt-4 border-t border-[#d8e0d8] space-y-1.5">
             {pkg.features.map((feat, i) => (
               <div key={i} className="flex items-center gap-2">
-                <BadgeCheck className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
-                <span className="text-xs text-gray-600 dark:text-gray-400">{feat}</span>
+                <BadgeCheck className="w-3.5 h-3.5 text-[#3a7d44] flex-shrink-0" />
+                <span className="text-xs text-[#617061]">{feat}</span>
               </div>
             ))}
           </div>
@@ -288,7 +288,7 @@ function PackageFeatureInput({ onAdd }: { onAdd: (feat: string) => void }) {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }}
         placeholder="e.g. Custom nutrition plan…"
-        className="flex-1 px-2.5 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+        className="flex-1 px-2.5 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
       />
       <button
         type="button"
@@ -320,8 +320,8 @@ function PackageForm({
     setForm((prev) => ({ ...prev, [k]: v }));
 
   return (
-    <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-      <div className="h-1 bg-gradient-to-r from-blue-500 to-purple-600" />
+    <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+      <div className="h-1 bg-[#3a7d44]" />
       <div className="p-5 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
@@ -331,14 +331,14 @@ function PackageForm({
           </div>
           <Field label="Price (USD)">
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#617061] text-sm">$</span>
               <input
                 type="number"
                 min={0}
                 value={form.priceUSD || ''}
                 onChange={(e) => up('priceUSD', Number(e.target.value))}
                 placeholder="499"
-                className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
               />
             </div>
           </Field>
@@ -349,9 +349,9 @@ function PackageForm({
                 min={1}
                 value={form.durationWeeks || ''}
                 onChange={(e) => up('durationWeeks', Number(e.target.value))}
-                className="w-20 px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                className="w-20 px-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
               />
-              <span className="text-sm text-gray-500">weeks</span>
+              <span className="text-sm text-[#617061]">weeks</span>
             </div>
           </Field>
           <Field label="Sessions included">
@@ -361,9 +361,9 @@ function PackageForm({
                 min={1}
                 value={form.sessionsIncluded || ''}
                 onChange={(e) => up('sessionsIncluded', Number(e.target.value))}
-                className="w-20 px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                className="w-20 px-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
               />
-              <span className="text-sm text-gray-500">sessions</span>
+              <span className="text-sm text-[#617061]">sessions</span>
             </div>
           </Field>
           <div className="sm:col-span-2">
@@ -383,14 +383,14 @@ function PackageForm({
               <div className="space-y-2">
                 {(form.features ?? []).map((feat, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <BadgeCheck className="w-4 h-4 text-teal-500 flex-shrink-0" />
-                    <span className="flex-1 text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 rounded-lg px-2.5 py-1.5 border border-gray-200 dark:border-gray-700">
+                    <BadgeCheck className="w-4 h-4 text-[#3a7d44] flex-shrink-0" />
+                    <span className="flex-1 text-sm text-[#617061] bg-[#f6f8f5]  rounded-lg px-2.5 py-1.5 border border-[#d8e0d8]">
                       {feat}
                     </span>
                     <button
                       type="button"
                       onClick={() => up('features', (form.features ?? []).filter((_, idx) => idx !== i))}
-                      className="text-gray-400 hover:text-red-500 transition-colors flex-shrink-0"
+                      className="text-[#617061] hover:text-red-500 transition-colors flex-shrink-0"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -407,7 +407,7 @@ function PackageForm({
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+            className="px-4 py-2 text-sm text-[#617061] hover:text-[#617061] dark:hover:text-[#c8dcc9] transition-colors"
           >
             Cancel
           </button>
@@ -415,7 +415,7 @@ function PackageForm({
             type="button"
             onClick={() => onSave(form)}
             disabled={saving || !form.name.trim() || !form.priceUSD || !form.durationWeeks || !form.sessionsIncluded}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl bg-[#3a7d44] hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             Save package
@@ -443,7 +443,7 @@ function ProfileOverview({
     {
       title: 'Identity',
       icon: User,
-      iconBg: 'bg-gradient-to-br from-blue-500 to-blue-700',
+      iconBg: 'bg-[#3a7d44]',
       fields: [
         { label: 'Headline', filled: !!form.profileHeadline, value: form.profileHeadline || undefined },
         { label: 'Bio', filled: !!form.bio, value: form.bio ? `${form.bio.slice(0, 100)}${form.bio.length > 100 ? '…' : ''}` : undefined },
@@ -454,7 +454,7 @@ function ProfileOverview({
     {
       title: 'Expertise',
       icon: Briefcase,
-      iconBg: 'bg-gradient-to-br from-purple-500 to-purple-700',
+      iconBg: 'bg-[#162318]',
       fields: [
         { label: 'Specialties', filled: (form.specialties?.length ?? 0) > 0, value: form.specialties?.join(', ') || undefined },
         { label: 'Training modalities', filled: (form.trainingModalities?.length ?? 0) > 0, value: form.trainingModalities?.join(', ') || undefined },
@@ -466,7 +466,7 @@ function ProfileOverview({
     {
       title: 'Availability',
       icon: Clock,
-      iconBg: 'bg-gradient-to-br from-teal-500 to-teal-700',
+      iconBg: 'bg-[#52a85e]',
       fields: [
         { label: 'Timezone', filled: !!form.timezone, value: form.timezone || undefined },
         { label: 'Session duration', filled: form.sessionDurationMinutes != null, value: form.sessionDurationMinutes != null ? `${form.sessionDurationMinutes} min` : undefined },
@@ -477,7 +477,7 @@ function ProfileOverview({
     {
       title: 'Rates',
       icon: DollarSign,
-      iconBg: 'bg-gradient-to-br from-amber-500 to-orange-600',
+      iconBg: 'bg-[#2d5a31]',
       fields: [
         { label: 'Session rate', filled: form.sessionRateUSD != null, value: form.sessionRateUSD != null ? `$${form.sessionRateUSD}/session` : undefined },
         { label: 'Trial available', filled: form.trialSessionAvailable != null, value: form.trialSessionAvailable != null ? (form.trialSessionAvailable ? 'Yes' : 'No') : undefined },
@@ -501,14 +501,14 @@ function ProfileOverview({
   const totalCount = allFields.length;
   const pct = Math.round((filledCount / totalCount) * 100);
   const barColor = pct >= 80 ? 'bg-teal-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
-  const pctColor = pct >= 80 ? 'text-teal-600 dark:text-teal-400' : pct >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400';
+  const pctColor = pct >= 80 ? 'text-[#3a7d44]' : pct >= 50 ? 'text-amber-600' : 'text-red-600';
 
   if (loading) {
     return (
       <div className="space-y-4 animate-pulse">
-        <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded-2xl" />
+        <div className="h-24 bg-gray-200  rounded-2xl" />
         {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="h-44 bg-gray-200 dark:bg-gray-700 rounded-2xl" />
+          <div key={i} className="h-44 bg-gray-200  rounded-2xl" />
         ))}
       </div>
     );
@@ -517,19 +517,19 @@ function ProfileOverview({
   return (
     <div className="space-y-5">
       {/* Completeness card */}
-      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 p-5">
+      <div className="bg-white rounded-2xl border border-[#d8e0d8] p-5">
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
-            <p className="text-sm font-semibold text-gray-900 dark:text-white">Profile completeness</p>
-            <p className="text-xs text-gray-500 mt-0.5">{filledCount} of {totalCount} fields filled in</p>
+            <p className="text-sm font-semibold text-[#0f1f10]">Profile completeness</p>
+            <p className="text-xs text-[#617061] mt-0.5">{filledCount} of {totalCount} fields filled in</p>
           </div>
           <span className={cn('text-2xl font-bold', pctColor)}>{pct}%</span>
         </div>
-        <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+        <div className="h-2 bg-[#f6f8f5]  rounded-full overflow-hidden">
           <div className={cn('h-full rounded-full transition-all duration-500', barColor)} style={{ width: `${pct}%` }} />
         </div>
         {pct < 100 && (
-          <p className="text-xs text-gray-400 mt-2.5">
+          <p className="text-xs text-[#617061] mt-2.5">
             {pct < 50
               ? 'Your profile is missing key information. Add more details so clients can find and trust you.'
               : pct < 80
@@ -541,25 +541,25 @@ function ProfileOverview({
 
       {/* Section cards */}
       {sections.map(({ title, icon: Icon, iconBg, fields }) => (
-        <div key={title} className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-          <div className="px-6 py-3.5 border-b border-gray-200 dark:border-gray-800 flex items-center gap-3">
+        <div key={title} className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+          <div className="px-6 py-3.5 border-b border-[#d8e0d8] flex items-center gap-3">
             <div className={cn('w-7 h-7 rounded-lg flex items-center justify-center', iconBg)}>
               <Icon className="w-3.5 h-3.5 text-white" />
             </div>
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-white flex-1">{title}</h3>
-            <span className="text-xs text-gray-400">{fields.filter((f) => f.filled).length}/{fields.length}</span>
+            <h3 className="text-sm font-semibold text-[#0f1f10] flex-1">{title}</h3>
+            <span className="text-xs text-[#617061]">{fields.filter((f) => f.filled).length}/{fields.length}</span>
           </div>
-          <div className="px-6 divide-y divide-gray-100 dark:divide-gray-800">
+          <div className="px-6 divide-y divide-[#f0f4f0] ">
             {fields.map((field) => (
               <div key={field.label} className="py-3 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2 flex-shrink-0">
-                  <CheckCircle2 className={cn('w-3.5 h-3.5 flex-shrink-0', field.filled ? 'text-teal-500' : 'text-gray-300 dark:text-gray-600')} />
-                  <p className="text-xs text-gray-500">{field.label}</p>
+                  <CheckCircle2 className={cn('w-3.5 h-3.5 flex-shrink-0', field.filled ? 'text-[#3a7d44]' : 'text-[#c8dcc9] ')} />
+                  <p className="text-xs text-[#617061]">{field.label}</p>
                 </div>
                 {field.filled ? (
-                  <p className="text-xs text-gray-800 dark:text-gray-200 text-right truncate max-w-[55%]">{field.value}</p>
+                  <p className="text-xs text-[#0f1f10]  text-right truncate max-w-[55%]">{field.value}</p>
                 ) : (
-                  <span className="text-xs text-gray-400 italic">Not set</span>
+                  <span className="text-xs text-[#617061] italic">Not set</span>
                 )}
               </div>
             ))}
@@ -752,15 +752,15 @@ export default function CoachProfilePage() {
           {tab === 'profile' && viewMode === 'edit' && (
             <button
               onClick={() => setViewMode('view')}
-              className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex-shrink-0"
+              className="p-1.5 rounded-lg text-[#617061] hover:bg-[#f6f8f5]  hover:text-[#617061] dark:hover:text-[#c8dcc9] transition-colors flex-shrink-0"
               aria-label="Back to overview"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
           )}
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('profilePlansTitle')}</h1>
-            <p className="text-sm text-gray-500 mt-0.5">
+            <h1 className="text-2xl font-bold text-[#0f1f10]">{t('profilePlansTitle')}</h1>
+            <p className="text-sm text-[#617061] mt-0.5">
               {tab === 'profile' && viewMode === 'edit' ? 'Edit your coach profile' : t('profilePlansSubtitle')}
             </p>
           </div>
@@ -769,7 +769,7 @@ export default function CoachProfilePage() {
         {tab === 'profile' && viewMode === 'view' ? (
           <button
             onClick={() => setViewMode('edit')}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 transition-opacity flex-shrink-0"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl bg-[#3a7d44] hover:opacity-90 transition-opacity flex-shrink-0"
           >
             <Edit2 className="w-4 h-4" />
             Edit profile
@@ -778,7 +778,7 @@ export default function CoachProfilePage() {
           <button
             onClick={handleSaveProfile}
             disabled={saving}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 transition-opacity disabled:opacity-60 flex-shrink-0"
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl bg-[#3a7d44] hover:opacity-90 transition-opacity disabled:opacity-60 flex-shrink-0"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             {saving ? t('saving') : t('saveButton')}
@@ -788,7 +788,7 @@ export default function CoachProfilePage() {
       </div>
 
       {/* ── Tab bar ── */}
-      <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-xl p-1 w-fit">
+      <div className="flex gap-1 bg-[#f6f8f5]  rounded-xl p-1 w-fit">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
@@ -796,8 +796,8 @@ export default function CoachProfilePage() {
             className={cn(
               'flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors',
               tab === id
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                ? 'bg-white text-[#0f1f10] shadow-sm'
+                : 'text-[#617061] hover:text-[#617061] dark:hover:text-[#c8dcc9]'
             )}
           >
             <Icon className="w-4 h-4" />
@@ -814,7 +814,7 @@ export default function CoachProfilePage() {
       {tab === 'profile' && viewMode === 'edit' && (
         <div className="space-y-5">
           {/* Identity */}
-          <Section title={t('sectionIdentity')} icon={User} iconBg="bg-gradient-to-br from-blue-500 to-blue-700">
+          <Section title={t('sectionIdentity')} icon={User} iconBg="bg-[#3a7d44]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="sm:col-span-2">
                 <Field label={t('fieldHeadline')}>
@@ -854,7 +854,7 @@ export default function CoachProfilePage() {
           </Section>
 
           {/* Expertise */}
-          <Section title={t('sectionExpertise')} icon={Briefcase} iconBg="bg-gradient-to-br from-purple-500 to-purple-700">
+          <Section title={t('sectionExpertise')} icon={Briefcase} iconBg="bg-[#162318]">
             <PillInput
               label={t('fieldSpecialties')}
               values={form.specialties ?? []}
@@ -889,7 +889,7 @@ export default function CoachProfilePage() {
           </Section>
 
           {/* Availability */}
-          <Section title={t('sectionAvailability')} icon={Clock} iconBg="bg-gradient-to-br from-teal-500 to-teal-700">
+          <Section title={t('sectionAvailability')} icon={Clock} iconBg="bg-[#52a85e]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <Field label={t('fieldTimezone')}>
                 <SelectInput
@@ -904,9 +904,9 @@ export default function CoachProfilePage() {
                     type="number"
                     value={form.sessionDurationMinutes ?? ''}
                     onChange={(e) => updateForm('sessionDurationMinutes', Number(e.target.value))}
-                    className="w-24 px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                    className="w-24 px-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
                   />
-                  <span className="text-sm text-gray-500">{t('minutes')}</span>
+                  <span className="text-sm text-[#617061]">{t('minutes')}</span>
                 </div>
               </Field>
               <Field label={t('fieldMaxClients')}>
@@ -926,17 +926,17 @@ export default function CoachProfilePage() {
                 />
               </Field>
               {/* Accepting clients toggle */}
-              <div className="sm:col-span-2 flex items-center justify-between bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4">
+              <div className="sm:col-span-2 flex items-center justify-between bg-[#f6f8f5]  rounded-xl p-4">
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{t('fieldAccepting')}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{t('fieldAcceptingHint')}</p>
+                  <p className="text-sm font-medium text-[#0f1f10]">{t('fieldAccepting')}</p>
+                  <p className="text-xs text-[#617061] mt-0.5">{t('fieldAcceptingHint')}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => updateForm('acceptingClients', !form.acceptingClients)}
                   className={cn(
-                    'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/40',
-                    form.acceptingClients ? 'bg-teal-500' : 'bg-gray-300 dark:bg-gray-600'
+                    'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40',
+                    form.acceptingClients ? 'bg-teal-500' : 'bg-gray-300 '
                   )}
                 >
                   <span
@@ -951,29 +951,29 @@ export default function CoachProfilePage() {
           </Section>
 
           {/* Rates */}
-          <Section title={t('sectionRates')} icon={DollarSign} iconBg="bg-gradient-to-br from-amber-500 to-orange-600">
+          <Section title={t('sectionRates')} icon={DollarSign} iconBg="bg-[#2d5a31]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <Field label={t('fieldSessionRate')}>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#617061] text-sm">$</span>
                   <input
                     type="number"
                     value={form.sessionRateUSD ?? ''}
                     onChange={(e) => updateForm('sessionRateUSD', Number(e.target.value) || undefined)}
                     placeholder="120"
-                    className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                    className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
                   />
                 </div>
               </Field>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{t('fieldTrialAvailable')}</p>
+                  <p className="text-xs font-medium text-[#617061] uppercase tracking-wide">{t('fieldTrialAvailable')}</p>
                   <button
                     type="button"
                     onClick={() => updateForm('trialSessionAvailable', !form.trialSessionAvailable)}
                     className={cn(
                       'relative inline-flex h-5 w-9 items-center rounded-full transition-colors',
-                      form.trialSessionAvailable ? 'bg-teal-500' : 'bg-gray-300 dark:bg-gray-600'
+                      form.trialSessionAvailable ? 'bg-teal-500' : 'bg-gray-300 '
                     )}
                   >
                     <span className={cn('inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform', form.trialSessionAvailable ? 'translate-x-4' : 'translate-x-0.5')} />
@@ -981,13 +981,13 @@ export default function CoachProfilePage() {
                 </div>
                 {form.trialSessionAvailable && (
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#617061] text-sm">$</span>
                     <input
                       type="number"
                       value={form.trialSessionRateUSD ?? ''}
                       onChange={(e) => updateForm('trialSessionRateUSD', Number(e.target.value) || undefined)}
                       placeholder={t('fieldTrialRatePlaceholder')}
-                      className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                      className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
                     />
                   </div>
                 )}
@@ -1006,7 +1006,7 @@ export default function CoachProfilePage() {
               </Field>
               <Field label={t('fieldInstagram')}>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">@</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#617061] text-sm">@</span>
                   <TextInput value={form.instagramHandle} onChange={(v) => updateForm('instagramHandle', v)} placeholder="yourhandle" />
                 </div>
               </Field>
@@ -1020,14 +1020,14 @@ export default function CoachProfilePage() {
         <div className="space-y-5">
           {/* Header row */}
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-[#617061]">
               Packages shown on your public profile. Clients can see pricing before connecting.
             </p>
             {editingPackage === undefined && (
               <button
                 type="button"
                 onClick={() => setEditingPackage(null)}
-                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800 transition-colors"
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#3a7d44] hover:bg-blue-50 dark:hover:bg-[#ddf0df] rounded-xl border border-blue-200 dark:border-blue-800 transition-colors"
               >
                 <Plus className="w-4 h-4" /> New package
               </button>
@@ -1037,7 +1037,7 @@ export default function CoachProfilePage() {
           {/* Loading spinner */}
           {packagesLoading && (
             <div className="flex items-center justify-center py-16">
-              <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+              <Loader2 className="w-6 h-6 animate-spin text-[#617061]" />
             </div>
           )}
 
@@ -1060,16 +1060,16 @@ export default function CoachProfilePage() {
 
           {/* Empty state */}
           {!packagesLoading && user?.id && packages.length === 0 && editingPackage === undefined && (
-            <div className="flex flex-col items-center justify-center py-20 text-center bg-white dark:bg-[#1a1d27] rounded-2xl border border-dashed border-gray-200 dark:border-gray-700">
-              <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
-                <Package className="w-7 h-7 text-gray-400" />
+            <div className="flex flex-col items-center justify-center py-20 text-center bg-white rounded-2xl border border-dashed border-[#d8e0d8]">
+              <div className="w-14 h-14 rounded-2xl bg-[#f6f8f5]  flex items-center justify-center mb-4">
+                <Package className="w-7 h-7 text-[#617061]" />
               </div>
-              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">No packages yet</p>
-              <p className="text-xs text-gray-400 mt-1 mb-4">Create your first package to show clients what you offer</p>
+              <p className="text-sm font-medium text-[#617061]">No packages yet</p>
+              <p className="text-xs text-[#617061] mt-1 mb-4">Create your first package to show clients what you offer</p>
               <button
                 type="button"
                 onClick={() => setEditingPackage(null)}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#3a7d44] hover:text-[#3a7d44] transition-colors"
               >
                 <Plus className="w-4 h-4" /> Create your first package
               </button>
