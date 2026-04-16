@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/components/auth/session-provider';
 import { updateCoachProfile, getCoachOwnProfile, CoachProfileUpdate } from '@/actions/coach';
+import { getFullUserProfile } from '@/actions/user';
+import AvatarUploader from '@/components/profile/avatar-uploader';
 import {
   getCoachPackages,
   createPackage,
@@ -274,6 +276,7 @@ function PackageCard({
 // ─── Package feature input ────────────────────────────────────────────────────
 
 function PackageFeatureInput({ onAdd }: { onAdd: (feat: string) => void }) {
+  const t = useTranslations('coachDashboard');
   const [value, setValue] = useState('');
   function add() {
     const trimmed = value.trim();
@@ -287,7 +290,7 @@ function PackageFeatureInput({ onAdd }: { onAdd: (feat: string) => void }) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }}
-        placeholder="e.g. Custom nutrition plan…"
+        placeholder={t('pkgFeaturePlaceholder')}
         className="flex-1 px-2.5 py-2 text-sm rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
       />
       <button
@@ -296,7 +299,7 @@ function PackageFeatureInput({ onAdd }: { onAdd: (feat: string) => void }) {
         className="px-3 py-2 bg-[#3a7d44] text-white text-xs font-medium rounded-lg hover:bg-[#2d5a31] transition-colors flex items-center gap-1"
       >
         <Plus className="w-3.5 h-3.5" />
-        Add
+        {t('pkgAdd')}
       </button>
     </div>
   );
@@ -315,6 +318,7 @@ function PackageForm({
   onCancel: () => void;
   saving: boolean;
 }) {
+  const t = useTranslations('coachDashboard');
   const [form, setForm] = useState<PackageFormData>(initial);
   const up = <K extends keyof PackageFormData>(k: K, v: PackageFormData[K]) =>
     setForm((prev) => ({ ...prev, [k]: v }));
@@ -325,11 +329,11 @@ function PackageForm({
       <div className="p-5 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
-            <Field label="Package name">
-              <TextInput value={form.name} onChange={(v) => up('name', v)} placeholder="e.g. 12-Week Transformation" />
+            <Field label={t('pkgName')}>
+              <TextInput value={form.name} onChange={(v) => up('name', v)} placeholder={t('pkgNamePlaceholder')} />
             </Field>
           </div>
-          <Field label="Price (USD)">
+          <Field label={t('pkgPrice')}>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#617061] text-sm">$</span>
               <input
@@ -342,7 +346,7 @@ function PackageForm({
               />
             </div>
           </Field>
-          <Field label="Duration">
+          <Field label={t('pkgDuration')}>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -351,10 +355,10 @@ function PackageForm({
                 onChange={(e) => up('durationWeeks', Number(e.target.value))}
                 className="w-20 px-3 py-2 text-sm rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
               />
-              <span className="text-sm text-[#617061]">weeks</span>
+              <span className="text-sm text-[#617061]">{t('pkgWeeks')}</span>
             </div>
           </Field>
-          <Field label="Sessions included">
+          <Field label={t('pkgSessions')}>
             <div className="flex items-center gap-2">
               <input
                 type="number"
@@ -363,23 +367,23 @@ function PackageForm({
                 onChange={(e) => up('sessionsIncluded', Number(e.target.value))}
                 className="w-20 px-3 py-2 text-sm rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
               />
-              <span className="text-sm text-[#617061]">sessions</span>
+              <span className="text-sm text-[#617061]">{t('pkgSessionsUnit')}</span>
             </div>
           </Field>
           <div className="sm:col-span-2">
-            <Field label="Description">
+            <Field label={t('pkgDescription')}>
               <TextArea
                 value={form.description ?? ''}
                 onChange={(v) => up('description', v)}
                 rows={2}
-                placeholder="What's included? Who is this for?"
+                placeholder={t('pkgDescPlaceholder')}
               />
             </Field>
           </div>
 
           {/* Features / what's included */}
           <div className="sm:col-span-2">
-            <Field label="What's included (shown to client)">
+            <Field label={t('pkgFeatures')}>
               <div className="space-y-2">
                 {(form.features ?? []).map((feat, i) => (
                   <div key={i} className="flex items-center gap-2">
@@ -409,7 +413,7 @@ function PackageForm({
             onClick={onCancel}
             className="px-4 py-2 text-sm text-[#617061] hover:text-[#0f1f10] transition-colors"
           >
-            Cancel
+            {t('pkgCancel')}
           </button>
           <button
             type="button"
@@ -418,7 +422,7 @@ function PackageForm({
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl bg-[#162318] hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            Save package
+            {t('pkgSave')}
           </button>
         </div>
       </div>
@@ -431,67 +435,77 @@ function PackageForm({
 function ProfileOverview({
   form,
   loading,
+  avatarUrl,
+  initials,
+  onAvatarChanged,
 }: {
   form: CoachProfileUpdate;
   loading: boolean;
+  avatarUrl: string | null;
+  initials: string;
+  onAvatarChanged: (url: string | null) => void;
 }) {
+  const t = useTranslations('coachDashboard');
+
   const coachingTypeLabel: Record<string, string> = {
-    online: 'Online', in_person: 'In-person', hybrid: 'Hybrid',
+    online: t('coachingOnline'),
+    in_person: t('coachingInPerson'),
+    hybrid: t('coachingHybrid'),
   };
 
   const sections = [
     {
-      title: 'Identity',
+      title: t('overviewSectionIdentity'),
       icon: User,
       iconBg: 'bg-[#3a7d44]',
       fields: [
-        { label: 'Headline', filled: !!form.profileHeadline, value: form.profileHeadline || undefined },
-        { label: 'Bio', filled: !!form.bio, value: form.bio ? `${form.bio.slice(0, 100)}${form.bio.length > 100 ? '…' : ''}` : undefined },
-        { label: 'Years of experience', filled: form.yearsOfExperience != null, value: form.yearsOfExperience != null ? `${form.yearsOfExperience} yrs` : undefined },
-        { label: 'Coaching type', filled: !!form.coachingType, value: form.coachingType ? coachingTypeLabel[form.coachingType] : undefined },
+        { label: t('overviewFieldHeadline'), filled: !!form.profileHeadline, value: form.profileHeadline || undefined },
+        { label: t('fieldBio'), filled: !!form.bio, value: form.bio ? `${form.bio.slice(0, 100)}${form.bio.length > 100 ? '…' : ''}` : undefined },
+        { label: t('fieldYears'), filled: form.yearsOfExperience != null, value: form.yearsOfExperience != null ? `${form.yearsOfExperience} ${t('yrsUnit')}` : undefined },
+        { label: t('fieldCoachingType'), filled: !!form.coachingType, value: form.coachingType ? coachingTypeLabel[form.coachingType] : undefined },
       ],
     },
     {
-      title: 'Expertise',
+      title: t('sectionExpertise'),
       icon: Briefcase,
       iconBg: 'bg-[#2d5a31]',
       fields: [
-        { label: 'Specialties', filled: (form.specialties?.length ?? 0) > 0, value: form.specialties?.join(', ') || undefined },
-        { label: 'Training modalities', filled: (form.trainingModalities?.length ?? 0) > 0, value: form.trainingModalities?.join(', ') || undefined },
-        { label: 'Target client types', filled: (form.targetClientTypes?.length ?? 0) > 0, value: form.targetClientTypes?.join(', ') || undefined },
-        { label: 'Certifications', filled: (form.certifications?.length ?? 0) > 0, value: form.certifications?.join(', ') || undefined },
-        { label: 'Languages', filled: (form.languagesSpoken?.length ?? 0) > 0, value: form.languagesSpoken?.join(', ') || undefined },
+        { label: t('fieldSpecialties'), filled: (form.specialties?.length ?? 0) > 0, value: form.specialties?.join(', ') || undefined },
+        { label: t('fieldModalities'), filled: (form.trainingModalities?.length ?? 0) > 0, value: form.trainingModalities?.join(', ') || undefined },
+        { label: t('fieldClientTypes'), filled: (form.targetClientTypes?.length ?? 0) > 0, value: form.targetClientTypes?.join(', ') || undefined },
+        { label: t('fieldCertifications'), filled: (form.certifications?.length ?? 0) > 0, value: form.certifications?.join(', ') || undefined },
+        { label: t('overviewFieldLanguages'), filled: (form.languagesSpoken?.length ?? 0) > 0, value: form.languagesSpoken?.join(', ') || undefined },
       ],
     },
     {
-      title: 'Availability',
+      title: t('sectionAvailability'),
       icon: Clock,
       iconBg: 'bg-[#52a85e]',
       fields: [
-        { label: 'Timezone', filled: !!form.timezone, value: form.timezone || undefined },
-        { label: 'Session duration', filled: form.sessionDurationMinutes != null, value: form.sessionDurationMinutes != null ? `${form.sessionDurationMinutes} min` : undefined },
-        { label: 'Max clients', filled: form.maxClientCapacity != null, value: form.maxClientCapacity != null ? `${form.maxClientCapacity}` : undefined },
-        { label: 'Accepting clients', filled: form.acceptingClients != null, value: form.acceptingClients != null ? (form.acceptingClients ? 'Yes' : 'No') : undefined },
+        { label: t('fieldTimezone'), filled: !!form.timezone, value: form.timezone || undefined },
+        { label: t('fieldSessionDuration'), filled: form.sessionDurationMinutes != null, value: form.sessionDurationMinutes != null ? `${form.sessionDurationMinutes} ${t('minutes')}` : undefined },
+        { label: t('overviewFieldMaxClients'), filled: form.maxClientCapacity != null, value: form.maxClientCapacity != null ? `${form.maxClientCapacity}` : undefined },
+        { label: t('overviewFieldAccepting'), filled: form.acceptingClients != null, value: form.acceptingClients != null ? (form.acceptingClients ? t('boolYes') : t('boolNo')) : undefined },
       ],
     },
     {
-      title: 'Rates',
+      title: t('overviewSectionRates'),
       icon: DollarSign,
       iconBg: 'bg-[#e8a030]',
       fields: [
-        { label: 'Session rate', filled: form.sessionRateUSD != null, value: form.sessionRateUSD != null ? `$${form.sessionRateUSD}/session` : undefined },
-        { label: 'Trial available', filled: form.trialSessionAvailable != null, value: form.trialSessionAvailable != null ? (form.trialSessionAvailable ? 'Yes' : 'No') : undefined },
-        ...(form.trialSessionAvailable ? [{ label: 'Trial rate', filled: form.trialSessionRateUSD != null, value: form.trialSessionRateUSD != null ? (form.trialSessionRateUSD === 0 ? 'Free' : `$${form.trialSessionRateUSD}`) : undefined }] : []),
+        { label: t('overviewFieldSessionRate'), filled: form.sessionRateUSD != null, value: form.sessionRateUSD != null ? `$${form.sessionRateUSD}${t('ratePerSession')}` : undefined },
+        { label: t('overviewFieldTrialAvailable'), filled: form.trialSessionAvailable != null, value: form.trialSessionAvailable != null ? (form.trialSessionAvailable ? t('boolYes') : t('boolNo')) : undefined },
+        ...(form.trialSessionAvailable ? [{ label: t('overviewFieldTrialRate'), filled: form.trialSessionRateUSD != null, value: form.trialSessionRateUSD != null ? (form.trialSessionRateUSD === 0 ? t('freeLabel') : `$${form.trialSessionRateUSD}`) : undefined }] : []),
       ],
     },
     {
-      title: 'Links',
+      title: t('sectionLinks'),
       icon: Globe,
       iconBg: 'bg-[#617061]',
       fields: [
-        { label: 'Instagram', filled: !!form.instagramHandle, value: form.instagramHandle ? `@${form.instagramHandle}` : undefined },
-        { label: 'Website', filled: !!form.websiteUrl, value: form.websiteUrl || undefined },
-        { label: 'Video intro', filled: !!form.videoIntroUrl, value: form.videoIntroUrl || undefined },
+        { label: t('overviewFieldInstagram'), filled: !!form.instagramHandle, value: form.instagramHandle ? `@${form.instagramHandle}` : undefined },
+        { label: t('fieldWebsite'), filled: !!form.websiteUrl, value: form.websiteUrl || undefined },
+        { label: t('overviewFieldVideoIntro'), filled: !!form.videoIntroUrl, value: form.videoIntroUrl || undefined },
       ],
     },
   ];
@@ -518,10 +532,28 @@ function ProfileOverview({
     <div className="space-y-5">
       {/* Completeness card */}
       <div className="bg-white rounded-2xl border border-[#d8e0d8] p-5">
+        {/* Avatar row */}
+        <div className="flex items-center gap-4 mb-5 pb-5 border-b border-[#d8e0d8]">
+          <AvatarUploader
+            currentAvatar={avatarUrl}
+            initials={initials}
+            size="md"
+            onChanged={onAvatarChanged}
+          />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-[#0f1f10]">{t('overviewPhotoTitle')}</p>
+            <p className="text-xs text-[#617061] mt-0.5">
+              {avatarUrl
+                ? t('overviewPhotoHover')
+                : t('overviewPhotoAdd')}
+            </p>
+          </div>
+        </div>
+
         <div className="flex items-start justify-between gap-4 mb-4">
           <div>
-            <p className="text-sm font-semibold text-[#0f1f10]">Profile completeness</p>
-            <p className="text-xs text-[#617061] mt-0.5">{filledCount} of {totalCount} fields filled in</p>
+            <p className="text-sm font-semibold text-[#0f1f10]">{t('overviewCompletenessTitle')}</p>
+            <p className="text-xs text-[#617061] mt-0.5">{t('overviewCompletenessFields', { filled: filledCount, total: totalCount })}</p>
           </div>
           <span className={cn('text-2xl font-bold', pctColor)}>{pct}%</span>
         </div>
@@ -530,11 +562,7 @@ function ProfileOverview({
         </div>
         {pct < 100 && (
           <p className="text-xs text-[#617061] mt-2.5">
-            {pct < 50
-              ? 'Your profile is missing key information. Add more details so clients can find and trust you.'
-              : pct < 80
-              ? 'Good start — filling in a few more fields will make your profile stand out.'
-              : 'Almost complete! Polish the remaining fields to maximize your visibility.'}
+            {pct < 50 ? t('overviewLow') : pct < 80 ? t('overviewMid') : t('overviewHigh')}
           </p>
         )}
       </div>
@@ -559,7 +587,7 @@ function ProfileOverview({
                 {field.filled ? (
                   <p className="text-xs text-[#0f1f10] text-right truncate max-w-[55%]">{field.value}</p>
                 ) : (
-                  <span className="text-xs text-[#617061] italic">Not set</span>
+                  <span className="text-xs text-[#617061] italic">{t('notSet')}</span>
                 )}
               </div>
             ))}
@@ -608,6 +636,10 @@ export default function CoachProfilePage() {
   const [viewMode, setViewMode] = useState<'view' | 'edit'>('view');
   const [profileLoading, setProfileLoading] = useState(true);
 
+  // Avatar — lives on users table, loaded separately from coach profile fields
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const initials = `${user?.firstName?.[0] ?? ''}${user?.lastName?.[0] ?? ''}`.toUpperCase() || '?';
+
   // Profile form state
   const [form, setForm] = useState<CoachProfileUpdate>({
     profileHeadline: '',
@@ -648,6 +680,13 @@ export default function CoachProfilePage() {
         setForm((prev) => ({ ...prev, ...res.profile }));
       }
       setProfileLoading(false);
+    });
+  }, [user?.id]);
+
+  // Load avatar separately — it lives on users.avatar, not coach_profiles
+  useEffect(() => {
+    getFullUserProfile().then((profile) => {
+      if (profile?.avatar) setAvatarUrl(profile.avatar);
     });
   }, [user?.id]);
 
@@ -703,7 +742,7 @@ export default function CoachProfilePage() {
         const res = await updatePackage(editingPackage.id, data);
         if (res.success && res.package) {
           setPackages((prev) => prev.map((p) => (p.id === editingPackage.id ? res.package! : p)));
-          toast.success('Package updated');
+          toast.success(t('pkgUpdated'));
           setEditingPackage(undefined);
         } else {
           toast.error(res.message);
@@ -713,7 +752,7 @@ export default function CoachProfilePage() {
         const res = await createPackage(data);
         if (res.success && res.package) {
           setPackages((prev) => [res.package!, ...prev]);
-          toast.success('Package created');
+          toast.success(t('pkgCreated'));
           setEditingPackage(undefined);
         } else {
           toast.error(res.message);
@@ -730,7 +769,7 @@ export default function CoachProfilePage() {
       const res = await deletePackage(id);
       if (res.success) {
         setPackages((prev) => prev.filter((p) => p.id !== id));
-        toast.success('Package removed');
+        toast.success(t('pkgRemoved'));
       } else {
         toast.error(res.message);
       }
@@ -761,7 +800,7 @@ export default function CoachProfilePage() {
           <div>
             <h1 className="text-2xl font-bold text-[#0f1f10]">{t('profilePlansTitle')}</h1>
             <p className="text-sm text-[#617061] mt-0.5">
-              {tab === 'profile' && viewMode === 'edit' ? 'Edit your coach profile' : t('profilePlansSubtitle')}
+              {tab === 'profile' && viewMode === 'edit' ? t('editProfileSubtitle') : t('profilePlansSubtitle')}
             </p>
           </div>
         </div>
@@ -772,7 +811,7 @@ export default function CoachProfilePage() {
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl bg-[#162318] hover:opacity-90 transition-opacity flex-shrink-0"
           >
             <Edit2 className="w-4 h-4" />
-            Edit profile
+            {t('editProfile')}
           </button>
         ) : tab === 'profile' ? (
           <button
@@ -808,13 +847,34 @@ export default function CoachProfilePage() {
 
       {/* ── Profile tab ── */}
       {tab === 'profile' && viewMode === 'view' && (
-        <ProfileOverview form={form} loading={profileLoading} />
+        <ProfileOverview
+          form={form}
+          loading={profileLoading}
+          avatarUrl={avatarUrl}
+          initials={initials}
+          onAvatarChanged={(url) => setAvatarUrl(url)}
+        />
       )}
 
       {tab === 'profile' && viewMode === 'edit' && (
         <div className="space-y-5">
           {/* Identity */}
           <Section title={t('sectionIdentity')} icon={User} iconBg="bg-[#3a7d44]">
+            {/* Avatar picker inside edit mode */}
+            <div className="flex items-center gap-4 pb-5 mb-1 border-b border-[#d8e0d8]">
+              <AvatarUploader
+                currentAvatar={avatarUrl}
+                initials={initials}
+                size="md"
+                onChanged={(url) => setAvatarUrl(url)}
+              />
+              <div>
+                <p className="text-sm font-medium text-[#0f1f10]">Profile photo</p>
+                <p className="text-xs text-[#617061] mt-0.5">
+                  Hover to change · trash icon to remove
+                </p>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="sm:col-span-2">
                 <Field label={t('fieldHeadline')}>
@@ -1021,7 +1081,7 @@ export default function CoachProfilePage() {
           {/* Header row */}
           <div className="flex items-center justify-between">
             <p className="text-sm text-[#617061]">
-              Packages shown on your public profile. Clients can see pricing before connecting.
+              {t('plansPublicHint')}
             </p>
             {editingPackage === undefined && (
               <button
@@ -1029,7 +1089,7 @@ export default function CoachProfilePage() {
                 onClick={() => setEditingPackage(null)}
                 className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[#3a7d44] hover:bg-[#ddf0df] rounded-xl border border-[#3a7d44]/20 transition-colors"
               >
-                <Plus className="w-4 h-4" /> New package
+                <Plus className="w-4 h-4" /> {t('newPackage')}
               </button>
             )}
           </div>
@@ -1064,14 +1124,14 @@ export default function CoachProfilePage() {
               <div className="w-14 h-14 rounded-2xl bg-gray-100 bg-white flex items-center justify-center mb-4">
                 <Package className="w-7 h-7 text-[#617061]" />
               </div>
-              <p className="text-sm font-medium text-[#617061]">No packages yet</p>
-              <p className="text-xs text-[#617061] mt-1 mb-4">Create your first package to show clients what you offer</p>
+              <p className="text-sm font-medium text-[#617061]">{t('noPackagesYet')}</p>
+              <p className="text-xs text-[#617061] mt-1 mb-4">{t('noPackagesYetHint')}</p>
               <button
                 type="button"
                 onClick={() => setEditingPackage(null)}
                 className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#3a7d44] hover:text-[#2d5a31] transition-colors"
               >
-                <Plus className="w-4 h-4" /> Create your first package
+                <Plus className="w-4 h-4" /> {t('createFirstPackage')}
               </button>
             </div>
           )}

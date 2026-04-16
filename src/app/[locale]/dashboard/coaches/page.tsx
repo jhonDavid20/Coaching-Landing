@@ -144,8 +144,11 @@ function CoachDrawer({
 
         <div className="px-6 pt-5 pb-4 border-b border-[#d8e0d8] flex items-start gap-4">
           {/* Avatar */}
-          <div className={cn('w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 text-white text-lg font-bold', avatarGradient(coach.id))}>
-            {getInitials(coach.firstName, coach.lastName)}
+          <div className={cn('w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 text-white text-lg font-bold overflow-hidden', coach.avatar ? 'bg-[#162318]' : avatarGradient(coach.id))}>
+            {coach.avatar
+              // eslint-disable-next-line @next/next/no-img-element
+              ? <img src={coach.avatar} alt={`${coach.firstName} ${coach.lastName}`} className="w-full h-full object-cover" />
+              : getInitials(coach.firstName, coach.lastName)}
           </div>
 
           <div className="flex-1 min-w-0">
@@ -574,8 +577,11 @@ function CoachCard({
       <div className="p-5 flex flex-col flex-1">
         {/* Header */}
         <div className="flex items-start gap-4 mb-4">
-          <div className={cn('w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-white text-base font-bold', avatarGradient(coach.id))}>
-            {getInitials(coach.firstName, coach.lastName)}
+          <div className={cn('w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-white text-base font-bold overflow-hidden', coach.avatar ? 'bg-[#162318]' : avatarGradient(coach.id))}>
+            {coach.avatar
+              // eslint-disable-next-line @next/next/no-img-element
+              ? <img src={coach.avatar} alt={`${coach.firstName} ${coach.lastName}`} className="w-full h-full object-cover" />
+              : getInitials(coach.firstName, coach.lastName)}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-[#0f1f10]">
@@ -798,8 +804,11 @@ export default function CoachMarketplacePage() {
         {/* ── Your current coach banner ── */}
         {myCoach.hasCoach && myCoach.coach && (
           <div className="flex items-center gap-4 bg-teal-500/10 border border-teal-400/30 rounded-2xl px-5 py-4">
-            <div className={cn('w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 text-white text-sm font-bold', avatarGradient(myCoach.coach.id))}>
-              {getInitials(myCoach.coach.firstName, myCoach.coach.lastName)}
+            <div className={cn('w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0 text-white text-sm font-bold overflow-hidden', myCoach.coach.avatar ? 'bg-[#162318]' : avatarGradient(myCoach.coach.id))}>
+              {myCoach.coach.avatar
+                // eslint-disable-next-line @next/next/no-img-element
+                ? <img src={myCoach.coach.avatar} alt={`${myCoach.coach.firstName} ${myCoach.coach.lastName}`} className="w-full h-full object-cover" />
+                : getInitials(myCoach.coach.firstName, myCoach.coach.lastName)}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold text-[#3a7d44] uppercase tracking-wide mb-0.5">Your coach</p>

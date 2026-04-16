@@ -591,8 +591,11 @@ export default function MyCoachPage() {
         <div className="px-6 pb-6">
           {/* Avatar + coaching type badge */}
           <div className="flex items-end justify-between -mt-10 mb-4">
-            <div className="w-20 h-20 rounded-2xl bg-[#162318] border-4 border-white flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-              {initials}
+            <div className="w-20 h-20 rounded-2xl bg-[#162318] border-4 border-white flex items-center justify-center text-white text-2xl font-bold shadow-lg overflow-hidden">
+              {coach?.avatar
+                // eslint-disable-next-line @next/next/no-img-element
+                ? <img src={coach.avatar} alt={fullName} className="w-full h-full object-cover" />
+                : initials}
             </div>
             <div className="flex items-center gap-2 mb-1">
               {coach?.acceptingClients && (

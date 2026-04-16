@@ -196,8 +196,11 @@ export default function CoachOverviewPage() {
               return (
                 <div key={client.id} className="px-6 py-4 flex items-center gap-4 hover:bg-[#f6f8f5] transition-colors">
                   {/* Avatar */}
-                  <div className="w-10 h-10 rounded-full bg-[#162318] flex items-center justify-center flex-shrink-0 text-white text-sm font-bold">
-                    {getInitials(client.firstName, client.lastName)}
+                  <div className="w-10 h-10 rounded-full bg-[#162318] flex items-center justify-center flex-shrink-0 text-white text-sm font-bold overflow-hidden">
+                    {client.avatar
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img src={client.avatar} alt={`${client.firstName} ${client.lastName}`} className="w-full h-full object-cover" />
+                      : getInitials(client.firstName, client.lastName)}
                   </div>
                   {/* Info */}
                   <div className="flex-1 min-w-0">

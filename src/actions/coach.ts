@@ -90,6 +90,7 @@ export interface CoachPublicProfile {
   firstName?: string;
   lastName?: string;
   email?: string;
+  avatar?: string;
   profileHeadline?: string;
   bio?: string;
   specialties?: string[];
@@ -565,12 +566,14 @@ export async function getCoachProfileById(
     // Unwrap: { success, data: { ... } } or { success, coach: { ... } } or bare object
     const raw: Record<string, unknown> = data.data ?? data.coach ?? data.coachProfile ?? data;
 
+    const rawUser = raw.user as Record<string, unknown> | undefined;
     const coach: CoachPublicProfile = {
       userId: coachUserId,
       coachProfileId: raw.coachProfileId != null ? String(raw.coachProfileId) : raw.id != null ? String(raw.id) : undefined,
-      firstName: raw.firstName != null ? String(raw.firstName) : raw.user != null ? String((raw.user as Record<string, unknown>).firstName ?? '') : undefined,
-      lastName: raw.lastName != null ? String(raw.lastName) : raw.user != null ? String((raw.user as Record<string, unknown>).lastName ?? '') : undefined,
-      email: raw.email != null ? String(raw.email) : raw.user != null ? String((raw.user as Record<string, unknown>).email ?? '') : undefined,
+      firstName: raw.firstName != null ? String(raw.firstName) : rawUser?.firstName != null ? String(rawUser.firstName) : undefined,
+      lastName: raw.lastName != null ? String(raw.lastName) : rawUser?.lastName != null ? String(rawUser.lastName) : undefined,
+      email: raw.email != null ? String(raw.email) : rawUser?.email != null ? String(rawUser.email) : undefined,
+      avatar: rawUser?.avatar != null ? String(rawUser.avatar) : raw.avatar != null ? String(raw.avatar) : undefined,
       profileHeadline: raw.profileHeadline != null ? String(raw.profileHeadline) : undefined,
       bio: raw.bio != null ? String(raw.bio) : undefined,
       specialties: Array.isArray(raw.specialties) ? (raw.specialties as string[]) : undefined,

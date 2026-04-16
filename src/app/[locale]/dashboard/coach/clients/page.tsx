@@ -47,6 +47,7 @@ import {
   Save,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { resolveHealthTagKey } from '@/lib/health-tag-map';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -63,15 +64,17 @@ function fmtDate(iso?: string) {
   });
 }
 
-function fmtRelative(iso?: string) {
+type DateLabels = { today: string; tomorrow: string; yesterday: string; daysAgo: (n: number) => string };
+
+function fmtRelative(iso: string | undefined, dl: DateLabels): string | null {
   if (!iso) return null;
   const d = new Date(iso);
   const now = new Date();
   const diffDays = Math.round((d.getTime() - now.getTime()) / 86400000);
-  if (diffDays === 0) return 'Today';
-  if (diffDays === 1) return 'Tomorrow';
-  if (diffDays === -1) return 'Yesterday';
-  if (diffDays < -1 && diffDays > -7) return `${Math.abs(diffDays)}d ago`;
+  if (diffDays === 0) return dl.today;
+  if (diffDays === 1) return dl.tomorrow;
+  if (diffDays === -1) return dl.yesterday;
+  if (diffDays < -1 && diffDays > -7) return dl.daysAgo(Math.abs(diffDays));
   return fmtDate(iso);
 }
 
@@ -120,6 +123,7 @@ function MiniWeightBar({
   targetWeight: number;
   fitnessGoal?: string;
 }) {
+  const t = useTranslations('coachDashboard');
   const isLoss = fitnessGoal === 'weight_loss' || weight > targetWeight;
   const gap = Math.abs(weight - targetWeight);
   const scaleMin = Math.min(weight, targetWeight) * 0.97;
@@ -134,7 +138,7 @@ function MiniWeightBar({
     <div className="space-y-1">
       <div className="flex justify-between text-xs text-[#617061]">
         <span>{weight} kg</span>
-        <span className="font-medium text-[#617061]">{gap.toFixed(1)} kg {isLoss ? 'left to lose' : 'left to gain'}</span>
+        <span className="font-medium text-[#617061]">{gap.toFixed(1)} kg {isLoss ? t('leftToLose') : t('leftToGain')}</span>
         <span>{targetWeight} kg</span>
       </div>
       <div className="relative h-1.5 bg-[#e8f0e8] rounded-full overflow-hidden">
@@ -150,14 +154,19 @@ function MiniWeightBar({
 // ─── Tag list ─────────────────────────────────────────────────────────────────
 
 function TagList({ tags, empty }: { tags?: string[] | null; empty: string }) {
+  const tOnboarding = useTranslations('onboarding');
   if (!tags || tags.length === 0) return <p className="text-xs text-[#617061] italic">{empty}</p>;
   return (
     <div className="flex flex-wrap gap-1.5">
-      {tags.map((tag) => (
-        <span key={tag} className="px-2 py-0.5 text-xs rounded-full bg-[#f6f8f5] text-[#617061] border border-gray-200 border-[#d8e0d8]">
-          {tag}
-        </span>
-      ))}
+      {tags.map((tag) => {
+        const key = resolveHealthTagKey(tag);
+        const label = key ? tOnboarding(key) : tag;
+        return (
+          <span key={tag} className="px-2 py-0.5 text-xs rounded-full bg-[#f6f8f5] text-[#617061] border border-gray-200 border-[#d8e0d8]">
+            {label}
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -169,16 +178,27 @@ function ClientDrawer({
   onClose,
   goalLabels,
   statusLabels,
-  t,
   coachPackages,
 }: {
   client: CoachClient;
   onClose: () => void;
   goalLabels: Record<string, string>;
   statusLabels: Record<string, string>;
-  t: (key: string) => string;
   coachPackages: CoachPackage[];
 }) {
+  const t = useTranslations('coachDashboard');
+  const dateLabels: DateLabels = {
+    today: t('dateToday'),
+    tomorrow: t('dateTomorrow'),
+    yesterday: t('dateYesterday'),
+    daysAgo: (n) => t('daysAgo', { n }),
+  };
+  const activityMap: Record<string, string> = {
+    sedentary: t('activitySedentary'),
+    lightly_active: t('activityLightlyActive'),
+    moderately_active: t('activityModeratelyActive'),
+    very_active: t('activityVeryActive'),
+  };
   const drawerRef = useRef<HTMLDivElement>(null);
   const p = client.profile ?? {};
 
@@ -229,13 +249,13 @@ function ClientDrawer({
       goals: assignGoals.length > 0 ? assignGoals : undefined,
     });
     if (res.success) {
-      toast.success('Package assigned successfully');
+      toast.success(t('pkgAssigned'));
       setSelectedPackageId('');
       setAssignNotes('');
       setAssignGoals([]);
       getClientActivePackage(client.id).then((r) => setAssignedPackage(r.clientPackage));
     } else {
-      toast.error(res.message || 'Failed to assign package');
+      toast.error(res.message || t('pkgAssignError'));
     }
     setAssigning(false);
   }
@@ -249,7 +269,7 @@ function ClientDrawer({
       sessionsCompleted: editSessions,
     });
     if (res.success) {
-      toast.success('Plan updated');
+      toast.success(t('planUpdated'));
       if (res.clientPackage) {
         setAssignedPackage(res.clientPackage);
       } else {
@@ -263,7 +283,7 @@ function ClientDrawer({
       }
       setEditingPlan(false);
     } else {
-      toast.error(res.message || 'Failed to update plan');
+      toast.error(res.message || t('pkgUpdateError'));
     }
     setSavingPlan(false);
   }
@@ -302,8 +322,11 @@ function ClientDrawer({
       >
         {/* Header */}
         <div className="sticky top-0 bg-white px-5 py-4 border-b border-[#d8e0d8] flex items-center gap-3 z-10">
-          <div className="w-10 h-10 rounded-full bg-[#162318] flex items-center justify-center flex-shrink-0 text-white text-sm font-bold">
-            {getInitials(client.firstName, client.lastName)}
+          <div className="w-10 h-10 rounded-full bg-[#162318] flex items-center justify-center flex-shrink-0 text-white text-sm font-bold overflow-hidden">
+            {client.avatar
+              // eslint-disable-next-line @next/next/no-img-element
+              ? <img src={client.avatar} alt={displayName} className="w-full h-full object-cover" />
+              : getInitials(client.firstName, client.lastName)}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-[#0f1f10] truncate">{displayName}</p>
@@ -346,7 +369,7 @@ function ClientDrawer({
               <CalendarClock className="w-4 h-4 text-[#3a7d44] flex-shrink-0" />
               <div>
                 <p className="text-xs text-[#3a7d44] font-medium">{t('drawerNextSession')}</p>
-                <p className="text-sm text-[#2d5a31]">{fmtRelative(client.nextSessionAt)}</p>
+                <p className="text-sm text-[#2d5a31]">{fmtRelative(client.nextSessionAt, dateLabels)}</p>
               </div>
             </div>
           )}
@@ -354,7 +377,7 @@ function ClientDrawer({
           {/* Last session */}
           {client.lastSessionAt && (
             <div className="text-xs text-[#617061]">
-              {t('drawerLastSession')}: <span className="text-[#617061]">{fmtRelative(client.lastSessionAt)}</span>
+              {t('drawerLastSession')}: <span className="text-[#617061]">{fmtRelative(client.lastSessionAt, dateLabels)}</span>
             </div>
           )}
 
@@ -383,7 +406,7 @@ function ClientDrawer({
               {p.activityLevel && (
                 <div className="col-span-2">
                   <p className="text-xs text-[#617061] uppercase tracking-wide">{t('drawerActivity')}</p>
-                  <p className="text-sm text-[#0f1f10] capitalize">{p.activityLevel.replace(/_/g, ' ')}</p>
+                  <p className="text-sm text-[#0f1f10]">{activityMap[p.activityLevel] ?? p.activityLevel.replace(/_/g, ' ')}</p>
                 </div>
               )}
             </div>
@@ -444,7 +467,7 @@ function ClientDrawer({
                 <div className="w-6 h-6 rounded-md bg-purple-500/15 flex items-center justify-center">
                   <Package className="w-3.5 h-3.5 text-[#3a7d44]" />
                 </div>
-                <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide">Package / Plan</p>
+                <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide">{t('drawerPackagePlan')}</p>
               </div>
               {assignedPackage && !editingPlan && (
                 <button
@@ -452,7 +475,7 @@ function ClientDrawer({
                   className="inline-flex items-center gap-1 text-xs text-[#3a7d44] hover:text-[#2d5a31] font-medium"
                 >
                   <Pencil className="w-3 h-3" />
-                  Edit plan
+                  {t('drawerEditPlan')}
                 </button>
               )}
             </div>
@@ -461,7 +484,7 @@ function ClientDrawer({
             {packageLoading ? (
               <div className="flex items-center gap-2 text-xs text-[#617061] mb-3">
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                <span>Loading…</span>
+                <span>{t('loading')}</span>
               </div>
             ) : assignedPackage?.package ? (
               <>
@@ -493,7 +516,7 @@ function ClientDrawer({
                 {(assignedPackage.goals ?? []).length > 0 && !editingPlan && (
                   <div className="mb-3">
                     <p className="text-[11px] font-semibold text-[#617061] uppercase tracking-wide mb-1.5 flex items-center gap-1">
-                      <Target className="w-3 h-3" /> Goals
+                      <Target className="w-3 h-3" /> {t('drawerGoals')}
                     </p>
                     <div className="space-y-1">
                       {assignedPackage.goals!.map((g, i) => (
@@ -512,7 +535,7 @@ function ClientDrawer({
                 {assignedPackage.notes && !editingPlan && (
                   <div className="mb-3 p-2.5 bg-amber-50 dark:bg-amber-900/15 rounded-lg border border-amber-200 dark:border-amber-800/50">
                     <p className="text-[11px] font-semibold text-amber-600 dark:text-amber-400 mb-1 flex items-center gap-1">
-                      <StickyNote className="w-3 h-3" /> Note
+                      <StickyNote className="w-3 h-3" /> {t('drawerNote')}
                     </p>
                     <p className="text-xs text-amber-700 dark:text-amber-300 leading-relaxed">{assignedPackage.notes}</p>
                   </div>
@@ -523,7 +546,7 @@ function ClientDrawer({
                   <div className="space-y-4 mb-3 p-3 bg-[#f6f8f5] rounded-xl border border-gray-200 border-[#d8e0d8]">
                     {/* Sessions completed stepper */}
                     <div>
-                      <p className="text-xs font-semibold text-[#617061] mb-2">Sessions completed</p>
+                      <p className="text-xs font-semibold text-[#617061] mb-2">{t('drawerSessionsCompleted')}</p>
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => setEditSessions((n) => Math.max(0, n - 1))}
@@ -547,7 +570,7 @@ function ClientDrawer({
                     {/* Goals */}
                     <div>
                       <p className="text-xs font-semibold text-[#617061] mb-2 flex items-center gap-1">
-                        <Target className="w-3 h-3" /> Goals for this client
+                        <Target className="w-3 h-3" /> {t('drawerGoalsForClient')}
                       </p>
                       <div className="space-y-1.5 mb-2">
                         {editGoals.map((g, i) => (
@@ -574,7 +597,7 @@ function ClientDrawer({
                               setEditGoalInput('');
                             }
                           }}
-                          placeholder="Add a goal…"
+                          placeholder={t('drawerAddGoalPlaceholder')}
                           className="flex-1 px-2.5 py-1.5 text-xs rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#3a7d44]"
                         />
                         <button
@@ -594,13 +617,13 @@ function ClientDrawer({
                     {/* Notes */}
                     <div>
                       <p className="text-xs font-semibold text-[#617061] mb-2 flex items-center gap-1">
-                        <StickyNote className="w-3 h-3" /> Note for client
+                        <StickyNote className="w-3 h-3" /> {t('drawerNoteForClient')}
                       </p>
                       <textarea
                         value={editNotes}
                         onChange={(e) => setEditNotes(e.target.value)}
                         rows={3}
-                        placeholder="e.g. Focus on form before increasing weight…"
+                        placeholder={t('drawerNotePlaceholder')}
                         className="w-full px-2.5 py-2 text-xs rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#3a7d44] resize-none"
                       />
                     </div>
@@ -613,20 +636,20 @@ function ClientDrawer({
                         className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#162318] text-white text-xs font-medium rounded-lg hover:opacity-90 transition-opacity disabled:opacity-60"
                       >
                         {savingPlan ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
-                        {savingPlan ? 'Saving…' : 'Save changes'}
+                        {savingPlan ? t('saving') : t('saveButton')}
                       </button>
                       <button
                         onClick={() => setEditingPlan(false)}
                         className="px-3 py-2 text-xs text-[#617061] hover:text-[#617061] rounded-lg border border-gray-200 border-[#d8e0d8]"
                       >
-                        Cancel
+                        {t('cancel')}
                       </button>
                     </div>
                   </div>
                 )}
               </>
             ) : (
-              <p className="text-xs text-[#617061] italic mb-3">No package assigned yet.</p>
+              <p className="text-xs text-[#617061] italic mb-3">{t('drawerNoPackage')}</p>
             )}
 
             {/* Assign / change package */}
@@ -637,7 +660,7 @@ function ClientDrawer({
                   onChange={(e) => setSelectedPackageId(e.target.value)}
                   className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
                 >
-                  <option value="">{assignedPackage ? 'Change to a different package…' : 'Select a package…'}</option>
+                  <option value="">{assignedPackage ? t('drawerChangePackageOpt') : t('drawerSelectPackageOpt')}</option>
                   {coachPackages.filter((pkg) => pkg.isActive).map((pkg) => (
                     <option key={pkg.id} value={pkg.id}>
                       {pkg.name} — {pkg.durationWeeks}w · {pkg.sessionsIncluded} sessions · ${pkg.priceUSD}
@@ -651,7 +674,7 @@ function ClientDrawer({
                     {/* Goals */}
                     <div>
                       <p className="text-xs font-semibold text-[#617061] mb-2 flex items-center gap-1">
-                        <Target className="w-3 h-3" /> Goals (optional)
+                        <Target className="w-3 h-3" /> {t('drawerGoalsOptional')}
                       </p>
                       <div className="space-y-1.5 mb-2">
                         {assignGoals.map((g, i) => (
@@ -678,7 +701,7 @@ function ClientDrawer({
                               setAssignGoalInput('');
                             }
                           }}
-                          placeholder="Add a goal and press Enter…"
+                          placeholder={t('drawerAddGoalEnter')}
                           className="flex-1 px-2.5 py-1.5 text-xs rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#3a7d44]"
                         />
                         <button
@@ -697,13 +720,13 @@ function ClientDrawer({
                     {/* Note */}
                     <div>
                       <p className="text-xs font-semibold text-[#617061] mb-1.5 flex items-center gap-1">
-                        <StickyNote className="w-3 h-3" /> Note for client (optional)
+                        <StickyNote className="w-3 h-3" /> {t('drawerNoteOptional')}
                       </p>
                       <textarea
                         value={assignNotes}
                         onChange={(e) => setAssignNotes(e.target.value)}
                         rows={2}
-                        placeholder="e.g. Focus on form before increasing weight…"
+                        placeholder={t('drawerNotePlaceholder')}
                         className="w-full px-2.5 py-2 text-xs rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#3a7d44] resize-none"
                       />
                     </div>
@@ -716,13 +739,13 @@ function ClientDrawer({
                   className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#162318] text-white text-xs font-medium hover:opacity-90 transition-opacity disabled:opacity-60"
                 >
                   {assigning && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                  {assigning ? 'Assigning…' : assignedPackage ? 'Change Package' : 'Assign Package'}
+                  {assigning ? t('drawerAssigning') : assignedPackage ? t('drawerChangePackageBtn') : t('drawerAssignPackage')}
                 </button>
               </div>
             )}
 
             {coachPackages.filter((pkg) => pkg.isActive).length === 0 && !packageLoading && (
-              <p className="text-xs text-[#617061] italic">Create packages in your profile to assign them here.</p>
+              <p className="text-xs text-[#617061] italic">{t('drawerCreatePackagesHint')}</p>
             )}
           </div>
         </div>
@@ -746,12 +769,22 @@ function ClientCard({
   goalLabels: Record<string, string>;
   statusLabels: Record<string, string>;
 }) {
+  const t = useTranslations('coachDashboard');
+  const dateLabels: DateLabels = {
+    today: t('dateToday'),
+    tomorrow: t('dateTomorrow'),
+    yesterday: t('dateYesterday'),
+    daysAgo: (n) => t('daysAgo', { n }),
+  };
   return (
     <div className="bg-white rounded-2xl border border-[#d8e0d8] p-5 hover:border-[#3a7d44] hover:shadow-md transition-all">
       <div className="flex items-start gap-4">
         {/* Avatar */}
-        <div className="w-11 h-11 rounded-full bg-[#162318] flex items-center justify-center flex-shrink-0 text-white text-sm font-bold">
-          {getInitials(client.firstName, client.lastName)}
+        <div className="w-11 h-11 rounded-full bg-[#162318] flex items-center justify-center flex-shrink-0 text-white text-sm font-bold overflow-hidden">
+          {client.avatar
+            // eslint-disable-next-line @next/next/no-img-element
+            ? <img src={client.avatar} alt={`${client.firstName} ${client.lastName}`} className="w-full h-full object-cover" />
+            : getInitials(client.firstName, client.lastName)}
         </div>
 
         <div className="flex-1 min-w-0">
@@ -774,14 +807,14 @@ function ClientCard({
           <div className="flex items-center gap-3 mt-3 text-xs text-[#617061]">
             <span className="flex items-center gap-1">
               <Dumbbell className="w-3 h-3" />
-              <span>{client.sessionsCompleted} sessions</span>
+              <span>{client.sessionsCompleted} {t('sessionsUnit')}</span>
             </span>
             {client.lastSessionAt && (
               <>
                 <span className="text-[#d8e0d8]">·</span>
                 <span className="flex items-center gap-1">
                   <CalendarClock className="w-3 h-3" />
-                  <span>{fmtRelative(client.lastSessionAt)}</span>
+                  <span>{fmtRelative(client.lastSessionAt, dateLabels)}</span>
                 </span>
               </>
             )}
@@ -795,7 +828,7 @@ function ClientCard({
               className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-[#162318] rounded-lg hover:opacity-90 transition-opacity"
             >
               <User className="w-3.5 h-3.5" />
-              View Profile
+              {t('viewProfile')}
             </button>
             <button
               type="button"
@@ -803,7 +836,7 @@ function ClientCard({
               className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#617061] bg-[#f6f8f5] rounded-lg hover:bg-[#e8f0e8] transition-colors"
             >
               <ChevronRight className="w-3.5 h-3.5" />
-              Quick view
+              {t('quickView')}
             </button>
           </div>
         </div>
@@ -1194,7 +1227,6 @@ export default function CoachClientsPage() {
           onClose={() => setSelectedClient(null)}
           goalLabels={goalLabels}
           statusLabels={statusLabels}
-          t={(key: string) => t(key as Parameters<typeof t>[0])}
           coachPackages={coachPackages}
         />
       )}

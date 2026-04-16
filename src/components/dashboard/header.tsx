@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/components/auth/session-provider';
 import { Bell, Menu } from 'lucide-react';
-import { useLocale } from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import { useLocaleSwitch } from '@/components/providers/locale-switch-provider';
 
 interface DashboardHeaderProps {
@@ -10,15 +10,17 @@ interface DashboardHeaderProps {
 }
 
 export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
+  const t = useTranslations('DashboardHeader');
   const { user } = useAuth();
   const locale = useLocale();
   const { toggleLocale, isTransitioning } = useLocaleSwitch();
 
   const greeting = () => {
     const h = new Date().getHours();
-    if (h < 12) return 'Good morning';
-    if (h < 18) return 'Good afternoon';
-    return 'Good evening';
+    console.log(h);
+    if (h < 12) return t('GoodMorning');
+    if (h < 18) return t('GoodAfternoon');
+    return t('GoodEvening');
   };
 
   return (
@@ -42,7 +44,7 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
             </span>
           </h1>
           <p className="text-xs text-[#617061] hidden sm:block capitalize">
-            {user?.role ?? 'member'}
+            {t(user?.role === 'coach' ? 'Coach' : 'Client')}
           </p>
         </div>
       </div>
@@ -64,23 +66,6 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
           <span className="absolute top-1 right-1 w-2 h-2 bg-[#3a7d44] rounded-full" />
         </button>
 
-        {/* Avatar */}
-        {user && (
-          <div className="flex items-center gap-2.5 pl-2 border-l border-[#d8e0d8] ml-1">
-            <div className="w-8 h-8 rounded-full bg-[#ddf0df] flex items-center justify-center text-[#2d5a31] text-xs font-bold flex-shrink-0">
-              {`${user.firstName?.charAt(0) ?? ''}${user.lastName?.charAt(0) ?? ''}`.toUpperCase() ||
-                user.username?.charAt(0).toUpperCase() ||
-                'U'}
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-sm font-semibold text-[#0f1f10] leading-tight">
-                {user.firstName && user.lastName
-                  ? `${user.firstName} ${user.lastName}`
-                  : user.username}
-              </p>
-            </div>
-          </div>
-        )}
       </div>
     </header>
   );

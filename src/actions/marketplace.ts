@@ -10,6 +10,7 @@ export interface MarketplaceCoach {
   firstName: string;
   lastName: string;
   email?: string;
+  avatar?: string;
   profile: {
     profileHeadline?: string;
     bio?: string;
@@ -111,12 +112,16 @@ function normalizeCoach(raw: unknown): MarketplaceCoach {
     ? str(c.id)              // nested user → c.id is coach_profiles.id
     : str(c.coachProfileId ?? c.coach_profile_id); // flat response
 
+  // Avatar lives on the user record — check nested user first, then top-level
+  const avatar = str(u.avatar ?? c.avatar);
+
   return {
     id,
     coachProfileId,
     firstName,
     lastName,
     email,
+    avatar,
     activeClientsCount: typeof c.activeClientsCount === 'number' ? c.activeClientsCount : undefined,
     profile: {
       profileHeadline:      str(p.profileHeadline ?? p.profile_headline),

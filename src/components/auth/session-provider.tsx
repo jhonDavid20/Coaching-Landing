@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { getCurrentUser } from "@/actions/auth";
+import { getFullUserProfile } from "@/actions/user";
 import { useTokenRefresh } from "@/hooks/use-token-refresh";
 import { refreshTokenClient } from "@/actions/refresh-token-client";
 
@@ -21,12 +22,18 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  /** The current user's avatar URL — kept in sync across the whole app. */
+  avatarUrl: string | null;
+  /** Call this after a successful upload or delete to propagate the change everywhere. */
+  setAvatarUrl: (url: string | null) => void;
   refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
+  avatarUrl: null,
+  setAvatarUrl: () => {},
   refreshUser: async () => {},
 });
 
@@ -39,8 +46,9 @@ export default function AuthSessionProvider({
 }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  const refreshUser = async () => {
+  const refreshUser = useCallback(async () => {
     try {
       const currentUser = await getCurrentUser();
       setUser(currentUser);
@@ -50,7 +58,28 @@ export default function AuthSessionProvider({
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Whenever the user identity is confirmed, load the avatar from the profile endpoint.
+  // We keep this separate so auth loading stays fast (cookie-only) while the avatar
+  // fetches in the background.
+  useEffect(() => {
+    if (!user) {
+      setAvatarUrl(null);
+      return;
+    }
+    getFullUserProfile()
+      .then((profile) => {
+        if (profile?.avatar) {
+          // Bust the cache so the browser always fetches the latest file on
+          // page load — the backend reuses the same filename so without this
+          // the browser would serve its cached (possibly stale) copy.
+          const url = `${profile.avatar.split('?')[0]}?v=${Date.now()}`;
+          setAvatarUrl(url);
+        }
+      })
+      .catch(() => {}); // non-critical — silently ignore
+  }, [user?.id]); // re-run only when the logged-in user changes
 
   // Token refresh callback for automatic refresh
   const handleTokenRefresh = async () => {
@@ -61,6 +90,7 @@ export default function AuthSessionProvider({
     } else {
       console.error("Token refresh failed");
       setUser(null); // Clear user on refresh failure
+      setAvatarUrl(null);
       throw new Error("Token refresh failed");
     }
   };
@@ -70,10 +100,10 @@ export default function AuthSessionProvider({
 
   useEffect(() => {
     refreshUser();
-  }, []);
+  }, [refreshUser]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, avatarUrl, setAvatarUrl, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

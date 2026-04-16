@@ -18,6 +18,7 @@ const clientItems = [
 const adminItems = [
   { href: '/dashboard/admin',         icon: LayoutDashboard, label: 'overview' },
   { href: '/dashboard/admin/invites', icon: Mail,            label: 'invites' },
+  { href: '/dashboard/admin/users',   icon: Users,           label: 'users' },
 ];
 
 const coachItems = [
@@ -60,7 +61,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
   const params = useParams();
   const locale = params.locale as string;
-  const { user } = useAuth();
+  const { user, avatarUrl } = useAuth();
   const router = useRouter();
 
   const isAdmin = user?.role === 'admin';
@@ -175,8 +176,13 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
       <div className="px-3 py-3 border-t border-[#243d27]">
         {user && (
           <div className="flex items-center gap-3 px-3 py-2 rounded-lg mb-1">
-            <div className="w-8 h-8 rounded-full bg-[#3a7d44] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-              {initials}
+            <div className="w-8 h-8 rounded-full bg-[#3a7d44] flex-shrink-0 overflow-hidden flex items-center justify-center text-white text-xs font-bold">
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                initials
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-white truncate">

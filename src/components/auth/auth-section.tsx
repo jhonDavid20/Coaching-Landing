@@ -250,17 +250,6 @@ const AuthSection: React.FC = () => {
         </button>
       </form>
 
-      {/* Toggle mode link */}
-      <p className="text-center text-sm text-[#617061] mt-6">
-        {isLogin ? t("noAccount") : t("hasAccount")}{" "}
-        <button
-          type="button"
-          onClick={toggleMode}
-          className="text-[#3a7d44] font-semibold hover:text-[#2d5a31]"
-        >
-          {isLogin ? t("signUp") : t("signIn")}
-        </button>
-      </p>
 
       {/* Invite link */}
       {isLogin && (
