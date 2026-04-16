@@ -18,17 +18,17 @@ function StatusBadge({ status }: { status: Invite['status'] }) {
     pending: {
       label: 'Pending',
       icon: Clock,
-      className: 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/30',
+      className: 'bg-amber-50 text-amber-600 border-amber-200',
     },
     accepted: {
       label: 'Accepted',
       icon: UserCheck,
-      className: 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/30',
+      className: 'bg-[#ddf0df] text-[#2d5a31] border-[#3a7d44]/30',
     },
     expired: {
       label: 'Expired',
       icon: Ban,
-      className: 'bg-red-500/10 text-red-500 dark:text-red-400 border-red-500/30',
+      className: 'bg-red-50 text-red-500 border-red-200',
     },
   };
 
@@ -63,9 +63,9 @@ function CopyLinkButton({ token }: { token: string }) {
     <button
       onClick={handleCopy}
       title="Copy invite link"
-      className="p-1.5 rounded-md text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition-colors"
+      className="p-1.5 rounded-md text-[#617061] hover:text-[#3a7d44] hover:bg-[#ddf0df] transition-colors"
     >
-      {copied ? <Check className="w-4 h-4 text-teal-500" /> : <Copy className="w-4 h-4" />}
+      {copied ? <Check className="w-4 h-4 text-[#3a7d44]" /> : <Copy className="w-4 h-4" />}
     </button>
   );
 }
@@ -92,7 +92,7 @@ function RevokeButton({ id, onRevoked }: { id: string; onRevoked: () => void }) 
       onClick={handleClick}
       disabled={loading}
       title="Revoke invite"
-      className="p-1 rounded-md text-gray-400 hover:text-orange-500 hover:bg-orange-500/10 transition-colors disabled:opacity-50"
+      className="p-1 rounded-md text-[#617061] hover:text-amber-600 hover:bg-amber-50 transition-colors disabled:opacity-50"
     >
       {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <ShieldX className="w-3.5 h-3.5" />}
     </button>
@@ -121,7 +121,7 @@ function DeleteButton({ id, onDeleted }: { id: string; onDeleted: () => void }) 
       onClick={handleClick}
       disabled={loading}
       title="Delete invite"
-      className="p-1 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+      className="p-1 rounded-md text-[#617061] hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50"
     >
       {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <X className="w-3.5 h-3.5" />}
     </button>
@@ -134,10 +134,10 @@ function TableSkeleton() {
   return (
     <div className="space-y-2 animate-pulse">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="flex items-center gap-4 px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3" />
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20" />
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-32 ml-auto" />
+        <div key={i} className="flex items-center gap-4 px-4 py-3 rounded-lg bg-[#f6f8f5]">
+          <div className="h-4 bg-[#e8f0e8] rounded w-1/3" />
+          <div className="h-4 bg-[#e8f0e8] rounded w-20" />
+          <div className="h-4 bg-[#e8f0e8] rounded w-32 ml-auto" />
         </div>
       ))}
     </div>
@@ -206,23 +206,24 @@ export default function AdminInvitesPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Page header */}
-      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
-        <div className="h-2 bg-gradient-to-r from-purple-600 to-blue-600" />
+
+      {/* ── Page header ── */}
+      <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+        <div className="h-1 bg-[#162318]" />
         <div className="px-6 py-5 flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center flex-shrink-0">
-            <Mail className="w-5 h-5 text-purple-500" />
+          <div className="w-10 h-10 rounded-xl bg-[#ddf0df] border border-[#3a7d44]/20 flex items-center justify-center flex-shrink-0">
+            <Mail className="w-5 h-5 text-[#3a7d44]" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('title')}</h1>
-            <p className="text-sm text-gray-500">{t('subtitle')}</p>
+            <h1 className="text-lg font-bold text-[#0f1f10]">{t('title')}</h1>
+            <p className="text-sm text-[#617061]">{t('subtitle')}</p>
           </div>
         </div>
       </div>
 
-      {/* Create invite form */}
-      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
-        <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">{t('createTitle')}</h2>
+      {/* ── Create invite form ── */}
+      <div className="bg-white rounded-2xl border border-[#d8e0d8] p-6">
+        <h2 className="text-sm font-semibold text-[#0f1f10] mb-4">{t('createTitle')}</h2>
         <form onSubmit={handleCreate} className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1 space-y-1">
             <Label htmlFor="invite-email" className="sr-only">
@@ -235,13 +236,13 @@ export default function AdminInvitesPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t('emailPlaceholder')}
               required
-              className="bg-background dark:bg-[#1A202C] border-border dark:border-gray-600 text-foreground dark:text-white"
+              className="border-[#d8e0d8] bg-white text-[#0f1f10] placeholder-[#617061] focus-visible:ring-[#3a7d44]"
             />
           </div>
           <Button
             type="submit"
             disabled={creating || !email.trim()}
-            className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2 bg-[#162318] hover:opacity-90 text-white transition-opacity"
           >
             {creating ? (
               <RefreshCw className="w-4 h-4 animate-spin" />
@@ -253,21 +254,22 @@ export default function AdminInvitesPage() {
         </form>
       </div>
 
-      {/* Invite list */}
-      <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+      {/* ── Invite list ── */}
+      <div className="bg-white rounded-2xl border border-[#d8e0d8] overflow-hidden">
+
         {/* List header */}
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
+        <div className="px-6 py-4 border-b border-[#d8e0d8] flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-[#0f1f10]">
             {t('listTitle')}
             {pagination && (
-              <span className="ml-2 text-xs font-normal text-gray-500">
+              <span className="ml-2 text-xs font-normal text-[#617061]">
                 ({pagination.total} {t('total')})
               </span>
             )}
           </h2>
           <button
             onClick={() => load(page)}
-            className="p-1.5 rounded-md text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition-colors"
+            className="p-1.5 rounded-md text-[#617061] hover:text-[#3a7d44] hover:bg-[#ddf0df] transition-colors"
             title={t('refresh')}
           >
             <RefreshCw className={`w-4 h-4 ${listLoading ? 'animate-spin' : ''}`} />
@@ -280,20 +282,20 @@ export default function AdminInvitesPage() {
           </div>
         ) : invites.length === 0 ? (
           <div className="px-6 py-12 text-center">
-            <ShieldOff className="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-3" />
-            <p className="text-sm text-gray-500">{t('noInvites')}</p>
+            <ShieldOff className="w-10 h-10 mx-auto text-[#d8e0d8] mb-3" />
+            <p className="text-sm text-[#617061]">{t('noInvites')}</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+          <div className="divide-y divide-[#d8e0d8]">
             {invites.map((invite) => (
               <div
                 key={invite.id}
-                className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors"
+                className="flex items-center gap-4 px-6 py-4 hover:bg-[#f6f8f5] transition-colors"
               >
                 {/* Email */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{invite.email}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-sm font-medium text-[#0f1f10] truncate">{invite.email}</p>
+                  <p className="text-xs text-[#617061] mt-0.5">
                     {t('created')}{' '}
                     {new Date(invite.createdAt).toLocaleDateString(undefined, {
                       year: 'numeric',
@@ -308,15 +310,12 @@ export default function AdminInvitesPage() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-0.5">
-                  {/* Copy link — pending only */}
                   {invite.status === 'pending' && (
                     <CopyLinkButton token={invite.token} />
                   )}
-                  {/* Revoke — pending only (blocks used invites on backend) */}
                   {invite.status === 'pending' && (
                     <RevokeButton id={invite.id} onRevoked={() => load(page)} />
                   )}
-                  {/* Delete — always available, calls /permanent */}
                   <DeleteButton id={invite.id} onDeleted={() => load(page)} />
                 </div>
               </div>
@@ -326,16 +325,17 @@ export default function AdminInvitesPage() {
 
         {/* Pagination */}
         {pagination && pagination.totalPages > 1 && (
-          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
+          <div className="px-6 py-4 border-t border-[#d8e0d8] flex items-center justify-between">
             <Button
               variant="outline"
               size="sm"
               disabled={page <= 1 || listLoading}
               onClick={() => setPage((p) => p - 1)}
+              className="border-[#d8e0d8] text-[#617061] hover:bg-[#f6f8f5] hover:text-[#0f1f10]"
             >
               {t('prev')}
             </Button>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-[#617061]">
               {t('pageOf', { page, total: pagination.totalPages })}
             </span>
             <Button
@@ -343,6 +343,7 @@ export default function AdminInvitesPage() {
               size="sm"
               disabled={page >= pagination.totalPages || listLoading}
               onClick={() => setPage((p) => p + 1)}
+              className="border-[#d8e0d8] text-[#617061] hover:bg-[#f6f8f5] hover:text-[#0f1f10]"
             >
               {t('next')}
             </Button>
