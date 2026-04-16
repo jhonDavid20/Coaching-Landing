@@ -21,6 +21,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { cn, formatUTCDate } from '@/lib/utils';
+import { resolveHealthTagKey } from '@/lib/health-tag-map';
 
 // ─── Small helpers ───────────────────────────────────────────────────────────
 
@@ -46,6 +47,7 @@ function Field({
 }
 
 function TagList({ tags, noneRegistered }: { tags?: string[] | null; noneRegistered: string }) {
+  const tOnboarding = useTranslations('onboarding');
   if (!tags || tags.length === 0) {
     return (
       <span className="inline-flex items-center px-3 py-1 text-xs text-[#617061] border border-dashed border-[#d8e0d8] rounded-full italic">
@@ -55,14 +57,18 @@ function TagList({ tags, noneRegistered }: { tags?: string[] | null; noneRegiste
   }
   return (
     <div className="flex flex-wrap gap-2">
-      {tags.map((tag) => (
-        <span
-          key={tag}
-          className="px-3 py-1 text-xs text-[#617061] bg-[#f6f8f5] rounded-full border border-[#d8e0d8]"
-        >
-          {tag}
-        </span>
-      ))}
+      {tags.map((tag) => {
+        const key = resolveHealthTagKey(tag);
+        const label = key ? tOnboarding(key) : tag;
+        return (
+          <span
+            key={tag}
+            className="px-3 py-1 text-xs text-[#617061] bg-[#f6f8f5] rounded-full border border-[#d8e0d8]"
+          >
+            {label}
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -278,6 +284,10 @@ export default function ProfilePage() {
   const [open, setOpen] = useState([false, false, false, false]);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Tracks the avatar URL shown in the header immediately — updated optimistically
+  // on upload/remove so the header doesn't depend on a full profile reload.
+  const [headerAvatar, setHeaderAvatar] = useState<string | null>(null);
+
   // My Coach & Plan — only populated for clients with a coachId
   const [myCoach, setMyCoach] = useState<CoachPublicProfile | null>(null);
   const [myPlan, setMyPlan] = useState<ClientPackage | null>(null);
@@ -289,6 +299,8 @@ export default function ProfilePage() {
     getFullUserProfile()
       .then((p) => {
         setProfile(p);
+        // Sync header avatar from the freshly loaded profile (non-null wins)
+        if (p?.avatar) setHeaderAvatar(p.avatar);
         // If this client has an assigned coach, load coach + plan data in parallel
         if (p?.coachId) {
           getCoachProfileById(p.coachId).then((res) => {
@@ -375,10 +387,10 @@ export default function ProfilePage() {
         <div className="h-2 bg-[#162318]" />
         <div className="px-6 py-6 flex flex-col sm:flex-row sm:items-center gap-4">
           {/* Avatar */}
-          {profile?.avatar ? (
+          {headerAvatar ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={profile.avatar}
+              src={headerAvatar}
               alt={displayName}
               className="w-20 h-20 rounded-full object-cover ring-2 ring-[#d8e0d8] flex-shrink-0"
             />
@@ -585,8 +597,12 @@ export default function ProfilePage() {
             {/* ── Coach card ── */}
             {myCoach ? (
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br bg-[#162318] flex items-center justify-center flex-shrink-0 text-white text-base font-bold">
-                  {`${myCoach.firstName?.[0] ?? ''}${myCoach.lastName?.[0] ?? ''}`.toUpperCase() || '?'}
+                <div className="w-12 h-12 rounded-full bg-[#162318] flex items-center justify-center flex-shrink-0 text-white text-base font-bold overflow-hidden flex-shrink-0">
+                  {myCoach.avatar
+                    // eslint-disable-next-line @next/next/no-img-element
+                    ? <img src={myCoach.avatar} alt={`${myCoach.firstName ?? ''} ${myCoach.lastName ?? ''}`} className="w-full h-full object-cover" />
+                    : `${myCoach.firstName?.[0] ?? ''}${myCoach.lastName?.[0] ?? ''}`.toUpperCase() || '?'
+                  }
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-[#0f1f10]">
@@ -682,8 +698,9 @@ export default function ProfilePage() {
         <EditProfileDrawer
           isOpen={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-          profile={profile}
+          profile={{ ...profile, avatar: headerAvatar ?? profile.avatar }}
           onSaved={loadProfile}
+          onAvatarChanged={(url) => setHeaderAvatar(url)}
         />
       )}
     </div>

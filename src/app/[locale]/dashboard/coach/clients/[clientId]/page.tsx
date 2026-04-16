@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { getClientById, getCoachOwnProfile, CoachClient } from '@/actions/coach';
 import {
   getCoachPackages,
@@ -14,6 +14,7 @@ import {
 } from '@/actions/packages';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import { resolveHealthTagKey } from '@/lib/health-tag-map';
 import {
   ArrowLeft,
   Loader2,
@@ -72,11 +73,12 @@ const STATUS_STYLES: Record<string, string> = {
   inactive: 'bg-[#f6f8f5] text-[#617061] border-[#d8e0d8]',
 };
 
-const GOAL_LABELS: Record<string, string> = {
-  weight_loss: 'Weight Loss',
-  muscle_gain: 'Muscle Gain',
-  maintenance: 'Maintenance',
-  endurance: 'Endurance',
+// Maps enum value → translation key (in clientDetail namespace)
+const GOAL_LABEL_KEYS: Record<string, string> = {
+  weight_loss: 'goalWeightLoss',
+  muscle_gain: 'goalMuscleGain',
+  maintenance: 'goalMaintenance',
+  endurance:   'goalEndurance',
 };
 
 const GOAL_COLORS: Record<string, string> = {
@@ -86,11 +88,11 @@ const GOAL_COLORS: Record<string, string> = {
   endurance: 'bg-amber-50 text-amber-700 border-amber-300',
 };
 
-const ACTIVITY_LABELS: Record<string, string> = {
-  sedentary: 'Sedentary',
-  lightly_active: 'Lightly Active',
-  moderately_active: 'Moderately Active',
-  very_active: 'Very Active',
+const ACTIVITY_LABEL_KEYS: Record<string, string> = {
+  sedentary:         'activitySedentary',
+  lightly_active:    'activityLightly',
+  moderately_active: 'activityModerately',
+  very_active:       'activityVery',
 };
 
 // ─── Section wrapper ──────────────────────────────────────────────────────────
@@ -124,16 +126,21 @@ function InfoRow({ label, value }: { label: string; value?: string | number | nu
 // ─── Tag list ─────────────────────────────────────────────────────────────────
 
 function TagList({ tags, empty }: { tags?: string[] | null; empty?: string }) {
+  const tOnboarding = useTranslations('onboarding');
   if (!tags || tags.length === 0) {
     return empty ? <p className="text-xs text-[#617061] italic">{empty}</p> : null;
   }
   return (
     <div className="flex flex-wrap gap-1.5">
-      {tags.map((tag) => (
-        <span key={tag} className="px-2.5 py-1 text-xs rounded-full bg-[#f6f8f5] text-[#617061] border border-gray-200 border-[#d8e0d8]">
-          {tag}
-        </span>
-      ))}
+      {tags.map((tag) => {
+        const key = resolveHealthTagKey(tag);
+        const label = key ? tOnboarding(key) : tag;
+        return (
+          <span key={tag} className="px-2.5 py-1 text-xs rounded-full bg-[#f6f8f5] text-[#617061] border border-gray-200 border-[#d8e0d8]">
+            {label}
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -141,6 +148,7 @@ function TagList({ tags, empty }: { tags?: string[] | null; empty?: string }) {
 // ─── Weight progress bar ──────────────────────────────────────────────────────
 
 function WeightProgress({ weight, targetWeight, fitnessGoal }: { weight: number; targetWeight: number; fitnessGoal?: string }) {
+  const t = useTranslations('clientDetail');
   const isLoss = fitnessGoal === 'weight_loss' || weight > targetWeight;
   const gap = Math.abs(weight - targetWeight);
   const scaleMin = Math.min(weight, targetWeight) * 0.97;
@@ -154,9 +162,9 @@ function WeightProgress({ weight, targetWeight, fitnessGoal }: { weight: number;
   return (
     <div className="space-y-2">
       <div className="flex justify-between text-xs text-[#617061]">
-        <span className="font-medium">{weight} kg <span className="text-[#617061] font-normal">current</span></span>
-        <span className="text-[#3a7d44] font-semibold">{gap.toFixed(1)} kg {isLoss ? 'to lose' : 'to gain'}</span>
-        <span className="font-medium">{targetWeight} kg <span className="text-[#617061] font-normal">goal</span></span>
+        <span className="font-medium">{weight} kg <span className="text-[#617061] font-normal">{t('weightCurrent')}</span></span>
+        <span className="text-[#3a7d44] font-semibold">{gap.toFixed(1)} kg {isLoss ? t('toLose') : t('toGain')}</span>
+        <span className="font-medium">{targetWeight} kg <span className="text-[#617061] font-normal">{t('weightGoal')}</span></span>
       </div>
       <div className="relative h-2.5 bg-[#f6f8f5] rounded-full overflow-hidden">
         <div
@@ -200,11 +208,12 @@ function SessionBubbles({ total, completed }: { total: number; completed: number
 // ─── Goal input helper ────────────────────────────────────────────────────────
 
 function GoalInput({ goals, onChange }: { goals: string[]; onChange: (goals: string[]) => void }) {
+  const t = useTranslations('clientDetail');
   const [input, setInput] = useState('');
   function add() {
-    const t = input.trim();
-    if (!t) return;
-    onChange([...goals, t]);
+    const trimmed = input.trim();
+    if (!trimmed) return;
+    onChange([...goals, trimmed]);
     setInput('');
   }
   return (
@@ -225,7 +234,7 @@ function GoalInput({ goals, onChange }: { goals: string[]; onChange: (goals: str
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }}
-          placeholder="Add a goal and press Enter…"
+          placeholder={t('goalPlaceholder')}
           className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40"
         />
         <button onClick={add} className="px-3 py-2 bg-[#3a7d44] text-white text-sm rounded-lg hover:bg-[#2d5a31] transition-colors">
@@ -245,6 +254,7 @@ function PackageSection({
   clientId: string;
   coachPackages: CoachPackage[];
 }) {
+  const t = useTranslations('clientDetail');
   const [assignedPackage, setAssignedPackage] = useState<ClientPackage | null>(null);
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<'view' | 'edit' | 'assign'>('view');
@@ -287,7 +297,7 @@ function PackageSection({
       goals: assignGoals.length > 0 ? assignGoals : undefined,
     });
     if (res.success) {
-      toast.success('Package assigned');
+      toast.success(t('packageAssigned'));
       setSelectedPkgId('');
       setAssignNotes('');
       setAssignGoals([]);
@@ -308,7 +318,7 @@ function PackageSection({
       goals: editGoals.length > 0 ? editGoals : [],
     });
     if (res.success) {
-      toast.success('Plan updated');
+      toast.success(t('planUpdated'));
       setAssignedPackage(res.clientPackage ?? {
         ...assignedPackage,
         sessionsCompleted: editSessions,
@@ -327,7 +337,7 @@ function PackageSection({
   if (loading) {
     return (
       <div className="flex items-center gap-2 text-[#617061] py-4">
-        <Loader2 className="w-4 h-4 animate-spin" /> Loading plan…
+        <Loader2 className="w-4 h-4 animate-spin" /> {t('loadingPlan')}
       </div>
     );
   }
@@ -339,17 +349,17 @@ function PackageSection({
       {!assignedPackage && mode !== 'assign' && (
         <div className="text-center py-6 border-2 border-dashed border-gray-200 border-[#d8e0d8] rounded-2xl">
           <Package className="w-8 h-8 text-[#d8e0d8] mx-auto mb-3" />
-          <p className="text-sm font-medium text-[#617061] mb-1">No plan assigned yet</p>
-          <p className="text-xs text-[#617061] mb-4">Assign a package to start tracking this client's progress</p>
+          <p className="text-sm font-medium text-[#617061] mb-1">{t('noPlanYet')}</p>
+          <p className="text-xs text-[#617061] mb-4">{t('noPlanDesc')}</p>
           {activePackages.length > 0 ? (
             <button
               onClick={() => setMode('assign')}
               className="inline-flex items-center gap-2 px-4 py-2 bg-[#162318] text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity"
             >
-              <Plus className="w-4 h-4" /> Assign Package
+              <Plus className="w-4 h-4" /> {t('assignPackage')}
             </button>
           ) : (
-            <p className="text-xs text-[#617061] italic">Create packages in your profile first</p>
+            <p className="text-xs text-[#617061] italic">{t('createPackagesFirst')}</p>
           )}
         </div>
       )}
@@ -381,7 +391,7 @@ function PackageSection({
                 onClick={openEdit}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#3a7d44] bg-[#ddf0df] border border-[#3a7d44]/20 rounded-lg hover:bg-blue-100 transition-colors"
               >
-                <Pencil className="w-3.5 h-3.5" /> Edit plan
+                <Pencil className="w-3.5 h-3.5" /> {t('editPlan')}
               </button>
             </div>
           </div>
@@ -390,13 +400,13 @@ function PackageSection({
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-[#f6f8f5] rounded-xl p-3 text-center">
               <p className="text-lg font-bold text-[#0f1f10]">{assignedPackage.package.durationWeeks}w</p>
-              <p className="text-xs text-[#617061] mt-0.5">duration</p>
+              <p className="text-xs text-[#617061] mt-0.5">{t('duration')}</p>
             </div>
             <div className="bg-[#f6f8f5] rounded-xl p-3 text-center">
               <p className="text-lg font-bold text-[#3a7d44]">
                 {assignedPackage.sessionsCompleted ?? 0}/{assignedPackage.package.sessionsIncluded}
               </p>
-              <p className="text-xs text-[#617061] mt-0.5">sessions done</p>
+              <p className="text-xs text-[#617061] mt-0.5">{t('sessionsDoneLabel')}</p>
             </div>
             <div className="bg-[#f6f8f5] rounded-xl p-3 text-center">
               <p className={cn(
@@ -408,13 +418,13 @@ function PackageSection({
               )}>
                 {weeksRemaining(assignedPackage.startDate, assignedPackage.package.durationWeeks) ?? '—'}w
               </p>
-              <p className="text-xs text-[#617061] mt-0.5">weeks left</p>
+              <p className="text-xs text-[#617061] mt-0.5">{t('weeksLeft')}</p>
             </div>
           </div>
 
           {/* Session bubble map */}
           <div>
-            <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-2">Session progress</p>
+            <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-2">{t('sessionProgress')}</p>
             <SessionBubbles
               total={assignedPackage.package.sessionsIncluded}
               completed={assignedPackage.sessionsCompleted ?? 0}
@@ -424,10 +434,10 @@ function PackageSection({
           {/* Progress bar */}
           <div>
             <div className="flex justify-between text-xs text-[#617061] mb-1.5">
-              <span>Started {fmtDate(assignedPackage.startDate)}</span>
-              <span>{assignedPackage.package.sessionsIncluded > 0
+              <span>{t('started', { date: fmtDate(assignedPackage.startDate) })}</span>
+              <span>{t('percentComplete', { pct: assignedPackage.package.sessionsIncluded > 0
                 ? Math.round(((assignedPackage.sessionsCompleted ?? 0) / assignedPackage.package.sessionsIncluded) * 100)
-                : 0}% complete</span>
+                : 0 })}</span>
             </div>
             <div className="h-2 bg-[#f6f8f5] rounded-full overflow-hidden">
               <div
@@ -444,7 +454,7 @@ function PackageSection({
           {/* Features */}
           {assignedPackage.package.features && assignedPackage.package.features.length > 0 && (
             <div>
-              <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-2">What&apos;s included</p>
+              <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-2">{t('whatsIncluded')}</p>
               <div className="space-y-1.5">
                 {assignedPackage.package.features.map((feat, i) => (
                   <div key={i} className="flex items-center gap-2">
@@ -460,7 +470,7 @@ function PackageSection({
           {(assignedPackage.goals ?? []).length > 0 && (
             <div>
               <p className="text-xs font-semibold text-[#617061] uppercase tracking-wide mb-2 flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5" /> Goals
+                <Target className="w-3.5 h-3.5" /> {t('goalsLabel')}
               </p>
               <div className="space-y-2">
                 {assignedPackage.goals!.map((g, i) => (
@@ -479,7 +489,7 @@ function PackageSection({
           {assignedPackage.notes && (
             <div className="p-4 bg-amber-50 dark:bg-amber-900/15 border border-amber-200 dark:border-amber-800/50 rounded-xl">
               <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1.5 flex items-center gap-1.5">
-                <StickyNote className="w-3.5 h-3.5" /> Your note
+                <StickyNote className="w-3.5 h-3.5" /> {t('yourNote')}
               </p>
               <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">{assignedPackage.notes}</p>
             </div>
@@ -491,7 +501,7 @@ function PackageSection({
               onClick={() => setMode('assign')}
               className="text-xs text-[#617061] hover:text-[#3a7d44] transition-colors underline"
             >
-              Assign a different package
+              {t('assignDifferent')}
             </button>
           )}
         </div>
@@ -502,16 +512,16 @@ function PackageSection({
         <div className="space-y-5">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-[#0f1f10]">
-              Editing: {assignedPackage.package.name}
+              {t('editing', { name: assignedPackage.package.name })}
             </p>
             <button onClick={() => setMode('view')} className="text-xs text-[#617061] hover:text-gray-600">
-              Cancel
+              {t('cancel')}
             </button>
           </div>
 
           {/* Sessions stepper */}
           <div>
-            <p className="text-sm font-medium text-[#617061] mb-3">Sessions completed</p>
+            <p className="text-sm font-medium text-[#617061] mb-3">{t('sessionsCompleted')}</p>
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setEditSessions((n) => Math.max(0, n - 1))}
@@ -521,7 +531,7 @@ function PackageSection({
               </button>
               <div className="text-center">
                 <p className="text-3xl font-bold text-[#0f1f10] tabular-nums">{editSessions}</p>
-                <p className="text-xs text-[#617061]">of {assignedPackage.package.sessionsIncluded}</p>
+                <p className="text-xs text-[#617061]">{t('of')} {assignedPackage.package.sessionsIncluded}</p>
               </div>
               <button
                 onClick={() => setEditSessions((n) => Math.min(assignedPackage.package!.sessionsIncluded, n + 1))}
@@ -535,7 +545,7 @@ function PackageSection({
           {/* Goals */}
           <div>
             <p className="text-sm font-medium text-[#617061] mb-3 flex items-center gap-2">
-              <Target className="w-4 h-4 text-[#3a7d44]" /> Goals for this client
+              <Target className="w-4 h-4 text-[#3a7d44]" /> {t('goalsForClient')}
             </p>
             <GoalInput goals={editGoals} onChange={setEditGoals} />
           </div>
@@ -543,13 +553,13 @@ function PackageSection({
           {/* Note */}
           <div>
             <p className="text-sm font-medium text-[#617061] mb-2 flex items-center gap-2">
-              <StickyNote className="w-4 h-4 text-amber-500" /> Note for client
+              <StickyNote className="w-4 h-4 text-amber-500" /> {t('noteForClient')}
             </p>
             <textarea
               value={editNotes}
               onChange={(e) => setEditNotes(e.target.value)}
               rows={3}
-              placeholder="e.g. Focus on form before increasing weight…"
+              placeholder={t('notePlaceholder')}
               className="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40 resize-none"
             />
           </div>
@@ -561,13 +571,13 @@ function PackageSection({
               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#162318] text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60"
             >
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              {saving ? 'Saving…' : 'Save changes'}
+              {saving ? t('saving') : t('saveChanges')}
             </button>
             <button
               onClick={() => setMode('view')}
               className="px-4 py-2.5 text-sm text-[#617061] border border-gray-200 border-[#d8e0d8] rounded-xl hover:bg-[#f6f8f5] transition-colors"
             >
-              Cancel
+              {t('cancel')}
             </button>
           </div>
         </div>
@@ -578,16 +588,16 @@ function PackageSection({
         <div className="space-y-5">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-[#0f1f10]">
-              {assignedPackage ? 'Change package' : 'Assign a package'}
+              {assignedPackage ? t('changePackage') : t('assignPackage')}
             </p>
             <button onClick={() => setMode('view')} className="text-xs text-[#617061] hover:text-gray-600">
-              Cancel
+              {t('cancel')}
             </button>
           </div>
 
           {/* Package picker */}
           <div>
-            <p className="text-sm font-medium text-[#617061] mb-2">Choose a package</p>
+            <p className="text-sm font-medium text-[#617061] mb-2">{t('choosePackage')}</p>
             <div className="space-y-2">
               {activePackages.map((pkg) => (
                 <button
@@ -623,20 +633,20 @@ function PackageSection({
             <>
               <div>
                 <p className="text-sm font-medium text-[#617061] mb-3 flex items-center gap-2">
-                  <Target className="w-4 h-4 text-[#3a7d44]" /> Goals <span className="text-xs text-[#617061] font-normal">(optional)</span>
+                  <Target className="w-4 h-4 text-[#3a7d44]" /> Goals <span className="text-xs text-[#617061] font-normal">({t('optional')})</span>
                 </p>
                 <GoalInput goals={assignGoals} onChange={setAssignGoals} />
               </div>
 
               <div>
                 <p className="text-sm font-medium text-[#617061] mb-2 flex items-center gap-2">
-                  <StickyNote className="w-4 h-4 text-amber-500" /> Note for client <span className="text-xs text-[#617061] font-normal">(optional)</span>
+                  <StickyNote className="w-4 h-4 text-amber-500" /> {t('noteForClient')} <span className="text-xs text-[#617061] font-normal">({t('optional')})</span>
                 </p>
                 <textarea
                   value={assignNotes}
                   onChange={(e) => setAssignNotes(e.target.value)}
                   rows={3}
-                  placeholder="e.g. Focus on form before increasing weight…"
+                  placeholder={t('notePlaceholder')}
                   className="w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 border-[#d8e0d8] bg-white text-[#0f1f10] placeholder:text-[#617061] focus:outline-none focus:ring-2 focus:ring-[#3a7d44]/40 resize-none"
                 />
               </div>
@@ -649,7 +659,7 @@ function PackageSection({
             className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#162318] text-white text-sm font-semibold rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60"
           >
             {assigning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Package className="w-4 h-4" />}
-            {assigning ? 'Assigning…' : 'Assign Package'}
+            {assigning ? t('assigning') : t('assignPackage')}
           </button>
         </div>
       )}
@@ -663,6 +673,7 @@ export default function ClientProfilePage() {
   const params = useParams();
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations('clientDetail');
   const clientId = params.clientId as string;
 
   const [client, setClient] = useState<CoachClient | null>(null);
@@ -705,12 +716,12 @@ export default function ClientProfilePage() {
   if (error || !client) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <p className="text-[#617061]">{error ?? 'Client not found'}</p>
+        <p className="text-[#617061]">{error ?? t('notFound')}</p>
         <button
           onClick={() => router.push(`/${locale}/dashboard/coach/clients`)}
           className="text-sm text-[#3a7d44] hover:underline"
         >
-          Back to clients
+          {t('backToClients')}
         </button>
       </div>
     );
@@ -729,7 +740,7 @@ export default function ClientProfilePage() {
         className="inline-flex items-center gap-2 text-sm text-[#617061] hover:text-gray-800 hover:text-[#0f1f10] mb-6 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
-        Back to clients
+        {t('backToClients')}
       </button>
 
       {/* ── Header card ── */}
@@ -737,8 +748,11 @@ export default function ClientProfilePage() {
         <div className="h-20 bg-[#162318]" />
         <div className="px-6 pb-6">
           <div className="flex items-end justify-between -mt-8 mb-4">
-            <div className="w-16 h-16 rounded-2xl bg-[#162318] border-4 border-white flex items-center justify-center text-white text-xl font-bold shadow-lg">
-              {getInitials(client.firstName, client.lastName)}
+            <div className="w-16 h-16 rounded-2xl bg-[#162318] border-4 border-white flex items-center justify-center text-white text-xl font-bold shadow-lg overflow-hidden">
+              {client.avatar
+                // eslint-disable-next-line @next/next/no-img-element
+                ? <img src={client.avatar} alt={`${client.firstName} ${client.lastName}`} className="w-full h-full object-cover" />
+                : getInitials(client.firstName, client.lastName)}
             </div>
             <span className={cn('px-2.5 py-1 text-xs font-medium rounded-full border capitalize mb-1', STATUS_STYLES[client.status] ?? STATUS_STYLES.inactive)}>
               {client.status}
@@ -753,7 +767,7 @@ export default function ClientProfilePage() {
               <p className="text-sm text-[#617061] mt-0.5">{client.email}</p>
               {p.fitnessGoal && (
                 <span className={cn('inline-block mt-2 px-2.5 py-0.5 text-xs font-medium rounded-full border', GOAL_COLORS[p.fitnessGoal] ?? 'bg-gray-100 text-[#617061] border-gray-300')}>
-                  {GOAL_LABELS[p.fitnessGoal] ?? p.fitnessGoal}
+                  {GOAL_LABEL_KEYS[p.fitnessGoal] ? t(GOAL_LABEL_KEYS[p.fitnessGoal] as Parameters<typeof t>[0]) : p.fitnessGoal}
                 </span>
               )}
             </div>
@@ -761,16 +775,16 @@ export default function ClientProfilePage() {
             <div className="flex gap-6 text-center">
               <div>
                 <p className="text-xl font-bold text-[#0f1f10]">{client.sessionsCompleted}</p>
-                <p className="text-xs text-[#617061]">sessions done</p>
+                <p className="text-xs text-[#617061]">{t('sessionsDone')}</p>
               </div>
               <div>
                 <p className="text-xl font-bold text-[#0f1f10]">{fmtDate(client.joinedAt)}</p>
-                <p className="text-xs text-[#617061]">joined</p>
+                <p className="text-xs text-[#617061]">{t('joined')}</p>
               </div>
               {client.lastSessionAt && (
                 <div>
                   <p className="text-xl font-bold text-[#0f1f10]">{fmtDate(client.lastSessionAt)}</p>
-                  <p className="text-xs text-[#617061]">last session</p>
+                  <p className="text-xs text-[#617061]">{t('lastSession')}</p>
                 </div>
               )}
             </div>
@@ -785,33 +799,33 @@ export default function ClientProfilePage() {
         <div className="space-y-5">
 
           {/* Personal info */}
-          <Section title="Personal Info" icon={<User className="w-3.5 h-3.5 text-[#617061]" />}>
+          <Section title={t('sectionPersonal')} icon={<User className="w-3.5 h-3.5 text-[#617061]" />}>
             <div className="space-y-0">
-              <InfoRow label="Gender" value={p.gender ? p.gender.charAt(0).toUpperCase() + p.gender.slice(1).replace(/_/g, ' ') : null} />
-              <InfoRow label="Age" value={age != null ? `${age} years old` : null} />
-              <InfoRow label="Timezone" value={p.timezone?.replace(/_/g, ' ')} />
-              <InfoRow label="Phone" value={p.phone} />
-              <InfoRow label="Preferred schedule" value={p.preferredWorkoutTime ? p.preferredWorkoutTime.charAt(0).toUpperCase() + p.preferredWorkoutTime.slice(1) : null} />
-              {p.gymLocation && <InfoRow label="Gym / Location" value={p.gymLocation} />}
+              <InfoRow label={t('labelGender')} value={p.gender ? p.gender.charAt(0).toUpperCase() + p.gender.slice(1).replace(/_/g, ' ') : null} />
+              <InfoRow label={t('labelAge')} value={age != null ? t('yearsOld', { age }) : null} />
+              <InfoRow label={t('labelTimezone')} value={p.timezone?.replace(/_/g, ' ')} />
+              <InfoRow label={t('labelPhone')} value={p.phone} />
+              <InfoRow label={t('labelSchedule')} value={p.preferredWorkoutTime ? p.preferredWorkoutTime.charAt(0).toUpperCase() + p.preferredWorkoutTime.slice(1) : null} />
+              {p.gymLocation && <InfoRow label={t('labelGym')} value={p.gymLocation} />}
             </div>
           </Section>
 
           {/* Fitness profile */}
-          <Section title="Fitness Profile" icon={<Activity className="w-3.5 h-3.5 text-[#3a7d44]" />}>
+          <Section title={t('sectionFitness')} icon={<Activity className="w-3.5 h-3.5 text-[#3a7d44]" />}>
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-3">
                 {p.weight != null && (
                   <div className="bg-[#f6f8f5] rounded-xl p-3 text-center">
                     <Scale className="w-4 h-4 text-[#617061] mx-auto mb-1" />
                     <p className="text-lg font-bold text-[#0f1f10]">{p.weight}</p>
-                    <p className="text-xs text-[#617061]">kg current</p>
+                    <p className="text-xs text-[#617061]">{t('kgCurrent')}</p>
                   </div>
                 )}
                 {p.targetWeight != null && (
                   <div className="bg-[#f6f8f5] rounded-xl p-3 text-center">
                     <Target className="w-4 h-4 text-blue-400 mx-auto mb-1" />
                     <p className="text-lg font-bold text-[#3a7d44]">{p.targetWeight}</p>
-                    <p className="text-xs text-[#617061]">kg target</p>
+                    <p className="text-xs text-[#617061]">{t('kgTarget')}</p>
                   </div>
                 )}
                 {p.height != null && (
@@ -832,33 +846,33 @@ export default function ClientProfilePage() {
               )}
 
               <div className="space-y-0">
-                <InfoRow label="Activity level" value={p.activityLevel ? (ACTIVITY_LABELS[p.activityLevel] ?? p.activityLevel) : null} />
+                <InfoRow label={t('labelActivityLevel')} value={p.activityLevel ? (ACTIVITY_LABEL_KEYS[p.activityLevel] ? t(ACTIVITY_LABEL_KEYS[p.activityLevel] as Parameters<typeof t>[0]) : p.activityLevel) : null} />
               </div>
             </div>
           </Section>
 
           {/* Health */}
-          <Section title="Health & Medical" icon={<HeartPulse className="w-3.5 h-3.5 text-red-500" />}>
+          <Section title={t('sectionHealth')} icon={<HeartPulse className="w-3.5 h-3.5 text-red-500" />}>
             <div className="space-y-4">
               <div>
-                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Medical conditions</p>
-                <TagList tags={p.medicalConditions} empty="None reported" />
+                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">{t('labelMedicalConditions')}</p>
+                <TagList tags={p.medicalConditions} empty={t('noneReported')} />
               </div>
               <div>
-                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Injuries</p>
-                <TagList tags={p.injuries} empty="None reported" />
+                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">{t('labelInjuries')}</p>
+                <TagList tags={p.injuries} empty={t('noneReported')} />
               </div>
               <div>
-                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Allergies</p>
-                <TagList tags={p.allergies} empty="None reported" />
+                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">{t('labelAllergies')}</p>
+                <TagList tags={p.allergies} empty={t('noneReported')} />
               </div>
               <div>
-                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Dietary restrictions</p>
-                <TagList tags={p.dietaryRestrictions} empty="None reported" />
+                <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">{t('labelDietary')}</p>
+                <TagList tags={p.dietaryRestrictions} empty={t('noneReported')} />
               </div>
               {p.notes && (
                 <div className="pt-3 border-t border-[#d8e0d8]">
-                  <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">Onboarding notes</p>
+                  <p className="text-xs text-[#617061] uppercase tracking-wide mb-2">{t('labelNotes')}</p>
                   <p className="text-sm text-[#617061] leading-relaxed bg-amber-50 dark:bg-amber-900/15 rounded-xl p-3 border border-amber-200 dark:border-amber-800/50">
                     {p.notes}
                   </p>
@@ -870,7 +884,7 @@ export default function ClientProfilePage() {
 
         {/* ── Right: Package management ── */}
         <div className="space-y-5">
-          <Section title="Plan & Package" icon={<Package className="w-3.5 h-3.5 text-purple-500" />}>
+          <Section title={t('sectionPlan')} icon={<Package className="w-3.5 h-3.5 text-purple-500" />}>
             <PackageSection clientId={client.id} coachPackages={coachPackages} />
           </Section>
         </div>
