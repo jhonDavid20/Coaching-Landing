@@ -1,4 +1,5 @@
 import {NextIntlClientProvider, hasLocale} from 'next-intl';
+import {getMessages} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import './globals.css';
@@ -22,14 +23,17 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
- 
+
+  // Load messages for the current locale so client components can access them
+  const messages = await getMessages();
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <body>
         <AuthSessionProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <LoadingProvider>
-              <NextIntlClientProvider>
+              <NextIntlClientProvider messages={messages}>
                 <LocaleSwitchProvider>
                   <ConditionalNavbar />
                   {children}
