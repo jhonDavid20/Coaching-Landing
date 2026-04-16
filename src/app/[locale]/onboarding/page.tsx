@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { useRouter, usePathname } from '@/i18n/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -20,6 +20,7 @@ import {
   Heart,
   Settings,
   Dumbbell,
+  Globe,
 } from 'lucide-react';
 
 // ─── Schemas ────────────────────────────────────────────────────────────────
@@ -30,14 +31,10 @@ const step1Schema = z.object({
 });
 
 const step2Schema = z.object({
-  birthDate: z.string().min(1, 'Requerido'),
+  birthDate: z.string().min(1),
   gender: z.enum(['male', 'female', 'prefer_not_to_say', 'other']),
-  height: z
-    .number({ invalid_type_error: 'Requerido' })
-    .positive('Debe ser un valor positivo'),
-  currentWeight: z
-    .number({ invalid_type_error: 'Requerido' })
-    .positive('Debe ser un valor positivo'),
+  height: z.number({ invalid_type_error: '' }).positive(),
+  currentWeight: z.number({ invalid_type_error: '' }).positive(),
   targetWeight: z.number().positive().optional(),
 });
 
@@ -51,7 +48,7 @@ const step3Schema = z.object({
 const step4Schema = z.object({
   preferredSchedule: z.enum(['morning', 'afternoon', 'evening', 'flexible']),
   gymLocation: z.string().optional(),
-  timezone: z.string().min(1, 'Requerido'),
+  timezone: z.string().min(1),
   phone: z.string().optional(),
 });
 
@@ -62,18 +59,8 @@ type Step4Data = z.infer<typeof step4Schema>;
 
 type OnboardingFormData = Step1Data & Step2Data & Step3Data & Step4Data;
 
-// ─── Static options ─────────────────────────────────────────────────────────
+// ─── Static (non-translatable) options ──────────────────────────────────────
 
-const MEDICAL_CONDITIONS = [
-  'Diabetes',
-  'Hipertensión',
-  'Asma',
-  'Artritis',
-  'Enfermedad cardíaca',
-  'Otro',
-];
-const INJURIES = ['Rodilla', 'Espalda baja', 'Hombro', 'Cadera', 'Tobillo', 'Cuello', 'Otro'];
-const FOOD_ALLERGIES = ['Gluten', 'Lácteos', 'Nueces', 'Mariscos', 'Huevos', 'Soja', 'Otro'];
 const TIMEZONES = [
   'America/Mexico_City',
   'America/Bogota',
@@ -163,21 +150,59 @@ function FieldError({ message }: FieldErrorProps) {
   return <p className="text-red-400 text-xs mt-1">{message}</p>;
 }
 
-// ─── Step headers config ────────────────────────────────────────────────────
-
-const STEP_CONFIG = [
-  { title: 'Tu objetivo', subtitle: 'Cuéntanos qué quieres lograr', icon: Target },
-  { title: 'Datos físicos', subtitle: 'Información sobre tu cuerpo', icon: Dumbbell },
-  { title: 'Salud e historial', subtitle: 'Opcional — nos ayuda a personalizar tu plan', icon: Heart },
-  { title: 'Preferencias', subtitle: 'Cómo y cuándo quieres entrenar', icon: Settings },
-  { title: '¡Todo listo!', subtitle: 'Revisa tu información antes de comenzar', icon: CheckCircle2 },
-];
-
 // ─── Main component ──────────────────────────────────────────────────────────
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const pathname = usePathname();
   const locale = useLocale();
+  const t = useTranslations('onboarding');
+
+  const handleSwitchLocale = () => {
+    const nextLocale = locale === 'en' ? 'es' : 'en';
+    router.replace(pathname, { locale: nextLocale, scroll: false });
+  };
+
+  const handleFinishLater = () => {
+    window.location.href = `/${locale}`;
+  };
+
+  // Step config — defined inside component to use t()
+  const STEP_CONFIG = [
+    { title: t('step1Title'), subtitle: t('step1Subtitle'), icon: Target },
+    { title: t('step2Title'), subtitle: t('step2Subtitle'), icon: Dumbbell },
+    { title: t('step3Title'), subtitle: t('step3Subtitle'), icon: Heart },
+    { title: t('step4Title'), subtitle: t('step4Subtitle'), icon: Settings },
+    { title: t('step5Title'), subtitle: t('step5Subtitle'), icon: CheckCircle2 },
+  ];
+
+  // Locale-aware chip options — values are localised strings, stored to DB in user's locale
+  const MEDICAL_CONDITIONS = [
+    t('conditionDiabetes'),
+    t('conditionHypertension'),
+    t('conditionAsthma'),
+    t('conditionArthritis'),
+    t('conditionHeartDisease'),
+    t('conditionOther'),
+  ];
+  const INJURIES = [
+    t('injuryKnee'),
+    t('injuryLowerBack'),
+    t('injuryShoulder'),
+    t('injuryHip'),
+    t('injuryAnkle'),
+    t('injuryNeck'),
+    t('injuryOther'),
+  ];
+  const FOOD_ALLERGIES = [
+    t('allergyGluten'),
+    t('allergyDairy'),
+    t('allergyNuts'),
+    t('allergySeafood'),
+    t('allergyEggs'),
+    t('allergySoy'),
+    t('allergyOther'),
+  ];
 
   const [formData, setFormData] = useState<Partial<OnboardingFormData>>({});
   const [currentStep, setCurrentStep] = useState(1);
@@ -272,13 +297,13 @@ export default function OnboardingPage() {
     try {
       const result = await completeOnboarding(formData as OnboardingFormInput);
       if (result.success) {
-        toast.success('¡Bienvenido! Tu perfil está listo.');
+        toast.success(t('successMessage'));
         router.push(`/${locale}/dashboard`);
       } else {
-        setSubmitError(result.message || 'Ocurrió un error. Por favor intenta de nuevo.');
+        setSubmitError(result.message || t('errorGeneral'));
       }
     } catch {
-      setSubmitError('Ocurrió un error inesperado. Por favor intenta de nuevo.');
+      setSubmitError(t('errorUnexpected'));
     } finally {
       setIsSubmitting(false);
     }
@@ -295,28 +320,28 @@ export default function OnboardingPage() {
     return (
       <div className="space-y-8">
         <div>
-          <p className="text-sm font-medium text-[#0f1f10] mb-3">¿Cuál es tu objetivo principal?</p>
+          <p className="text-sm font-medium text-[#0f1f10] mb-3">{t('fitnessGoalLabel')}</p>
           <div className="grid grid-cols-2 gap-3">
             <SelectCard
-              label="Perder peso"
+              label={t('goalLoseWeight')}
               icon="🔥"
               selected={fitnessGoal === 'lose_weight'}
               onClick={() => setValue('fitnessGoal', 'lose_weight', { shouldValidate: true })}
             />
             <SelectCard
-              label="Ganar músculo"
+              label={t('goalGainMuscle')}
               icon="💪"
               selected={fitnessGoal === 'gain_muscle'}
               onClick={() => setValue('fitnessGoal', 'gain_muscle', { shouldValidate: true })}
             />
             <SelectCard
-              label="Mantener peso"
+              label={t('goalMaintain')}
               icon="⚖️"
               selected={fitnessGoal === 'maintain'}
               onClick={() => setValue('fitnessGoal', 'maintain', { shouldValidate: true })}
             />
             <SelectCard
-              label="Mejorar resistencia"
+              label={t('goalEndurance')}
               icon="🏃"
               selected={fitnessGoal === 'endurance'}
               onClick={() => setValue('fitnessGoal', 'endurance', { shouldValidate: true })}
@@ -326,29 +351,31 @@ export default function OnboardingPage() {
         </div>
 
         <div>
-          <p className="text-sm font-medium text-[#0f1f10] mb-3">¿Cuál es tu nivel de actividad actual?</p>
+          <p className="text-sm font-medium text-[#0f1f10] mb-3">{t('activityLevelLabel')}</p>
           <div className="grid grid-cols-1 gap-3">
             <SelectCard
-              label="Sedentario"
-              description="Poco o nada de ejercicio"
+              label={t('activitySedentary')}
+              description={t('activitySedentaryDesc')}
               selected={activityLevel === 'sedentary'}
               onClick={() => setValue('activityLevel', 'sedentary', { shouldValidate: true })}
             />
             <SelectCard
-              label="Ligeramente activo"
-              description="1-3 días/semana"
+              label={t('activityLightly')}
+              description={t('activityLightlyDesc')}
               selected={activityLevel === 'lightly_active'}
               onClick={() => setValue('activityLevel', 'lightly_active', { shouldValidate: true })}
             />
             <SelectCard
-              label="Moderadamente activo"
-              description="3-5 días/semana"
+              label={t('activityModerately')}
+              description={t('activityModeratelyDesc')}
               selected={activityLevel === 'moderately_active'}
-              onClick={() => setValue('activityLevel', 'moderately_active', { shouldValidate: true })}
+              onClick={() =>
+                setValue('activityLevel', 'moderately_active', { shouldValidate: true })
+              }
             />
             <SelectCard
-              label="Muy activo"
-              description="6-7 días/semana"
+              label={t('activityVery')}
+              description={t('activityVeryDesc')}
               selected={activityLevel === 'very_active'}
               onClick={() => setValue('activityLevel', 'very_active', { shouldValidate: true })}
             />
@@ -367,7 +394,7 @@ export default function OnboardingPage() {
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-[#0f1f10] mb-1">
-            Fecha de nacimiento
+            {t('birthDate')}
           </label>
           <input
             type="date"
@@ -378,13 +405,13 @@ export default function OnboardingPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#0f1f10] mb-3">Género</label>
+          <label className="block text-sm font-medium text-[#0f1f10] mb-3">{t('gender')}</label>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: 'male', label: 'Masculino' },
-              { value: 'female', label: 'Femenino' },
-              { value: 'prefer_not_to_say', label: 'Prefiero no decir' },
-              { value: 'other', label: 'Otro' },
+              { value: 'male', label: t('genderMale') },
+              { value: 'female', label: t('genderFemale') },
+              { value: 'prefer_not_to_say', label: t('genderPreferNot') },
+              { value: 'other', label: t('genderOther') },
             ].map((opt) => (
               <SelectCard
                 key={opt.value}
@@ -401,7 +428,7 @@ export default function OnboardingPage() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-[#0f1f10] mb-1">Altura (cm)</label>
+            <label className="block text-sm font-medium text-[#0f1f10] mb-1">{t('height')}</label>
             <input
               type="number"
               placeholder="170"
@@ -412,7 +439,7 @@ export default function OnboardingPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-[#0f1f10] mb-1">
-              Peso actual (kg)
+              {t('currentWeight')}
             </label>
             <input
               type="number"
@@ -426,8 +453,8 @@ export default function OnboardingPage() {
 
         <div>
           <label className="block text-sm font-medium text-[#0f1f10] mb-1">
-            Peso objetivo (kg){' '}
-            <span className="text-[#617061] font-normal">— opcional</span>
+            {t('targetWeight')}{' '}
+            <span className="text-[#617061] font-normal">{t('optional')}</span>
           </label>
           <input
             type="number"
@@ -446,14 +473,11 @@ export default function OnboardingPage() {
 
     return (
       <div className="space-y-6">
-        <p className="text-sm text-[#617061]">
-          Todos los campos de este paso son opcionales. Esta información nos ayuda a personalizar
-          tu plan de entrenamiento.
-        </p>
+        <p className="text-sm text-[#617061]">{t('step3OptionalNote')}</p>
 
         <div>
           <label className="block text-sm font-medium text-[#0f1f10] mb-3">
-            Condiciones médicas
+            {t('medicalConditions')}
           </label>
           <MultiSelectChips
             options={MEDICAL_CONDITIONS}
@@ -464,7 +488,7 @@ export default function OnboardingPage() {
 
         <div>
           <label className="block text-sm font-medium text-[#0f1f10] mb-3">
-            Lesiones previas
+            {t('injuries')}
           </label>
           <MultiSelectChips
             options={INJURIES}
@@ -475,19 +499,20 @@ export default function OnboardingPage() {
 
         <div>
           <label className="block text-sm font-medium text-[#0f1f10] mb-1">
-            Medicamentos <span className="text-[#617061] font-normal">— campo libre</span>
+            {t('medications')}{' '}
+            <span className="text-[#617061] font-normal">{t('medicationsFreeField')}</span>
           </label>
           <textarea
             {...register('medications')}
             rows={2}
-            placeholder="Ej: Metformina 500mg, Losartán..."
+            placeholder={t('medicationsPlaceholder')}
             className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0] resize-none"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-[#0f1f10] mb-3">
-            Alergias alimentarias
+            {t('foodAllergies')}
           </label>
           <MultiSelectChips
             options={FOOD_ALLERGIES}
@@ -506,13 +531,13 @@ export default function OnboardingPage() {
     return (
       <div className="space-y-6">
         <div>
-          <p className="text-sm font-medium text-[#0f1f10] mb-3">¿Cuándo prefieres entrenar?</p>
+          <p className="text-sm font-medium text-[#0f1f10] mb-3">{t('preferredScheduleLabel')}</p>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: 'morning', label: 'Mañana', icon: '🌅' },
-              { value: 'afternoon', label: 'Tarde', icon: '☀️' },
-              { value: 'evening', label: 'Noche', icon: '🌙' },
-              { value: 'flexible', label: 'Flexible', icon: '📅' },
+              { value: 'morning', label: t('scheduleMorning'), icon: '🌅' },
+              { value: 'afternoon', label: t('scheduleAfternoon'), icon: '☀️' },
+              { value: 'evening', label: t('scheduleEvening'), icon: '🌙' },
+              { value: 'flexible', label: t('scheduleFlexible'), icon: '📅' },
             ].map((opt) => (
               <SelectCard
                 key={opt.value}
@@ -532,14 +557,14 @@ export default function OnboardingPage() {
 
         <div>
           <label className="block text-sm font-medium text-[#0f1f10] mb-1">
-            Zona horaria
+            {t('timezone')}
           </label>
           <select
             {...register('timezone')}
             className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44]"
           >
             <option value="" disabled className="bg-gray-800">
-              Selecciona tu zona horaria
+              {t('timezoneSelect')}
             </option>
             {TIMEZONES.map((tz) => (
               <option key={tz} value={tz} className="bg-gray-800">
@@ -553,20 +578,20 @@ export default function OnboardingPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-[#0f1f10] mb-1">
-              Gym / Ubicación{' '}
-              <span className="text-[#617061] font-normal">— opcional</span>
+              {t('gymLocation')}{' '}
+              <span className="text-[#617061] font-normal">{t('optional')}</span>
             </label>
             <input
               type="text"
-              placeholder="Ej: Gold's Gym, Casa..."
+              placeholder="Gold's Gym, Home…"
               {...register('gymLocation')}
               className="w-full px-3 py-2.5 rounded-lg border border-[#d8e0d8] bg-white text-[#0f1f10] focus:outline-none focus:ring-2 focus:ring-[#3a7d44] focus:border-[#3a7d44] placeholder-[#a0b0a0]"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-[#0f1f10] mb-1">
-              Teléfono{' '}
-              <span className="text-[#617061] font-normal">— opcional</span>
+              {t('phone')}{' '}
+              <span className="text-[#617061] font-normal">{t('optional')}</span>
             </label>
             <input
               type="tel"
@@ -581,50 +606,50 @@ export default function OnboardingPage() {
   };
 
   const GOAL_LABELS: Record<string, string> = {
-    lose_weight: '🔥 Perder peso',
-    gain_muscle: '💪 Ganar músculo',
-    maintain: '⚖️ Mantener peso',
-    endurance: '🏃 Mejorar resistencia',
+    lose_weight: `🔥 ${t('goalLoseWeight')}`,
+    gain_muscle: `💪 ${t('goalGainMuscle')}`,
+    maintain: `⚖️ ${t('goalMaintain')}`,
+    endurance: `🏃 ${t('goalEndurance')}`,
   };
   const ACTIVITY_LABELS: Record<string, string> = {
-    sedentary: 'Sedentario',
-    lightly_active: 'Ligeramente activo',
-    moderately_active: 'Moderadamente activo',
-    very_active: 'Muy activo',
+    sedentary: t('activitySedentary'),
+    lightly_active: t('activityLightly'),
+    moderately_active: t('activityModerately'),
+    very_active: t('activityVery'),
   };
   const GENDER_LABELS: Record<string, string> = {
-    male: 'Masculino',
-    female: 'Femenino',
-    prefer_not_to_say: 'Prefiero no decir',
-    other: 'Otro',
+    male: t('genderMale'),
+    female: t('genderFemale'),
+    prefer_not_to_say: t('genderPreferNot'),
+    other: t('genderOther'),
   };
   const SCHEDULE_LABELS: Record<string, string> = {
-    morning: '🌅 Mañana',
-    afternoon: '☀️ Tarde',
-    evening: '🌙 Noche',
-    flexible: '📅 Flexible',
+    morning: `🌅 ${t('scheduleMorning')}`,
+    afternoon: `☀️ ${t('scheduleAfternoon')}`,
+    evening: `🌙 ${t('scheduleEvening')}`,
+    flexible: `📅 ${t('scheduleFlexible')}`,
   };
 
   const renderStep5 = () => {
     const items = [
-      { label: 'Objetivo', value: formData.fitnessGoal ? GOAL_LABELS[formData.fitnessGoal] : '—' },
+      { label: t('summaryGoal'), value: formData.fitnessGoal ? GOAL_LABELS[formData.fitnessGoal] : '—' },
       {
-        label: 'Nivel de actividad',
+        label: t('summaryActivityLevel'),
         value: formData.activityLevel ? ACTIVITY_LABELS[formData.activityLevel] : '—',
       },
-      { label: 'Fecha de nacimiento', value: formData.birthDate || '—' },
-      { label: 'Género', value: formData.gender ? GENDER_LABELS[formData.gender] : '—' },
-      { label: 'Altura', value: formData.height ? `${formData.height} cm` : '—' },
-      { label: 'Peso actual', value: formData.currentWeight ? `${formData.currentWeight} kg` : '—' },
+      { label: t('summaryBirthDate'), value: formData.birthDate || '—' },
+      { label: t('summaryGender'), value: formData.gender ? GENDER_LABELS[formData.gender] : '—' },
+      { label: t('summaryHeight'), value: formData.height ? `${formData.height} cm` : '—' },
+      { label: t('summaryCurrentWeight'), value: formData.currentWeight ? `${formData.currentWeight} kg` : '—' },
       {
-        label: 'Peso objetivo',
-        value: formData.targetWeight ? `${formData.targetWeight} kg` : 'No especificado',
+        label: t('summaryTargetWeight'),
+        value: formData.targetWeight ? `${formData.targetWeight} kg` : t('summaryTargetWeightNone'),
       },
       {
-        label: 'Horario preferido',
+        label: t('summarySchedule'),
         value: formData.preferredSchedule ? SCHEDULE_LABELS[formData.preferredSchedule] : '—',
       },
-      { label: 'Zona horaria', value: formData.timezone || '—' },
+      { label: t('summaryTimezone'), value: formData.timezone || '—' },
     ];
 
     return (
@@ -635,9 +660,7 @@ export default function OnboardingPage() {
           </div>
         </div>
 
-        <p className="text-center text-gray-400 text-sm">
-          Revisa tu información. Podrás modificarla más adelante desde tu perfil.
-        </p>
+        <p className="text-center text-gray-400 text-sm">{t('reviewNote')}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {items.map(({ label, value }) => (
@@ -676,16 +699,35 @@ export default function OnboardingPage() {
   return (
     <div className="min-h-screen bg-[#f6f8f5] flex items-center justify-center py-12 px-4">
       <div className="w-full max-w-2xl">
-        {/* Brand */}
-        <div className="text-center mb-8">
+        {/* Brand + top actions */}
+        <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-bold text-[#162318] tracking-tight">
             Steady<span className="text-[#52a85e]">Vitality</span>
           </h1>
+          <div className="flex items-center gap-2">
+            {/* Language switcher */}
+            <button
+              type="button"
+              onClick={handleSwitchLocale}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#617061] border border-[#d8e0d8] bg-white hover:bg-[#f0f4f0] hover:text-[#162318] transition-colors"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              {locale === 'en' ? 'ES' : 'EN'}
+            </button>
+            {/* Finish later */}
+            <button
+              type="button"
+              onClick={handleFinishLater}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium text-[#617061] border border-[#d8e0d8] bg-white hover:bg-[#f0f4f0] hover:text-[#162318] transition-colors"
+            >
+              {t('finishLater')}
+            </button>
+          </div>
         </div>
 
         {/* Progress bar */}
         <div className="mb-2 flex items-center justify-between text-xs text-[#617061]">
-          <span>Paso {currentStep} de 5</span>
+          <span>{t('stepIndicator')} {currentStep} {t('of')} 5</span>
           <span>{Math.round((currentStep / 5) * 100)}%</span>
         </div>
         <div className="w-full bg-[#d8e0d8] rounded-full h-1.5 mb-8">
@@ -733,7 +775,7 @@ export default function OnboardingPage() {
                 className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-[#d8e0d8] text-[#617061] text-sm font-medium hover:bg-[#eff2ee] hover:text-[#162318] transition-colors disabled:opacity-50"
               >
                 <ChevronLeft className="w-4 h-4" />
-                Anterior
+                {t('back')}
               </button>
             ) : (
               <div />
@@ -745,7 +787,7 @@ export default function OnboardingPage() {
                 onClick={handleNext}
                 className="flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-[#162318] text-white text-sm font-medium hover:bg-[#243d27] transition-colors"
               >
-                Siguiente
+                {t('next')}
                 <ChevronRight className="w-4 h-4" />
               </button>
             ) : (
@@ -758,13 +800,13 @@ export default function OnboardingPage() {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Guardando...
+                    {t('saving')}
                   </>
                 ) : submitError ? (
-                  'Intentar de nuevo'
+                  t('retry')
                 ) : (
                   <>
-                    Comenzar mi journey
+                    {t('submit')}
                     <Activity className="w-4 h-4" />
                   </>
                 )}

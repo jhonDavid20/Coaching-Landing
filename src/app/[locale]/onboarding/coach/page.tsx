@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { cn } from '@/lib/utils';
 import { completeCoachOnboarding, CoachOnboardingPayload, CoachingType } from '@/actions/coach-onboarding';
 import { toast } from 'sonner';
+import AvatarUploader from '@/components/profile/avatar-uploader';
 import {
   ChevronLeft,
   ChevronRight,
@@ -344,6 +345,9 @@ export default function CoachOnboardingPage() {
     trialSessionAvailable: false,
   });
 
+  // Avatar URL set after upload (optional — user can skip)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
   // Multi-select state (not managed by react-hook-form)
   const [specialties,       setSpecialties]       = useState<string[]>([]);
   const [modalities,        setModalities]         = useState<string[]>([]);
@@ -437,6 +441,20 @@ export default function CoachOnboardingPage() {
     const { register, formState: { errors } } = form1;
     return (
       <div className="space-y-5">
+        {/* ── Profile photo (optional) ── */}
+        <div className="flex flex-col items-center gap-2 pb-2">
+          <AvatarUploader
+            currentAvatar={avatarUrl}
+            size="lg"
+            onChanged={(url) => {
+              setAvatarUrl(url);
+            }}
+          />
+          <p className="text-xs text-[#617061]">
+            {avatarUrl ? 'Looking great! You can change it anytime.' : 'Add a profile photo — optional but recommended'}
+          </p>
+        </div>
+
         <div>
           <Label>Profile headline</Label>
           <TextInput {...register('profileHeadline')} placeholder="e.g. Strength & Mobility Coach for Busy Professionals" />
@@ -655,9 +673,17 @@ export default function CoachOnboardingPage() {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-center mb-2">
-          <div className="w-16 h-16 rounded-full bg-[#ddf0df] border-2 border-[#3a7d44] flex items-center justify-center">
-            <CheckCircle2 className="w-8 h-8 text-[#3a7d44]" />
-          </div>
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt="Your photo"
+              className="w-16 h-16 rounded-full object-cover ring-2 ring-[#3a7d44]"
+            />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-[#ddf0df] border-2 border-[#3a7d44] flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8 text-[#3a7d44]" />
+            </div>
+          )}
         </div>
         <p className="text-center text-[#617061] text-sm mb-4">
           Looking good! Review your details below — you can update everything later from your dashboard.
