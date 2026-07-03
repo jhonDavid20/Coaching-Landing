@@ -3,6 +3,10 @@
 import Cal from "@calcom/embed-react"
 import { useTranslations } from "next-intl"
 
+// Cal.com booking config — override via environment variables.
+const CAL_LINK = process.env.NEXT_PUBLIC_CAL_LINK ?? "jhonda/30min"
+const CAL_NAMESPACE = process.env.NEXT_PUBLIC_CAL_NAMESPACE ?? "coaching"
+
 export default function CalSection() {
   const t = useTranslations("CalSection")
   return (
@@ -18,8 +22,8 @@ export default function CalSection() {
           {t('content')}
         </p>
         <Cal
-          namespace="Hola"
-          calLink="jhonda/30min"
+          namespace={CAL_NAMESPACE}
+          calLink={CAL_LINK}
           style={{
             paddingBottom: "2rem",
             width: "100%",
