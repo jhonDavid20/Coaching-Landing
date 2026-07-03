@@ -48,7 +48,9 @@
     "ExperiencePlaceholder": "Cuéntanos sobre tu experiencia en fitness, lesiones o inquietudes específicas...",
     "BMI": "IMC",
     "InitialRecommendations": "Recomendaciones iniciales:",
-    "GetMyCustomPlan": "Obtener mi plan personalizado"
+    "GetMyCustomPlan": "Obtener mi plan personalizado",
+    "Submitting": "Enviando...",
+    "SubmitError": "Algo salió mal. Por favor, inténtalo de nuevo."
   },
   "AboutSection": {
     "title": "Tu compañero de transformación",

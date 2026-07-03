@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { AssessmentForm } from "./assessment-form"
 import { AssessmentSuccess } from "./assessment-success"
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 
 interface AssessmentFormData {
   name: string
@@ -19,12 +19,32 @@ interface AssessmentFormData {
 
 export default function AssessmentSection() {
   const t = useTranslations('AssessmentSection')
+  const locale = useLocale()
   const [showSuccess, setShowSuccess] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleFormSubmit = (data: AssessmentFormData) => {
-    console.log("Assessment data:", data)
-    // Here you would typically send the data to your backend
-    setShowSuccess(true)
+  const handleFormSubmit = async (data: AssessmentFormData) => {
+    setSubmitting(true)
+    setError(null)
+    try {
+      const response = await fetch("/api/assessment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, locale }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Request failed")
+      }
+
+      setShowSuccess(true)
+    } catch (err) {
+      console.error("Assessment submission error:", err)
+      setError(t('SubmitError'))
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -35,7 +55,14 @@ export default function AssessmentSection() {
         {showSuccess ? (
           <AssessmentSuccess onBackToForm={() => setShowSuccess(false)} />
         ) : (
-          <AssessmentForm onSubmit={handleFormSubmit} />
+          <>
+            {error && (
+              <p className="text-red-500 text-center mb-6" role="alert">
+                {error}
+              </p>
+            )}
+            <AssessmentForm onSubmit={handleFormSubmit} submitting={submitting} />
+          </>
         )}
       </div>
     </section>

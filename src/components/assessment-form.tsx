@@ -23,10 +23,11 @@ interface AssessmentFormData {
 }
 
 interface AssessmentFormProps {
-  onSubmit: (data: AssessmentFormData) => void
+  onSubmit: (data: AssessmentFormData) => void | Promise<void>
+  submitting?: boolean
 }
 
-export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
+export function AssessmentForm({ onSubmit, submitting = false }: AssessmentFormProps) {
   const t = useTranslations('AssessmentSection');
   const [bmi, setBmi] = useState<number | null>(null)
   const [bmiCategory, setBmiCategory] = useState<string>("")
@@ -268,8 +269,8 @@ export function AssessmentForm({ onSubmit }: AssessmentFormProps) {
             </div>
           )}
 
-          <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground dark:bg-white dark:text-[#2D3748] dark:hover:bg-white/90 py-3 text-lg">
-            {t('GetMyCustomPlan')}
+          <Button type="submit" disabled={submitting} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground dark:bg-white dark:text-[#2D3748] dark:hover:bg-white/90 py-3 text-lg disabled:opacity-60">
+            {submitting ? t('Submitting') : t('GetMyCustomPlan')}
           </Button>
         </form>
       </CardContent>

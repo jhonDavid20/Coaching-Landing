@@ -7,14 +7,6 @@ import {useTranslations} from 'next-intl';
 export default function HeroSection() {
   const t = useTranslations('HeroSection');
 
-
-  const openCalBooking = (source: string) => {
-    // In production, replace with actual Cal.com integration
-    console.log(`Opening Cal.com booking from: ${source}`)
-    // Example: window.open('https://cal.com/your-username/15min', '_blank')
-    alert(`Cal.com booking would open here (source: ${source})`)
-  }
-
   return (
     <section
       id="home"

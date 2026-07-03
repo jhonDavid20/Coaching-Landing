@@ -48,7 +48,9 @@
     "ExperiencePlaceholder": "Tell us about your fitness background, any injuries, or specific concerns...",
     "BMI": "BMI",
     "InitialRecommendations": "Initial Recommendations:",
-    "GetMyCustomPlan": "Get My Custom Plan"
+    "GetMyCustomPlan": "Get My Custom Plan",
+    "Submitting": "Submitting...",
+    "SubmitError": "Something went wrong. Please try again."
   },
   "AboutSection": {
     "title": "Your Transformation Partner",
